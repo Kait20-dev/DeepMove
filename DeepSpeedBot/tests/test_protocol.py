@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from adapter.engine import Engine
-from adapter.arena import ArenaError, Client, budget, validate, play
+from adapter.arena import ArenaError, Client, budget, polling_interval, validate, play
 
 EXE=ROOT/"build"/("deepspeed.exe" if os.name=="nt" else "deepspeed")
 
@@ -170,6 +170,49 @@ class HttpTests(unittest.TestCase):
     def test_protocol_history_validation(self):
         state={"status":"playing","turn":"w","seats":{"w":{"kind":"bot","userId":"owner"}},"moves":[{"uci":"e2e4\nquit"}],"legalMoves":[]}
         with self.assertRaises(ValueError): validate(state,"w")
+
+    def test_short_deadline_polling_is_bounded_and_countdown_stays_quiet(self):
+        state={"status":"playing","seats":{"w":{"kind":"bot"}},"format":{"botMoveMs":1000}}
+        self.assertEqual(polling_interval(state,"w",.2),.04)
+        self.assertEqual(polling_interval({**state,"format":{"botMoveMs":3000}},"w",.2),.2)
+        waiting={**state,"status":"waiting","startsAt":10000,"serverNow":1000}
+        self.assertEqual(polling_interval(waiting,"w",.2),.2)
+        self.assertEqual(polling_interval({**waiting,"serverNow":9500},"w",.2),.04)
+
+    def test_move_is_submitted_before_slow_diagnostics_and_phase_timings_are_recorded(self):
+        actions=[]; events=[]
+        active={"status":"playing","turn":"w","seats":{"w":{"kind":"bot","userId":"owner","ready":True}},
+                "moves":[],"legalMoves":["e2e4"],"deadline":4000,"serverNow":1000,"turnStartedAt":1000,
+                "clocks":{"w":300000,"b":300000},"format":{"initialMs":300000,"incrementMs":0}}
+        finished={**active,"status":"finished","turn":"b","legalMoves":[],
+                  "moves":[{"uci":"e2e4","san":"e4","elapsedMs":123}],"result":"1-0","reason":"resignation"}
+        class Transport:
+            rtt_ms=12.5
+            def request(self,action="",data=None):
+                actions.append(action or "get")
+                return finished if action=="move" else active
+            def close(self): pass
+        class Native:
+            diagnostics=[]
+            def position(self,*_):
+                self.diagnostics.append({"event":"ponder","elapsed_ms":17})
+                return {}
+            def think(self,*_): return {"move":"e2e4","elapsed_ms":1,"ponder_hit":False}
+            def stop(self): pass
+            def send(self,*_): pass
+            def wait(self,*_): pass
+        def emit(event):
+            actions.append("emit:"+event["event"])
+            events.append(event)
+        play(Transport(),Native(),"w",emit)
+        self.assertLess(actions.index("move"),actions.index("emit:move"))
+        self.assertLess(actions.index("move"),actions.index("emit:ponder"))
+        move=next(event for event in events if event["event"]=="move")
+        self.assertTrue(move["accepted"])
+        self.assertEqual(move["server_move_ms"],123)
+        self.assertEqual(move["poll_rtt_ms"],12.5)
+        for field in ("position_ms","search_roundtrip_ms","decision_ms","move_http_ms"):
+            self.assertGreaterEqual(move[field],0)
 
     def test_lost_post_response_rereads_instead_of_repeating(self):
         events=[]; actions=[]

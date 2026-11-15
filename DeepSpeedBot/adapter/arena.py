@@ -41,7 +41,7 @@ class Client:
         headers = {"Accept": "application/json"}
         if data is not None:
             headers.update({"Authorization": "Bearer " + self._token, "Content-Type": "application/json"})
-        started = time.monotonic()
+        started = time.perf_counter()
         try:
             self.connection.request("POST" if data is not None else "GET", self.path + ("/" + action if action else ""),
                                     json.dumps(data) if data is not None else None, headers)
@@ -66,7 +66,7 @@ class Client:
             state = json.loads(raw)
             if not isinstance(state, dict):
                 raise ValueError("Invalid arena object")
-            self.rtt_ms = (time.monotonic()-started)*1000
+            self.rtt_ms = (time.perf_counter()-started)*1000
             return state
         except (OSError, http.client.HTTPException, ValueError):
             self.connection.close()
@@ -99,6 +99,16 @@ def budget(state: dict, received: float, rtt_ms: float, reserve_ms: int) -> tupl
     return max(0, int(remaining)), max(0, int(left))
 
 
+def polling_interval(state: dict, side: str, poll: float) -> float:
+    """Short-deadline games need faster detection, with one outstanding GET only."""
+    if state.get("status") != "playing" and not (isinstance(state.get("startsAt"), (int, float))
+                                                and 0 <= state["startsAt"]-state.get("serverNow", 0) <= 1000):
+        return poll
+    limits = state.get("format", {})
+    limit = limits.get("botMoveMs" if state["seats"][side]["kind"] == "bot" else "humanMoveMs")
+    return min(poll, .04) if isinstance(limit, (int, float)) and 0 < limit <= 1000 else poll
+
+
 def play(client: Client, engine: Engine, side: str, emit, poll: float = .2, reserve_ms: int = 220,
          ponder: str = "adaptive", think_ms: int | None = None, stop_event=None) -> dict | None:
     if side not in ("w", "b") or not .2 <= poll <= 5 or reserve_ms < 50:
@@ -125,6 +135,8 @@ def play(client: Client, engine: Engine, side: str, emit, poll: float = .2, rese
                 if state is None:
                     state = client.request()
                 received = time.monotonic()
+                received_precise = time.perf_counter()
+                snapshot_rtt = client.rtt_ms
                 moves = validate(state, side)
                 if state["status"] == "finished":
                     engine.stop()
@@ -147,8 +159,9 @@ def play(client: Client, engine: Engine, side: str, emit, poll: float = .2, rese
                     state = ready
                     continue
                 if state["status"] == "playing" and state["turn"] == side:
+                    position_started = time.perf_counter()
                     engine.position(moves)
-                    diagnostics()
+                    positioned = time.perf_counter()
                     # Feed only official opponent timings and features of the position they faced.
                     for i in range(observed, len(moves)):
                         if (i % 2 == 0) != (side == "w"):
@@ -166,16 +179,33 @@ def play(client: Client, engine: Engine, side: str, emit, poll: float = .2, rese
                                   "ponder_hit": False, "ponder_opportunity": pondering_at is not None, "emergency": True}
                     else:
                         result = engine.think(remaining, hard, state["format"]["incrementMs"], think_ms, side)
+                    thought = time.perf_counter()
                     move = result["move"]
                     if move not in state["legalMoves"]:
                         raise ValueError("Native engine returned a move outside official legalMoves")
                     opportunities += bool(result.get("ponder_opportunity"))
                     hits += bool(result.get("ponder_hit"))
                     cpu_search_ms += result["elapsed_ms"]
-                    result.update(event="move", ply=len(moves), hard_budget_ms=hard)
-                    emit(result)
+                    result.update(event="move", ply=len(moves), hard_budget_ms=hard,
+                                  poll_rtt_ms=round(snapshot_rtt, 3),
+                                  position_ms=round((positioned-position_started)*1000, 3),
+                                  search_roundtrip_ms=round((thought-positioned)*1000, 3))
                     # Never retry a POST without re-reading the authoritative state.
-                    state = client.request("move", {"move": move, "expectedPly": len(moves)})
+                    # Logging can block on a slow terminal/file: send the move first.
+                    post_started = time.perf_counter()
+                    result["decision_ms"] = round((post_started-received_precise)*1000, 3)
+                    result["estimated_margin_ms"] = round(float(state["deadline"])-float(state["serverNow"])
+                                                           -(post_started-received_precise)*1000-snapshot_rtt, 3)
+                    try:
+                        state = client.request("move", {"move": move, "expectedPly": len(moves)})
+                        accepted = state.get("moves", [])[len(moves):len(moves)+1]
+                        result["accepted"] = bool(accepted and accepted[0]["uci"] == move)
+                        if result["accepted"]:
+                            result["server_move_ms"] = accepted[0].get("elapsedMs")
+                    finally:
+                        result["move_http_ms"] = round((time.perf_counter()-post_started)*1000, 3)
+                        emit(result)
+                        diagnostics()
                     pondering_at = None
                     if state["status"] == "playing" and state["turn"] != side:
                         enemy_features = engine.position([m["uci"] for m in state["moves"]])
@@ -188,7 +218,10 @@ def play(client: Client, engine: Engine, side: str, emit, poll: float = .2, rese
                     if ponder != "off":
                         engine.ponder(ponder)
                     pondering_at = len(moves)
-                time.sleep(poll)
+                # Sleep only the remainder of the cadence, rather than adding a
+                # full poll delay after every HTTP response and IPC exchange.
+                interval = polling_interval(state, side, poll)
+                time.sleep(max(0, interval-client.rtt_ms/1000-(time.perf_counter()-received_precise)))
                 state = None
             except ArenaError as error:
                 if error.status in (401, 403, 404, 422) or 300 <= error.status < 400:
