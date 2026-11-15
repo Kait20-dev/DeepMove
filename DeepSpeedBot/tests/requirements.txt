@@ -1,0 +1,2 @@
+# Optional arbitration/oracle for tests only; NOT a native runtime dependency.
+chess==1.11.2

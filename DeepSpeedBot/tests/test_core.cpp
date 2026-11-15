@@ -48,6 +48,8 @@ void moveTests() {
     ds::Board rep;
     for(int i=0;i<2;++i) for(auto m:{"g1f3","g8f6","f3g1","f6g8"}) check(rep.play(m),"repetition move");
     check(rep.repetition(),"threefold repetition");
+    ds::Board sameFen(rep.fen());
+    check(rep.key==sameFen.key && rep.searchKey()!=sameFen.searchKey(),"TT separates different repetition histories");
     check(ds::Board("4k3/8/8/8/8/8/8/4K3 w - - 0 1").insufficient(),"bare kings draw");
     check(ds::Board("4k3/8/8/8/8/8/8/2B1K3 w - - 0 1").insufficient(),"single minor draw");
     check(!ds::Board("4k3/8/8/8/8/8/8/1NN1K3 w - - 0 1").insufficient(),"two knights not automatic draw");

@@ -15,7 +15,7 @@ function Get-VerifiedArchive($url, $file, $sha) {
 $gccArchive = Join-Path $toolsRoot 'w64devkit-x64-2.11.0.7z.exe'
 if (-not (Test-Path -LiteralPath (Join-Path $toolsRoot 'w64devkit/bin/g++.exe'))) {
     Get-VerifiedArchive 'https://github.com/skeeto/w64devkit/releases/download/v2.11.0/w64devkit-x64-2.11.0.7z.exe' $gccArchive '54c2bb9962e8a30c8270e34c5efc3d5fee579f53087fa7d435b95fbba2af7b2b'
-    $extract = Start-Process -FilePath $gccArchive -ArgumentList @('-y', "-o$toolsRoot") -WindowStyle Hidden -Wait -PassThru
+    $extract = Start-Process -FilePath $gccArchive -ArgumentList @('-y', ('-o"{0}"' -f $toolsRoot)) -WindowStyle Hidden -Wait -PassThru
     if ($extract.ExitCode -ne 0) { throw 'Compiler extraction failed' }
     Remove-Item -LiteralPath $gccArchive
 }

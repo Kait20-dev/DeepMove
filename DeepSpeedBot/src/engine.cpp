@@ -37,6 +37,7 @@ void Engine::think(Limits limits,bool ponder,int remaining,int hard,int incremen
     }
     bool opportunity=wasPondering; wasPondering=false;
     if (limits.timeMs<0) limits.timeMs=timeBudget(board,config,remaining,hard,increment,found,opponent);
+    ponderBudgetMs=std::max(1,limits.timeMs);
     auto effectiveConfig=config; auto model=opponent;
     worker=std::thread([this,board,limits,ponder,hit,found,opportunity,effectiveConfig,model]() {
         auto started=Clock::now(); Result result;
@@ -115,7 +116,7 @@ bool Engine::command(const std::string& line) {
         emit("uciok");
     } else if(cmd=="isready") emit("readyok");
     else if(cmd=="stop") stop(true);
-    else if(cmd=="ponderhit") { control.deadline=ticks()+static_cast<std::int64_t>(config.normalMs)*1000000; control.ponder=false; }
+    else if(cmd=="ponderhit") { control.deadline=ticks()+static_cast<std::int64_t>(ponderBudgetMs)*1000000; control.ponder=false; }
     else if(cmd=="ucinewgame") { stop(false); tt.clear(); prepared.clear(); opponent={}; wasPondering=false; position=Board(); }
     else if(cmd=="setoption") {
         stop(false); std::string word,name,value;
@@ -154,7 +155,7 @@ bool Engine::command(const std::string& line) {
         s<<"info string dmmodel {\"observations\":"<<opponent.observations<<",\"mean_ms\":"<<opponent.meanMs<<",\"variance_ms2\":"<<opponent.variance()<<",\"complexity_correlation\":"<<opponent.correlation()<<",\"captures\":"<<opponent.captures<<",\"check_mean_ms\":"<<opponent.checkMean<<",\"capture_mean_ms\":"<<opponent.captureMean<<",\"quiet_mean_ms\":"<<opponent.quietMean<<",\"opening_mean_ms\":"<<opponent.openingMean<<",\"middle_mean_ms\":"<<opponent.middleMean<<",\"ending_mean_ms\":"<<opponent.endingMean<<"}"; emit(s.str());
     } else if(cmd=="go") {
         Limits limits; limits.timeMs=-1; int remaining=300000,hard=std::max(1,3000-config.reserveMs),increment=0;
-        bool ponder=false; std::string word;
+        bool ponder=false, depthOrNodes=false, explicitTime=false, explicitHard=false; std::string word;
         while(in>>word) {
             if(word=="ponder") ponder=true;
             else if(word=="infinite") limits.infinite=true;
@@ -162,16 +163,17 @@ bool Engine::command(const std::string& line) {
                 std::string value; if(!(in>>value)) throw std::invalid_argument("Missing go value");
                 auto n=std::stoll(value);
                 if(n<0 || n>1000000000) throw std::invalid_argument("Invalid go value");
-                if(word=="movetime") limits.timeMs=std::max(1,static_cast<int>(n));
-                else if(word=="depth") { limits.depth=std::clamp(static_cast<int>(n),1,64); limits.infinite=true; }
-                else if(word=="nodes") { limits.nodes=n; limits.timeMs=1000000000; }
-                else if(word=="hardtime") hard=std::max(1,static_cast<int>(n));
+                if(word=="movetime") { limits.timeMs=std::max(1,static_cast<int>(n)); explicitTime=true; }
+                else if(word=="depth") { limits.depth=std::clamp(static_cast<int>(n),1,64); depthOrNodes=true; }
+                else if(word=="nodes") { limits.nodes=std::max<std::int64_t>(1,n); depthOrNodes=true; }
+                else if(word=="hardtime") { hard=std::max(1,static_cast<int>(n)); explicitHard=true; }
                 else if((word=="wtime" && position.turn==0) || (word=="btime" && position.turn==1)) remaining=n;
                 else if((word=="winc" && position.turn==0) || (word=="binc" && position.turn==1)) increment=n;
             }
         }
-        // depth/nodes are finite completion conditions, not UCI go infinite.
-        if(line.find("infinite")==std::string::npos && limits.infinite) { limits.timeMs=1000000000; limits.infinite=false; }
+        // Multiple finite limits mean stop at the earliest one. go infinite is separate.
+        if(depthOrNodes && !explicitTime) limits.timeMs=explicitHard?hard:1000000000;
+        if(explicitHard && limits.timeMs>hard) limits.timeMs=hard;
         think(limits,ponder,remaining,hard,increment);
     } else if(cmd=="perft") {
         stop(false); int depth=0; in>>depth;
