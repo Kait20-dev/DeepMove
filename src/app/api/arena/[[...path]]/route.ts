@@ -30,6 +30,8 @@ export async function POST(request: Request, context: Context) {
     const botAction = path[0] === 'games' && path.length === 3 && ['move', 'ready', 'resign'].includes(path[2]) && request.headers.has('authorization');
     if (!botAction) sameOrigin(request);
     const input = await body(request);
+    // Full JSON received; DB bookkeeping must not consume the player's clock.
+    const receivedAt = Date.now();
     if (path[0] === 'register' || path[0] === 'login') {
       rateLimit('authentication-global', 100, 60_000);
       const { user, token } = await authenticate(input, path[0] === 'register');
@@ -43,7 +45,7 @@ export async function POST(request: Request, context: Context) {
     }
     if (botAction) {
       rateLimit(`bot:${hash(request.headers.get('authorization') || '')}`, 300, 60_000);
-      return json(gameAction(path[1], request, path[2], input));
+      return json(gameAction(path[1], request, path[2], input, receivedAt));
     }
     const user = requireUser(request);
     rateLimit(`write:${user.id}`, 180, 60_000);
@@ -64,7 +66,7 @@ export async function POST(request: Request, context: Context) {
         rateLimit(`analysis:${user.id}`, 4, 3600_000);
         return json(await requestAnalysis(id), 200);
       }
-      return json(gameAction(id, request, action, input));
+      return json(gameAction(id, request, action, input, receivedAt));
     }
     if (path[0] === 'teams') {
       if (path.length === 1) return json(createTeam(user, input), 201);

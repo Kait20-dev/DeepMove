@@ -11,6 +11,8 @@ export interface Seat { userId: string | null; name: string; kind: PlayerKind; r
 export interface MoveRecord { uci: string; san: string; fen: string; elapsedMs: number; remainingMs: number }
 export interface TimeoutDetails {
   side: Side; kind: 'move' | 'total'; ply: number; limitMs: number; remainingMs: number;
+  deadlineAt?: number;
+  lateMove?: { uci: string; receivedAt: number; delayMs: number };
 }
 export interface Game {
   id: string; createdAt: number; createdBy: string; joinHash: string;
@@ -27,10 +29,14 @@ export interface GameView extends Omit<Game, 'seats' | 'analysis' | 'joinHash'> 
   serverNow: number; deadline: number | null; pgn: string; material: MaterialSummary;
   analysis: AnalysisReport | null;
 }
+/** Only the fields rendered by lobby cards and profile game lists. */
+export interface GameSummary extends Pick<Game, 'id' | 'createdAt' | 'status' | 'result' | 'reason' | 'format'> {
+  seats: Record<Side, PublicSeat>; moveCount: number;
+}
 export interface MaterialSummary { white: number; black: number; balance: number; capturedByWhite: string[]; capturedByBlack: string[] }
 export type MoveQuality = 'best' | 'good' | 'inaccuracy' | 'mistake' | 'blunder' | 'brilliant-candidate';
 export interface MoveAnalysis { ply: number; san: string; evaluation: number; mate: number | null; loss: number; accuracy: number; quality: MoveQuality; bestMove: string | null }
 export interface AnalysisReport { engine: string; depth: number; createdAt: number; moves: MoveAnalysis[]; accuracy: Record<Side, number | null>; methodology: string }
 export interface UserView { id: string; handle: string; name: string; bio: string; createdAt: number }
 export interface TeamView { id: string; name: string; ownerId: string; members: UserView[] }
-export interface Dashboard { user: UserView | null; games: GameView[]; teams: TeamView[] }
+export interface Dashboard { user: UserView | null; games: GameSummary[]; teams: TeamView[] }

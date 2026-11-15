@@ -63,6 +63,31 @@ test('bot credentials are game-scoped, not readable, and revocable; invite rotat
   joinGame(first.id, bob.user, { joinCode: code });
   const json = JSON.stringify(getGame(first.id)); assert.ok(!json.includes(old)); assert.ok(!json.includes(code)); assert.ok(!json.includes('Hash'));
 });
+
+test('late diagnostics require the expired seat key and ignore client timestamps, illegal and stale attempts', () => {
+  const alice = user(), bob = user(), mallory = user();
+  const created = createGame(alice.user, { format: 'hardbullet', side: 'w', kind: 'bot', opponentKind: 'bot' });
+  joinGame(created.id, bob.user, { joinCode: created.joinCode });
+  const white = rotateBotKey(created.id, alice.user).token;
+  const black = rotateBotKey(created.id, bob.user).token;
+  const botRequest = (token: string) => new Request('http://localhost', { headers: { authorization: `Bearer ${token}` } });
+  const game = loadGame(created.id), deadline = Date.now() - 100;
+  game.status = 'playing'; game.turnStartedAt = deadline - 1000;
+  saveGame(game);
+  assert.equal(getGame(game.id).reason, 'timeout'); // Spectator settled it before the POST.
+  const input = { move: 'e2e4', expectedPly: 0, receivedAt: deadline - 1, delayMs: 0 };
+  assert.throws(() => gameAction(game.id, mallory.request, 'move', input), /зритель/);
+  assert.throws(() => gameAction(game.id, alice.request, 'move', input), /Bearer/);
+  assert.equal(gameAction(game.id, botRequest(black), 'move', input).timeout?.lateMove, undefined);
+  assert.equal(gameAction(game.id, botRequest(white), 'move', { ...input, expectedPly: 1 }).timeout?.lateMove, undefined);
+  assert.equal(gameAction(game.id, botRequest(white), 'move', { ...input, move: 'e2e5' }).timeout?.lateMove, undefined);
+  const late = gameAction(game.id, botRequest(white), 'move', input, deadline + 79);
+  assert.deepEqual(late.timeout?.lateMove, { uci: 'e2e4', receivedAt: deadline + 79, delayMs: 79 });
+  assert.equal(gameAction(game.id, botRequest(white), 'move', input, deadline + 1000).timeout?.lateMove?.delayMs, 79);
+  assert.equal(loadGame(game.id).timeout?.lateMove?.delayMs, 79);
+  assert.equal(late.result, '0-1');
+  assert.equal(late.moves.length, 0);
+});
 test('profile authentication uses salted KDF, hashed sessions and exact same-origin validation', async () => {
   const handle = `user_${randomUUID().slice(0, 8)}`;
   const registered = await authenticate({ handle, name: 'Alice', password: 'a-long-test-password' }, true);

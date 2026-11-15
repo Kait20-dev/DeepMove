@@ -1,0 +1,38 @@
+{
+  "measuredAt": "2026-11-15T11:35:15.363Z",
+  "platform": "win32",
+  "node": "v24.20.0",
+  "scenario": "Two real HardBullet 15+0/1s games, 50 archived 128-ply fixtures, concurrent lobby reads every 100ms, isolated SQLite/production Next server",
+  "games": [
+    {
+      "ponder": "off",
+      "result": "1/2-1/2",
+      "reason": "insufficient_material",
+      "timeoutKind": null,
+      "plies": 174,
+      "maxAcceptedMoveMs": 302,
+      "meanAcceptedMoveMs": 167.184,
+      "meanDecisionMs": 69.853,
+      "maxMoveHttpMs": 287.06,
+      "warnings": 0
+    },
+    {
+      "ponder": "adaptive",
+      "result": "1-0",
+      "reason": "checkmate",
+      "timeoutKind": null,
+      "plies": 101,
+      "maxAcceptedMoveMs": 354,
+      "meanAcceptedMoveMs": 193.069,
+      "meanDecisionMs": 127.501,
+      "maxMoveHttpMs": 119.292,
+      "warnings": 0
+    }
+  ],
+  "lobby": {
+    "requests": 358,
+    "medianMs": 25.253,
+    "maxMs": 475.51
+  },
+  "limitations": "Local integration validation, not Elo or a guarantee against overload/network faults. Both native engines single-core with default OS-allowed core selection."
+}

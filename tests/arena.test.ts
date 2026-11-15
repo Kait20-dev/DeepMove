@@ -2,10 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Chess } from 'chess.js';
 import { randomUUID } from 'node:crypto';
-import { applyMove, settleClock, viewGame, pgnFor, deadlineFor } from '../src/features/arena/rules';
+import { applyMove, settleClock, viewGame, pgnFor, deadlineFor, recordLateMove } from '../src/features/arena/rules';
 import { formats, type Game, type Side } from '../src/features/arena/types';
 import { analyzeGame, classifyLoss } from '../src/server/analysis';
-import { clocksAtPly, clockText, timeoutFor } from '../src/features/arena/timing';
+import { clocksAtPly, clockText, timeoutArrivalText, timeoutFor } from '../src/features/arena/timing';
 
 function fixture(kind: 'human' | 'bot' = 'human', format = formats.arena): Game {
   return { id: randomUUID(), createdBy: 'alice', joinHash: 'secret-never-public', createdAt: 1700000000000, status: 'playing', result: '*', reason: null, seats: { w: { userId: 'alice', name: 'Alice', kind, ready: true, tokenHash: 'white-secret' }, b: { userId: 'bob', name: 'Bob', kind, ready: true, tokenHash: 'black-secret' } }, format: { ...format }, moves: [], clocks: { w: format.initialMs, b: format.initialMs }, turnStartedAt: 1000, startDelayMs: 8000, startsAt: null, version: 0 };
@@ -85,13 +85,15 @@ test('timeout records the failed side and unaccepted ply separately from the las
   const game = fixture('bot', formats.hardbullet);
   applyMove(game, 'w', 'e2e4', 0, 1300);
   settleClock(game, 9000); // Late observation must still settle at the official deadline.
-  assert.deepEqual(game.timeout, { side: 'b', kind: 'move', ply: 2, limitMs: 1000, remainingMs: 14000 });
+  assert.deepEqual(game.timeout, { side: 'b', kind: 'move', ply: 2, limitMs: 1000, remainingMs: 14000, deadlineAt: 2300 });
   assert.equal(game.moves.length, 1);
   assert.equal(game.moves[0].elapsedMs, 300);
   const saved = JSON.parse(JSON.stringify(game)) as Game;
   assert.deepEqual(viewGame(saved, 10000).timeout, game.timeout);
   delete saved.timeout;
-  assert.deepEqual(timeoutFor(saved), game.timeout, 'old archives infer the same cause without changing their result');
+  const { deadlineAt: _deadlineAt, ...legacyTimeout } = game.timeout!;
+  void _deadlineAt;
+  assert.deepEqual(timeoutFor(saved), legacyTimeout, 'old archives infer the cause but cannot recover unrecorded arrival times');
   const parsed = new Chess(); parsed.loadPgn(pgnFor(saved));
   assert.equal(parsed.getHeaders().TimeoutKind, 'move');
   assert.equal(parsed.getHeaders().TimeoutSide, 'b');
@@ -105,16 +107,78 @@ test('total timeout wins ties with the move cap and old archives recover total e
     const game = fixture('bot', formats.hardbullet);
     game.clocks.w = remaining;
     settleClock(game, 2000);
-    assert.deepEqual(game.timeout, { side: 'w', kind: 'total', ply: 1, limitMs: remaining, remainingMs: 0 });
+    assert.deepEqual(game.timeout, { side: 'w', kind: 'total', ply: 1, limitMs: remaining, remainingMs: 0, deadlineAt: 1000 + remaining });
   }
   const game = fixture('human', formats.rapid);
   applyMove(game, 'w', 'e2e4', 0, 1300);
   settleClock(game, 601300);
-  const expected = game.timeout;
+  const { deadlineAt: _deadlineAt, ...expected } = game.timeout!;
+  void _deadlineAt;
   delete game.timeout;
   assert.deepEqual(timeoutFor(game), expected);
   game.reason = 'checkmate';
   assert.equal(timeoutFor(game), null);
+});
+
+test('only the first legal late attempt records exact lateness, including a prior spectator settlement', () => {
+  const game = fixture('bot', formats.hardbullet);
+  applyMove(game, 'w', 'e2e4', 0, 1300);
+  settleClock(game, 5000);
+  const version = game.version;
+  assert.match(timeoutArrivalText(game.timeout!), /пока не получен/);
+  recordLateMove(game, 'w', 'g1f3', 1, 2400);
+  recordLateMove(game, 'b', 'e7e5', 0, 2400);
+  recordLateMove(game, 'b', 'e7e4', 1, 2400);
+  recordLateMove(game, 'b', 'not-a-move', 1, 2400);
+  recordLateMove(game, 'b', 'e7e5', 1, 2299);
+  assert.equal(game.timeout!.lateMove, undefined);
+  assert.equal(game.version, version);
+  recordLateMove(game, 'b', 'e7e5', 1, 2379);
+  assert.deepEqual(game.timeout!.lateMove, { uci: 'e7e5', receivedAt: 2379, delayMs: 79 });
+  assert.match(timeoutArrivalText(game.timeout!), /Опоздание: 79 мс/);
+  assert.equal(game.version, version + 1);
+  recordLateMove(game, 'b', 'd7d5', 1, 9999);
+  assert.equal(timeoutFor(game)!.lateMove!.delayMs, 79);
+  assert.equal(game.moves.length, 1);
+  assert.equal(game.result, '1-0');
+  assert.deepEqual(game.clocks, { w: 14700, b: 14000 });
+  const replay = new Chess(); replay.loadPgn(pgnFor(game));
+  assert.equal(replay.getHeaders().LateMoveDelayMs, '79');
+  assert.equal(replay.getHeaders().LateMove, 'e7e5');
+  assert.deepEqual(replay.history(), ['e4']);
+});
+
+test('an exact-deadline late move has zero lateness and legacy archives remain unknown', () => {
+  const game = fixture('bot', formats.hardbullet);
+  settleClock(game, 2000);
+  recordLateMove(game, 'w', 'e2e4', 0, 2000);
+  assert.equal(game.timeout!.lateMove!.delayMs, 0);
+  delete game.timeout;
+  assert.match(timeoutArrivalText(timeoutFor(game)!), /не записывалось/);
+  recordLateMove(game, 'w', 'e2e4', 0, 3000);
+  assert.equal(game.timeout, undefined);
+});
+
+test('cached public position data refreshes after moves, late attempts and archive edits while clocks and analysis stay fresh', () => {
+  const game = fixture('bot', formats.hardbullet);
+  const first = viewGame(game, 1000);
+  assert.equal(first.moves.length, 0);
+  applyMove(game, 'w', 'e2e4', 0, 1300);
+  assert.match(viewGame(game, 1400).pgn, /e4/);
+  settleClock(game, 2300);
+  const finished = viewGame(game, 2400);
+  assert.ok(!finished.pgn.includes('LateMoveDelayMs'));
+  recordLateMove(game, 'b', 'e7e5', 1, 2379);
+  assert.match(viewGame(game, 2401).pgn, /LateMoveDelayMs "79"/);
+  game.seats.w.name = 'Renamed archive';
+  assert.match(viewGame(game, 2402).pgn, /Renamed archive/);
+  game.clocks.w = 12345;
+  game.seats.w.ready = false;
+  const fresh = viewGame(game, 2403);
+  assert.equal(fresh.serverNow, 2403);
+  assert.equal(fresh.clocks.w, 12345);
+  assert.equal(fresh.seats.w.ready, false);
+  assert.ok(!JSON.stringify(fresh).includes('white-secret'));
 });
 
 test('replay clocks retain both sides, increments and the position before a final timeout', () => {

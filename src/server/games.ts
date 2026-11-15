@@ -2,8 +2,8 @@ import { randomUUID } from 'node:crypto';
 import { db, loadGame, saveGame, transaction } from './db';
 import { ensure, text } from './errors';
 import { hash, secret, sessionUser } from './auth';
-import { applyMove, finish, opposite, settleClock, viewGame } from '@/features/arena/rules';
-import { formats, type Game, type GameView, type Side, type TimeFormat, type UserView } from '@/features/arena/types';
+import { applyMove, finish, opposite, recordLateMove, settleClock, viewGame } from '@/features/arena/rules';
+import { formats, type Game, type GameSummary, type GameView, type Side, type TimeFormat, type UserView } from '@/features/arena/types';
 
 export function getGame(id: string): GameView {
   return transaction(() => {
@@ -14,9 +14,22 @@ export function getGame(id: string): GameView {
     return viewGame(game, now);
   });
 }
-export function listGames(): GameView[] {
-  const rows = db().prepare('SELECT id FROM games ORDER BY updated_at DESC LIMIT 50').all() as { id: string }[];
-  return rows.map(row => getGame(row.id));
+export function listGames(): GameSummary[] {
+  // Lobby polling must not replay fifty archived histories on the move server.
+  return transaction(() => {
+    const rows = db().prepare('SELECT id FROM games ORDER BY updated_at DESC LIMIT 50').all() as { id: string }[];
+    const now = Date.now();
+    return rows.map(row => {
+      const game = loadGame(row.id), version = game.version;
+      settleClock(game, now);
+      if (version !== game.version) saveGame(game);
+      const seats = Object.fromEntries((['w', 'b'] as const).map(side => {
+        const { userId, name, kind, ready } = game.seats[side];
+        return [side, { userId, name, kind, ready }];
+      })) as GameSummary['seats'];
+      return { id: game.id, createdAt: game.createdAt, status: game.status, result: game.result, reason: game.reason, format: game.format, seats, moveCount: game.moves.length };
+    });
+  });
 }
 function validateFormat(input: Record<string, unknown>): TimeFormat {
   if (input.format !== 'custom') {
@@ -108,16 +121,19 @@ export function rotateBotKey(id: string, user: UserView): { token: string } {
     return { token };
   });
 }
-export function gameAction(id: string, request: Request, action: string, input: Record<string, unknown>): GameView {
+export function gameAction(id: string, request: Request, action: string, input: Record<string, unknown>, receivedAt = Date.now()): GameView {
   return transaction(() => {
-    const game = loadGame(id), now = Date.now();
+    const game = loadGame(id), now = receivedAt;
     const actor = actorSide(request, game);
     settleClock(game, now);
     if (action === 'move') {
       ensure(actor.isBot === (game.seats[actor.side].kind === 'bot'), 403, 'Для бота используйте его Bearer-ключ');
       ensure(typeof input.move === 'string' && Number.isInteger(input.expectedPly), 400, 'Нужны move и expectedPly');
       if (game.status === 'playing') applyMove(game, actor.side, input.move, Number(input.expectedPly), now);
-      else ensure(game.status === 'finished' && game.reason === 'timeout', 409, 'Партия не идёт');
+      else {
+        ensure(game.status === 'finished' && game.reason === 'timeout', 409, 'Партия не идёт');
+        recordLateMove(game, actor.side, input.move, Number(input.expectedPly), now);
+      }
     } else if (action === 'ready') {
       ensure(actor.isBot && game.status === 'waiting', 409, 'Готовность доступна боту перед стартом');
       game.seats[actor.side].ready = true; game.version++;
@@ -127,6 +143,6 @@ export function gameAction(id: string, request: Request, action: string, input: 
       finish(game, game.status === 'waiting' ? '1/2-1/2' : opposite(actor.side) === 'w' ? '1-0' : '0-1', game.status === 'waiting' ? 'cancelled' : 'resignation');
     } else ensure(false, 404, 'Неизвестное действие');
     saveGame(game);
-    return viewGame(game, now);
+    return viewGame(game, Date.now());
   });
 }

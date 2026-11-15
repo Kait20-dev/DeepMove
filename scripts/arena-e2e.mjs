@@ -246,11 +246,12 @@ try {
   assert.equal(hardPgn.getHeaders().TimeControl, '15+0');
   assert.equal(hardPgn.getHeaders().BotMoveLimit, '1');
   assert.equal(hardPgn.getHeaders().HumanMoveLimit, '1');
-  assert.deepEqual(hardFinished.timeout, { side: 'b', kind: 'move', ply: 2, limitMs: 1000, remainingMs: 14000 });
+  assert.deepEqual(hardFinished.timeout, { side: 'b', kind: 'move', ply: 2, limitMs: 1000, remainingMs: 14000, deadlineAt: hardMoved.deadline });
   const timingPage = await spectator.newPage();
   timingPage.on('pageerror', error => errors.push(error.message));
   await timingPage.goto(`${base}/arena/games/${hardGame.id}`);
   await timingPage.locator('.game-state').getByText('Чёрные: истёк лимит на ход', { exact: true }).waitFor();
+  assert.match(await timingPage.locator('.game-state .timeout-arrival').innerText(), /пока не получен/);
   assert.match(await timingPage.locator('.timeout-event').innerText(), /Ход 1\.\.\. не принят/);
   const whiteClock = timingPage.getByLabel('Белые: остаток времени', { exact: true });
   const blackClock = timingPage.getByLabel('Чёрные: остаток времени', { exact: true });
@@ -269,10 +270,20 @@ try {
   await timingPage.getByText('Часы на момент завершения партии', { exact: true }).waitFor();
   assert.equal(await blackClock.innerText(), '0:14.000');
   assert.match(await timingPage.locator('.move-timing').innerText(), /Ход: .* с\s+Ост.: 0:/);
+  const lateAttempt = await post(spectator, `/games/${hardGame.id}/move`, { move: 'e7e5', expectedPly: 1, receivedAt: hardMoved.deadline - 10 }, 200, { Authorization: `Bearer ${hardBlack}` });
+  assert.equal(lateAttempt.moves.length, 1);
+  assert.equal(lateAttempt.result, '1-0');
+  assert.equal(lateAttempt.timeout.lateMove.uci, 'e7e5');
+  assert.equal(lateAttempt.timeout.lateMove.delayMs, lateAttempt.timeout.lateMove.receivedAt - hardMoved.deadline);
+  assert.ok(lateAttempt.timeout.lateMove.delayMs > 0);
+  await timingPage.locator('.game-state .timeout-arrival').getByText(new RegExp(`Опоздание: ${lateAttempt.timeout.lateMove.delayMs} мс`)).waitFor();
+  const lateHeaders = new Chess(); lateHeaders.loadPgn(lateAttempt.pgn);
+  assert.equal(lateHeaders.getHeaders().LateMoveDelayMs, String(lateAttempt.timeout.lateMove.delayMs));
   // Legacy snapshots must render the same explanation without a persisted timeout object.
   await timingPage.route(`${base}/api/arena/games/${hardGame.id}`, route => route.fulfill({ json: { ...hardFinished, timeout: undefined } }));
   await timingPage.reload();
   await timingPage.locator('.game-state').getByText('Чёрные: истёк лимит на ход', { exact: true }).waitFor();
+  assert.match(await timingPage.locator('.game-state .timeout-arrival').innerText(), /не записывалось/);
   await timingPage.unroute(`${base}/api/arena/games/${hardGame.id}`);
   await timingPage.route(`${base}/api/arena/games/${hardGame.id}`, route => route.fulfill({ json: { ...hardFinished, clocks: { ...hardFinished.clocks, b: 0 }, timeout: { side: 'b', kind: 'total', ply: 2, limitMs: 15000, remainingMs: 0 } } }));
   await timingPage.reload();

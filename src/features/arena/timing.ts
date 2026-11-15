@@ -43,3 +43,10 @@ export function timeoutDescription(timeout: TimeoutDetails): string {
   const move = `${Math.ceil(timeout.ply / 2)}${timeout.side === 'w' ? '.' : '...'}`;
   return `Ход ${move} не принят до дедлайна. ${timeout.kind === 'move' ? 'Лимит на ход' : 'Общий запас на начало хода'}: ${secondsText(timeout.limitMs)} с. Остаток общего времени: ${secondsText(timeout.remainingMs)} с.`;
 }
+
+export function timeoutArrivalText(timeout: TimeoutDetails): string {
+  if (timeout.lateMove) return `Опоздание: ${timeout.lateMove.delayMs} мс (${secondsText(timeout.lateMove.delayMs)} с). Поздний ход: ${timeout.lateMove.uci}.`;
+  return timeout.deadlineAt == null
+    ? 'В этой партии время позднего запроса не записывалось. Точное опоздание неизвестно.'
+    : 'Поздний ход пока не получен. Величина опоздания неизвестна; по одному таймауту нельзя определить зависание бота.';
+}
