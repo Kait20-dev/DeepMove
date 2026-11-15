@@ -7,7 +7,6 @@ import hashlib
 import json
 import os
 import platform
-import shutil
 import statistics
 from pathlib import Path
 
@@ -29,7 +28,9 @@ def main():
                     ("stress/games.pgn","stress.pgn"),("arena-smoke.json","arena-smoke.json"),
                     ("arena-1.pgn","arena-1.pgn"),("arena-2.pgn","arena-2.pgn"),
                     ("arena-1.jsonl","arena-1.jsonl"),("arena-2.jsonl","arena-2.jsonl")):
-        shutil.copyfile(source/src,target/dst)
+        # Canonical text bytes: Git must not invalidate evidence hashes on Windows.
+        with (target/dst).open("w",encoding="utf-8",newline="\n") as output:
+            output.write((source/src).read_text(encoding="utf-8"))
     for name in ("matches","stress"):
         with (target/f"{name}-moves.jsonl.gz").open("wb") as output:
             with gzip.GzipFile(fileobj=output,mode="wb",mtime=0) as zipped:
@@ -39,7 +40,8 @@ def main():
               "compiler":"GCC 16.2.0, C++20, -O3, generic x86-64, static MinGW runtime",
               "binary_bytes":binary.stat().st_size,"binary_sha256":hashlib.sha256(binary.read_bytes()).hexdigest(),
               "evidence_sha256":{path.name:hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(target.iterdir()) if path.is_file() and path.name!="manifest.json"}}
-    (target/"manifest.json").write_text(json.dumps(metadata,indent=2)+"\n",encoding="utf-8")
+    with (target/"manifest.json").open("w",encoding="utf-8",newline="\n") as output:
+        output.write(json.dumps(metadata,indent=2)+"\n")
     def load_moves(name): return [json.loads(line) for line in (source/name/"moves.jsonl").read_text().splitlines()]
     baseline_depths=collections.Counter(row["depth"] for row in load_moves("matches") if not row["native"])
     stress_depths=collections.Counter(row["depth"] for row in load_moves("stress") if not row["native"])
