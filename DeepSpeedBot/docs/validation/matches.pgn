@@ -1,0 +1,960 @@
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot adaptive"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "adaptive"]
+[Seed "20261115"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.016000] } 1... Nc6 { [%emt 0.031000] } 2. d4 { [%emt 0.000000] } 2... Nf6 { [%emt 0.031000] } 3. Nf3 { [%emt 0.016000] } 3... h6 { [%emt 0.031000] } 4. Bf4 { [%emt 0.016000] } 4... Nxd4 { [%emt 0.031000] } 5. Nxd4 { [%emt 0.000000] } 5... d5 { [%emt 0.031000] } 6. Qd3 { [%emt 0.016000] } 6... Bf5 { [%emt 0.031000] } 7. Qxf5 { [%emt 0.016000] } 7... Ne4 { [%emt 0.031000] } 8. Nxd5 { [%emt 0.000000] } 8... Qxd5 { [%emt 0.031000] } 9. Qxd5 { [%emt 0.000000] } 9... Nxf2 { [%emt 0.032000] } 10. Kxf2 { [%emt 0.000000] } 10... a5 { [%emt 0.031000] } 11. Bxc7 { [%emt 0.016000] } 11... b5 { [%emt 0.031000] } 12. Qxb5# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot adaptive"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "adaptive"]
+[Seed "20261116"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.031000] } 1... Nc6 { [%emt 0.000000] } 2. Nf3 { [%emt 0.031000] } 2... d5 { [%emt 0.000000] } 3. d4 { [%emt 0.031000] } 3... Nf6 { [%emt 0.016000] } 4. Be3 { [%emt 0.031000] } 4... Bf5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Nxd5 { [%emt 0.000000] } 6. Ne5 { [%emt 0.031000] } 6... Nxe5 { [%emt 0.000000] } 7. dxe5 { [%emt 0.032000] } 7... Nxe3 { [%emt 0.000000] } 8. Qxd8+ { [%emt 0.031000] } 8... Rxd8 { [%emt 0.000000] } 9. fxe3 { [%emt 0.031000] } 9... Rd5 { [%emt 0.000000] } 10. Rd1 { [%emt 0.031000] } 10... Rxe5 { [%emt 0.016000] } 11. Kd2 { [%emt 0.031000] } 11... h5 { [%emt 0.016000] } 12. b4 { [%emt 0.031000] } 12... Rh6 { [%emt 0.016000] } 13. h4 { [%emt 0.031000] } 13... Rd6+ { [%emt 0.016000] } 14. Kc1 { [%emt 0.031000] } 14... Rxe3 { [%emt 0.000000] } 15. Rxd6 { [%emt 0.031000] } 15... exd6 { [%emt 0.000000] } 16. a4 { [%emt 0.031000] } 16... Rc3 { [%emt 0.016000] } 17. e4 { [%emt 0.031000] } 17... Bxe4 { [%emt 0.000000] } 18. Bc4 { [%emt 0.032000] } 18... Rxc4 { [%emt 0.000000] } 19. g4 { [%emt 0.031000] } 19... Bxh1 { [%emt 0.015000] } 20. gxh5 { [%emt 0.032000] } 20... Rxb4 { [%emt 0.000000] } 21. a5 { [%emt 0.031000] } 21... Rxh4 { [%emt 0.016000] } 22. h6 { [%emt 0.031000] } 22... g5 { [%emt 0.015000] } 23. h7 { [%emt 0.032000] } 23... f5 { [%emt 0.000000] } 24. c4 { [%emt 0.031000] } 24... Rxh7 { [%emt 0.016000] } 25. Kd2 { [%emt 0.031000] } 25... g4 { [%emt 0.015000] } 26. Kc3 { [%emt 0.032000] } 26... g3 { [%emt 0.015000] } 27. Kd4 { [%emt 0.032000] } 27... g2 { [%emt 0.015000] } 28. Kc3 { [%emt 0.031000] } 28... g1=Q { [%emt 0.016000] } 29. Kb4 { [%emt 0.031000] } 29... Qc5+ { [%emt 0.016000] } 30. Kc3 { [%emt 0.031000] } 30... Bd5 { [%emt 0.000000] } 31. Kd2 { [%emt 0.031000] } 31... Rh2+ { [%emt 0.016000] } 32. Kd1 { [%emt 0.031000] } 32... Qg1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot adaptive"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "adaptive"]
+[Seed "20261117"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.016000] } 4... bxc6 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.016000] } 5... Ne7 { [%emt 0.031000] } 6. Nc3 { [%emt 0.016000] } 6... Nd5 { [%emt 0.031000] } 7. exd5 { [%emt 0.000000] } 7... cxd5 { [%emt 0.031000] } 8. Qf3 { [%emt 0.000000] } 8... Bc5 { [%emt 0.031000] } 9. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot adaptive"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "adaptive"]
+[Seed "20261118"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.031000] } 4... dxc6 { [%emt 0.000000] } 5. Nxe5 { [%emt 0.032000] } 5... Qd4 { [%emt 0.000000] } 6. Nxc6 { [%emt 0.031000] } 6... Qxe4+ { [%emt 0.016000] } 7. Qe2 { [%emt 0.031000] } 7... Qxe2+ { [%emt 0.000000] } 8. Kxe2 { [%emt 0.031000] } 8... bxc6 { [%emt 0.000000] } 9. Nc3 { [%emt 0.031000] } 9... Bf5 { [%emt 0.000000] } 10. d3 { [%emt 0.032000] } 10... Nf6 { [%emt 0.015000] } 11. Bf4 { [%emt 0.031000] } 11... Bd6 { [%emt 0.000000] } 12. Bxd6 { [%emt 0.032000] } 12... cxd6 { [%emt 0.000000] } 13. f3 { [%emt 0.031000] } 13... Rb8 { [%emt 0.016000] } 14. Nd5 { [%emt 0.031000] } 14... Nxd5 { [%emt 0.015000] } 15. a4 { [%emt 0.032000] } 15... Rxb2 { [%emt 0.015000] } 16. g4 { [%emt 0.032000] } 16... Rxc2+ { [%emt 0.000000] } 17. Kd1 { [%emt 0.031000] } 17... Ne3+ { [%emt 0.000000] } 18. Ke1 { [%emt 0.031000] } 18... Bxd3 { [%emt 0.000000] } 19. h4 { [%emt 0.031000] } 19... Re2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot adaptive"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "adaptive"]
+[Seed "20261119"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.016000] } 4... exd5 { [%emt 0.031000] } 5. Nf3 { [%emt 0.016000] } 5... Nc6 { [%emt 0.031000] } 6. Bf4 { [%emt 0.000000] } 6... Nxd4 { [%emt 0.031000] } 7. Nxd4 { [%emt 0.000000] } 7... Bf5 { [%emt 0.031000] } 8. Nxf5 { [%emt 0.016000] } 8... Bc5 { [%emt 0.031000] } 9. Nxg7+ { [%emt 0.016000] } 9... Kf8 { [%emt 0.031000] } 10. Nf5 { [%emt 0.000000] } 10... Bxf2+ { [%emt 0.031000] } 11. Kxf2 { [%emt 0.000000] } 11... Kg8 { [%emt 0.032000] } 12. Kg1 { [%emt 0.000000] } 12... Ne4 { [%emt 0.031000] } 13. Nxd5 { [%emt 0.000000] } 13... Qxd5 { [%emt 0.031000] } 14. Qxd5 { [%emt 0.000000] } 14... a5 { [%emt 0.031000] } 15. Nh6+ { [%emt 0.000000] } 15... Kf8 { [%emt 0.032000] } 16. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot adaptive"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "adaptive"]
+[Seed "20261120"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.015000] } 5. Nxd5 { [%emt 0.032000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Bb4+ { [%emt 0.000000] } 7. Bd2 { [%emt 0.031000] } 7... Nc6 { [%emt 0.000000] } 8. Bxb4 { [%emt 0.031000] } 8... Nxb4 { [%emt 0.000000] } 9. Ne5 { [%emt 0.032000] } 9... O-O { [%emt 0.000000] } 10. Nxf7 { [%emt 0.031000] } 10... Rxf7 { [%emt 0.000000] } 11. a4 { [%emt 0.031000] } 11... Bd7 { [%emt 0.016000] } 12. e4 { [%emt 0.031000] } 12... Qxe4+ { [%emt 0.031000] } 13. Be2 { [%emt 0.032000] } 13... Nc2+ { [%emt 0.015000] } 14. Qxc2 { [%emt 0.031000] } 14... Qxc2 { [%emt 0.000000] } 15. O-O { [%emt 0.032000] } 15... Qxe2 { [%emt 0.000000] } 16. b4 { [%emt 0.031000] } 16... Qd2 { [%emt 0.016000] } 17. f4 { [%emt 0.031000] } 17... Qxd4+ { [%emt 0.015000] } 18. Kh1 { [%emt 0.032000] } 18... Qxb4 { [%emt 0.015000] } 19. g4 { [%emt 0.032000] } 19... Bc6+ { [%emt 0.015000] } 20. Kg1 { [%emt 0.031000] } 20... Qd4+ { [%emt 0.016000] } 21. Rf2 { [%emt 0.031000] } 21... Qxa1+ { [%emt 0.000000] } 22. Rf1 { [%emt 0.032000] } 22... Qd4+ { [%emt 0.000000] } 23. Rf2 { [%emt 0.031000] } 23... Rxf4 { [%emt 0.015000] } 24. a5 { [%emt 0.032000] } 24... Qxf2# { [%emt 0.015000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot adaptive"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "adaptive"]
+[Seed "20261121"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. Nf3 { [%emt 0.016000] } 4... dxc4 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.000000] } 5... Qxd2+ { [%emt 0.031000] } 6. Bxd2 { [%emt 0.000000] } 6... Nc6 { [%emt 0.032000] } 7. Qa4 { [%emt 0.000000] } 7... Bf5 { [%emt 0.031000] } 8. Nxc6 { [%emt 0.015000] } 8... bxc6 { [%emt 0.032000] } 9. Qxc6+ { [%emt 0.015000] } 9... Ke7 { [%emt 0.032000] } 10. Qxa8 { [%emt 0.015000] } 10... Nd5 { [%emt 0.031000] } 11. Qxd5 { [%emt 0.016000] } 11... a5 { [%emt 0.031000] } 12. Qxf5 { [%emt 0.016000] } 12... c5 { [%emt 0.031000] } 13. Qxc5+ { [%emt 0.016000] } 13... Ke8 { [%emt 0.031000] } 14. Qc8+ { [%emt 0.000000] } 14... Ke7 { [%emt 0.031000] } 15. Nd5+ { [%emt 0.000000] } 15... Kd6 { [%emt 0.032000] } 16. e4 { [%emt 0.000000] } 16... f5 { [%emt 0.031000] } 17. Bf4# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot adaptive"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "adaptive"]
+[Seed "20261122"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Nc6 { [%emt 0.000000] } 7. Nxe5 { [%emt 0.031000] } 7... Qxh1 { [%emt 0.000000] } 8. Nxc6 { [%emt 0.032000] } 8... Bh3 { [%emt 0.000000] } 9. Nxa7 { [%emt 0.031000] } 9... Qxf1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot balanced"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "balanced"]
+[Seed "20261115"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.031000] } 1... Nc6 { [%emt 0.031000] } 2. d4 { [%emt 0.000000] } 2... Nf6 { [%emt 0.031000] } 3. Nf3 { [%emt 0.016000] } 3... h6 { [%emt 0.031000] } 4. d5 { [%emt 0.016000] } 4... Nxd5 { [%emt 0.031000] } 5. Qxd5 { [%emt 0.000000] } 5... Nd4 { [%emt 0.031000] } 6. Qxd4 { [%emt 0.000000] } 6... a5 { [%emt 0.032000] } 7. Ne5 { [%emt 0.015000] } 7... b5 { [%emt 0.032000] } 8. Qd5 { [%emt 0.015000] } 8... c5 { [%emt 0.031000] } 9. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot balanced"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "balanced"]
+[Seed "20261116"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.032000] } 1... Nc6 { [%emt 0.000000] } 2. Nf3 { [%emt 0.031000] } 2... Nf6 { [%emt 0.000000] } 3. e4 { [%emt 0.031000] } 3... d5 { [%emt 0.016000] } 4. exd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Bc4 { [%emt 0.031000] } 6... Qxc4 { [%emt 0.016000] } 7. d4 { [%emt 0.031000] } 7... Bf5 { [%emt 0.016000] } 8. Bf4 { [%emt 0.031000] } 8... Bxc2 { [%emt 0.015000] } 9. Qxc2 { [%emt 0.032000] } 9... Qxc2 { [%emt 0.000000] } 10. Bxc7 { [%emt 0.031000] } 10... Qxb2 { [%emt 0.000000] } 11. O-O { [%emt 0.031000] } 11... Nxd4 { [%emt 0.000000] } 12. Nxd4 { [%emt 0.031000] } 12... Qxd4 { [%emt 0.000000] } 13. a4 { [%emt 0.032000] } 13... e5 { [%emt 0.015000] } 14. Bxe5 { [%emt 0.032000] } 14... Qxe5 { [%emt 0.000000] } 15. Rfd1 { [%emt 0.031000] } 15... Rd8 { [%emt 0.000000] } 16. Rxd8+ { [%emt 0.031000] } 16... Kxd8 { [%emt 0.000000] } 17. Rc1 { [%emt 0.031000] } 17... h5 { [%emt 0.016000] } 18. g3 { [%emt 0.031000] } 18... Bc5 { [%emt 0.016000] } 19. Rxc5 { [%emt 0.031000] } 19... Qxc5 { [%emt 0.000000] } 20. h4 { [%emt 0.031000] } 20... a5 { [%emt 0.000000] } 21. Kf1 { [%emt 0.032000] } 21... Qc4+ { [%emt 0.015000] } 22. Ke1 { [%emt 0.031000] } 22... Qd3 { [%emt 0.000000] } 23. f3 { [%emt 0.032000] } 23... Qxf3 { [%emt 0.015000] } 24. Kd2 { [%emt 0.032000] } 24... f5 { [%emt 0.015000] } 25. Kc1 { [%emt 0.031000] } 25... Re8 { [%emt 0.016000] } 26. Kd2 { [%emt 0.031000] } 26... Re2+ { [%emt 0.000000] } 27. Kd1 { [%emt 0.032000] } 27... Qf1# { [%emt 0.015000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot balanced"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "balanced"]
+[Seed "20261117"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.031000] } 4... bxc6 { [%emt 0.032000] } 5. Nxe5 { [%emt 0.015000] } 5... Ne7 { [%emt 0.031000] } 6. Nc3 { [%emt 0.016000] } 6... Nd5 { [%emt 0.031000] } 7. exd5 { [%emt 0.000000] } 7... cxd5 { [%emt 0.032000] } 8. Qf3 { [%emt 0.000000] } 8... Bc5 { [%emt 0.031000] } 9. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot balanced"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "balanced"]
+[Seed "20261118"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.031000] } 4... dxc6 { [%emt 0.000000] } 5. Nxe5 { [%emt 0.032000] } 5... Qd4 { [%emt 0.000000] } 6. Nxc6 { [%emt 0.031000] } 6... Qxe4+ { [%emt 0.015000] } 7. Qe2 { [%emt 0.032000] } 7... Qxe2+ { [%emt 0.000000] } 8. Kxe2 { [%emt 0.031000] } 8... bxc6 { [%emt 0.000000] } 9. Nc3 { [%emt 0.031000] } 9... Bf5 { [%emt 0.000000] } 10. d3 { [%emt 0.031000] } 10... Rb8 { [%emt 0.016000] } 11. Bf4 { [%emt 0.031000] } 11... Rxb2 { [%emt 0.016000] } 12. Bxc7 { [%emt 0.031000] } 12... Rxc2+ { [%emt 0.015000] } 13. Ke3 { [%emt 0.032000] } 13... Rxc3 { [%emt 0.015000] } 14. a4 { [%emt 0.032000] } 14... Bc5+ { [%emt 0.015000] } 15. Kf4 { [%emt 0.031000] } 15... Bxd3 { [%emt 0.016000] } 16. g4 { [%emt 0.031000] } 16... Bxf2 { [%emt 0.016000] } 17. h4 { [%emt 0.031000] } 17... Nf6 { [%emt 0.016000] } 18. Be5 { [%emt 0.031000] } 18... Rc4+ { [%emt 0.016000] } 19. Kf3 { [%emt 0.031000] } 19... Be4+ { [%emt 0.016000] } 20. Kxf2 { [%emt 0.031000] } 20... Nxg4+ { [%emt 0.000000] } 21. Ke2 { [%emt 0.031000] } 21... Rc2+ { [%emt 0.000000] } 22. Kd1 { [%emt 0.031000] } 22... Nf2+ { [%emt 0.000000] } 23. Ke1 { [%emt 0.032000] } 23... Nd3+ { [%emt 0.000000] } 24. Kf1 { [%emt 0.031000] } 24... Rf2+ { [%emt 0.015000] } 25. Kg1 { [%emt 0.032000] } 25... Rg2+ { [%emt 0.000000] } 26. Kf1 { [%emt 0.031000] } 26... Rf2+ { [%emt 0.000000] } 27. Kg1 { [%emt 0.031000] } 27... Rg2+ { [%emt 0.000000] } 28. Kf1 { [%emt 0.031000] } 28... Nxe5 { [%emt 0.000000] } 29. Rd1 { [%emt 0.032000] } 29... Ra2 { [%emt 0.000000] } 30. Rg1 { [%emt 0.031000] } 30... Bd3+ { [%emt 0.000000] } 31. Ke1 { [%emt 0.031000] } 31... Nf3# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot balanced"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "balanced"]
+[Seed "20261119"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... exd5 { [%emt 0.032000] } 5. Nf3 { [%emt 0.015000] } 5... Nc6 { [%emt 0.031000] } 6. Bf4 { [%emt 0.000000] } 6... Nxd4 { [%emt 0.032000] } 7. Nxd4 { [%emt 0.000000] } 7... Bf5 { [%emt 0.031000] } 8. Nxf5 { [%emt 0.016000] } 8... Bc5 { [%emt 0.031000] } 9. Nxg7+ { [%emt 0.015000] } 9... Kf8 { [%emt 0.032000] } 10. Nf5 { [%emt 0.000000] } 10... Bxf2+ { [%emt 0.031000] } 11. Kxf2 { [%emt 0.000000] } 11... Kg8 { [%emt 0.031000] } 12. Kg1 { [%emt 0.000000] } 12... Ne4 { [%emt 0.031000] } 13. Nh6+ { [%emt 0.000000] } 13... Kf8 { [%emt 0.032000] } 14. Nxd5 { [%emt 0.015000] } 14... Qxd5 { [%emt 0.032000] } 15. Qxd5 { [%emt 0.000000] } 15... a5 { [%emt 0.031000] } 16. Qxf7# { [%emt 0.015000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot balanced"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "balanced"]
+[Seed "20261120"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Bb4+ { [%emt 0.000000] } 7. Bd2 { [%emt 0.031000] } 7... Nc6 { [%emt 0.000000] } 8. Bxb4 { [%emt 0.032000] } 8... Nxb4 { [%emt 0.000000] } 9. Ne5 { [%emt 0.031000] } 9... O-O { [%emt 0.000000] } 10. Nxf7 { [%emt 0.031000] } 10... Rxf7 { [%emt 0.000000] } 11. a4 { [%emt 0.031000] } 11... Bd7 { [%emt 0.016000] } 12. e4 { [%emt 0.031000] } 12... Qxe4+ { [%emt 0.016000] } 13. Be2 { [%emt 0.031000] } 13... Nc2+ { [%emt 0.016000] } 14. Qxc2 { [%emt 0.031000] } 14... Qxc2 { [%emt 0.000000] } 15. O-O { [%emt 0.031000] } 15... Qxe2 { [%emt 0.000000] } 16. b4 { [%emt 0.031000] } 16... Qd2 { [%emt 0.016000] } 17. f4 { [%emt 0.031000] } 17... Qxd4+ { [%emt 0.016000] } 18. Kh1 { [%emt 0.031000] } 18... Qxb4 { [%emt 0.016000] } 19. g4 { [%emt 0.031000] } 19... Bc6+ { [%emt 0.016000] } 20. Kg1 { [%emt 0.031000] } 20... Qd4+ { [%emt 0.016000] } 21. Rf2 { [%emt 0.031000] } 21... Qxa1+ { [%emt 0.000000] } 22. Rf1 { [%emt 0.031000] } 22... Qd4+ { [%emt 0.000000] } 23. Rf2 { [%emt 0.031000] } 23... Rxf4 { [%emt 0.000000] } 24. a5 { [%emt 0.032000] } 24... Qxf2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot balanced"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "balanced"]
+[Seed "20261121"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. Nf3 { [%emt 0.016000] } 4... dxc4 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.000000] } 5... Qxd2+ { [%emt 0.032000] } 6. Bxd2 { [%emt 0.000000] } 6... Nc6 { [%emt 0.031000] } 7. Qa4 { [%emt 0.000000] } 7... Bf5 { [%emt 0.031000] } 8. Nxc6 { [%emt 0.016000] } 8... bxc6 { [%emt 0.031000] } 9. Qxc6+ { [%emt 0.016000] } 9... Ke7 { [%emt 0.031000] } 10. Qxa8 { [%emt 0.015000] } 10... Nd5 { [%emt 0.032000] } 11. Qxd5 { [%emt 0.015000] } 11... a5 { [%emt 0.032000] } 12. Qxf5 { [%emt 0.031000] } 12... c5 { [%emt 0.031000] } 13. Qxc5+ { [%emt 0.016000] } 13... Ke8 { [%emt 0.031000] } 14. Qc8+ { [%emt 0.000000] } 14... Ke7 { [%emt 0.031000] } 15. Nd5+ { [%emt 0.000000] } 15... Kd6 { [%emt 0.031000] } 16. e4 { [%emt 0.000000] } 16... f5 { [%emt 0.032000] } 17. Bf4# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot balanced"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "balanced"]
+[Seed "20261122"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.032000] } 6... Nc6 { [%emt 0.000000] } 7. Nxe5 { [%emt 0.031000] } 7... Qxh1 { [%emt 0.000000] } 8. Nxc6 { [%emt 0.031000] } 8... Bh3 { [%emt 0.000000] } 9. Nxa7 { [%emt 0.031000] } 9... Qxf1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot speed"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "speed"]
+[Seed "20261115"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.031000] } 1... Nc6 { [%emt 0.032000] } 2. Nf3 { [%emt 0.000000] } 2... Nf6 { [%emt 0.031000] } 3. d4 { [%emt 0.000000] } 3... h6 { [%emt 0.031000] } 4. Bf4 { [%emt 0.016000] } 4... Nxd4 { [%emt 0.031000] } 5. Nxd4 { [%emt 0.000000] } 5... d5 { [%emt 0.031000] } 6. Qd3 { [%emt 0.016000] } 6... Bf5 { [%emt 0.031000] } 7. Qxf5 { [%emt 0.016000] } 7... Ne4 { [%emt 0.031000] } 8. Nxd5 { [%emt 0.000000] } 8... Qxd5 { [%emt 0.031000] } 9. Qxd5 { [%emt 0.000000] } 9... Nxf2 { [%emt 0.032000] } 10. Kxf2 { [%emt 0.000000] } 10... a5 { [%emt 0.031000] } 11. Bxc7 { [%emt 0.015000] } 11... b5 { [%emt 0.032000] } 12. Qxb5# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot speed"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "speed"]
+[Seed "20261116"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.031000] } 1... Nc6 { [%emt 0.000000] } 2. Nf3 { [%emt 0.031000] } 2... Nf6 { [%emt 0.000000] } 3. e4 { [%emt 0.032000] } 3... d5 { [%emt 0.015000] } 4. exd5 { [%emt 0.032000] } 4... Nxd5 { [%emt 0.015000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Bc4 { [%emt 0.032000] } 6... Qxc4 { [%emt 0.015000] } 7. d4 { [%emt 0.032000] } 7... Bf5 { [%emt 0.015000] } 8. Bf4 { [%emt 0.031000] } 8... Bxc2 { [%emt 0.016000] } 9. Qxc2 { [%emt 0.031000] } 9... Qxc2 { [%emt 0.000000] } 10. Bxc7 { [%emt 0.032000] } 10... Qxb2 { [%emt 0.000000] } 11. O-O { [%emt 0.031000] } 11... Nxd4 { [%emt 0.000000] } 12. Nxd4 { [%emt 0.031000] } 12... Qxd4 { [%emt 0.000000] } 13. Rfe1 { [%emt 0.031000] } 13... g5 { [%emt 0.000000] } 14. a4 { [%emt 0.032000] } 14... Rc8 { [%emt 0.015000] } 15. Rxe7+ { [%emt 0.031000] } 15... Bxe7 { [%emt 0.000000] } 16. Rc1 { [%emt 0.032000] } 16... Rxc7 { [%emt 0.015000] } 17. Rxc7 { [%emt 0.032000] } 17... Qd1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot speed"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "speed"]
+[Seed "20261117"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.031000] } 4... bxc6 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.016000] } 5... Ne7 { [%emt 0.031000] } 6. Nc3 { [%emt 0.016000] } 6... d5 { [%emt 0.031000] } 7. O-O { [%emt 0.016000] } 7... dxe4 { [%emt 0.031000] } 8. Nxe4 { [%emt 0.000000] } 8... Qxd2 { [%emt 0.031000] } 9. Qxd2 { [%emt 0.000000] } 9... Be6 { [%emt 0.031000] } 10. a4 { [%emt 0.016000] } 10... Nd5 { [%emt 0.031000] } 11. Nxc6 { [%emt 0.000000] } 11... Bd6 { [%emt 0.032000] } 12. c4 { [%emt 0.015000] } 12... Bxh2+ { [%emt 0.031000] } 13. Kxh2 { [%emt 0.000000] } 13... O-O { [%emt 0.032000] } 14. cxd5 { [%emt 0.000000] } 14... Bf5 { [%emt 0.031000] } 15. Ne7+ { [%emt 0.016000] } 15... Kh8 { [%emt 0.031000] } 16. Nxf5 { [%emt 0.000000] } 16... f6 { [%emt 0.031000] } 17. Qc3 { [%emt 0.016000] } 17... c5 { [%emt 0.031000] } 18. dxc6 { [%emt 0.016000] } 18... g5 { [%emt 0.031000] } 19. Bxg5 { [%emt 0.015000] } 19... h5 { [%emt 0.032000] } 20. Nxf6 { [%emt 0.015000] } 20... Rab8 { [%emt 0.032000] } 21. Qh3 { [%emt 0.015000] } 21... Rxf6 { [%emt 0.031000] } 22. Bxf6+ { [%emt 0.000000] } 22... Kh7 { [%emt 0.032000] } 23. Qxh5+ { [%emt 0.015000] } 23... Kg8 { [%emt 0.032000] } 24. Qg6+ { [%emt 0.000000] } 24... Kf8 { [%emt 0.031000] } 25. Be7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot speed"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "speed"]
+[Seed "20261118"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.031000] } 4... dxc6 { [%emt 0.000000] } 5. Nxe5 { [%emt 0.031000] } 5... Qd4 { [%emt 0.000000] } 6. Nxc6 { [%emt 0.031000] } 6... Qxe4+ { [%emt 0.016000] } 7. Qe2 { [%emt 0.031000] } 7... Qxe2+ { [%emt 0.000000] } 8. Kxe2 { [%emt 0.032000] } 8... bxc6 { [%emt 0.000000] } 9. Nc3 { [%emt 0.031000] } 9... Bf5 { [%emt 0.000000] } 10. d3 { [%emt 0.031000] } 10... Nf6 { [%emt 0.016000] } 11. Bf4 { [%emt 0.031000] } 11... Bd6 { [%emt 0.000000] } 12. Bxd6 { [%emt 0.031000] } 12... cxd6 { [%emt 0.000000] } 13. f3 { [%emt 0.031000] } 13... Rb8 { [%emt 0.016000] } 14. Nd5 { [%emt 0.031000] } 14... Nxd5 { [%emt 0.016000] } 15. a4 { [%emt 0.031000] } 15... Rxb2 { [%emt 0.016000] } 16. g4 { [%emt 0.031000] } 16... Rxc2+ { [%emt 0.000000] } 17. Kd1 { [%emt 0.031000] } 17... Ne3+ { [%emt 0.000000] } 18. Ke1 { [%emt 0.032000] } 18... Bxd3 { [%emt 0.000000] } 19. h4 { [%emt 0.031000] } 19... Re2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot speed"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "speed"]
+[Seed "20261119"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.015000] } 4... exd5 { [%emt 0.032000] } 5. Nf3 { [%emt 0.015000] } 5... Nc6 { [%emt 0.031000] } 6. Bf4 { [%emt 0.000000] } 6... Nxd4 { [%emt 0.032000] } 7. Nxd4 { [%emt 0.000000] } 7... Bf5 { [%emt 0.031000] } 8. Nxf5 { [%emt 0.016000] } 8... Bc5 { [%emt 0.031000] } 9. Nxg7+ { [%emt 0.015000] } 9... Kf8 { [%emt 0.032000] } 10. Nf5 { [%emt 0.000000] } 10... Bxf2+ { [%emt 0.031000] } 11. Kxf2 { [%emt 0.000000] } 11... Kg8 { [%emt 0.031000] } 12. Kg1 { [%emt 0.000000] } 12... Ne4 { [%emt 0.031000] } 13. Nxd5 { [%emt 0.000000] } 13... Qxd5 { [%emt 0.032000] } 14. Qxd5 { [%emt 0.000000] } 14... a5 { [%emt 0.031000] } 15. Nh6+ { [%emt 0.000000] } 15... Kf8 { [%emt 0.031000] } 16. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot speed"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "speed"]
+[Seed "20261120"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Bb4+ { [%emt 0.000000] } 7. Bd2 { [%emt 0.032000] } 7... Nc6 { [%emt 0.000000] } 8. Bxb4 { [%emt 0.031000] } 8... Nxb4 { [%emt 0.000000] } 9. Ne5 { [%emt 0.031000] } 9... O-O { [%emt 0.000000] } 10. Nxf7 { [%emt 0.031000] } 10... Rxf7 { [%emt 0.000000] } 11. a4 { [%emt 0.032000] } 11... Bd7 { [%emt 0.015000] } 12. e4 { [%emt 0.032000] } 12... Qxe4+ { [%emt 0.015000] } 13. Be2 { [%emt 0.031000] } 13... Nc2+ { [%emt 0.016000] } 14. Kf1 { [%emt 0.031000] } 14... Ne3+ { [%emt 0.016000] } 15. Kg1 { [%emt 0.031000] } 15... Qxg2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot speed"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "speed"]
+[Seed "20261121"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. Nf3 { [%emt 0.016000] } 4... dxc4 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.000000] } 5... Qxd2+ { [%emt 0.031000] } 6. Bxd2 { [%emt 0.000000] } 6... Nc6 { [%emt 0.031000] } 7. Qa4 { [%emt 0.000000] } 7... Bf5 { [%emt 0.032000] } 8. Nxc6 { [%emt 0.015000] } 8... bxc6 { [%emt 0.032000] } 9. Qxc6+ { [%emt 0.015000] } 9... Ke7 { [%emt 0.031000] } 10. Qxa8 { [%emt 0.016000] } 10... Nd5 { [%emt 0.031000] } 11. Qxd5 { [%emt 0.016000] } 11... a5 { [%emt 0.031000] } 12. Qxf5 { [%emt 0.016000] } 12... f6 { [%emt 0.031000] } 13. Nd5+ { [%emt 0.016000] } 13... Kf7 { [%emt 0.031000] } 14. Bxa5 { [%emt 0.016000] } 14... Kg8 { [%emt 0.031000] } 15. Qe6# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot speed"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "speed"]
+[Seed "20261122"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Nc6 { [%emt 0.000000] } 7. Nxe5 { [%emt 0.032000] } 7... Qxh1 { [%emt 0.000000] } 8. Qa4 { [%emt 0.031000] } 8... Bh3 { [%emt 0.016000] } 9. Nxc6 { [%emt 0.031000] } 9... Qxf1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot survival"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "survival"]
+[Seed "20261115"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.016000] } 1... Nc6 { [%emt 0.031000] } 2. d4 { [%emt 0.000000] } 2... Nf6 { [%emt 0.031000] } 3. Nf3 { [%emt 0.016000] } 3... h6 { [%emt 0.031000] } 4. d5 { [%emt 0.016000] } 4... Nxd5 { [%emt 0.031000] } 5. Qxd5 { [%emt 0.000000] } 5... Nd4 { [%emt 0.031000] } 6. Qxd4 { [%emt 0.000000] } 6... a5 { [%emt 0.031000] } 7. Ne5 { [%emt 0.016000] } 7... b5 { [%emt 0.031000] } 8. Qd5 { [%emt 0.016000] } 8... c5 { [%emt 0.031000] } 9. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot survival"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "survival"]
+[Seed "20261116"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.032000] } 1... Nc6 { [%emt 0.000000] } 2. Nf3 { [%emt 0.031000] } 2... d5 { [%emt 0.000000] } 3. d4 { [%emt 0.031000] } 3... Nf6 { [%emt 0.016000] } 4. Be3 { [%emt 0.031000] } 4... Bf5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Nxd5 { [%emt 0.000000] } 6. Ne5 { [%emt 0.031000] } 6... Nxe3 { [%emt 0.000000] } 7. fxe3 { [%emt 0.031000] } 7... Nxe5 { [%emt 0.000000] } 8. dxe5 { [%emt 0.032000] } 8... c5 { [%emt 0.000000] } 9. Qxd8+ { [%emt 0.031000] } 9... Rxd8 { [%emt 0.000000] } 10. c4 { [%emt 0.031000] } 10... f6 { [%emt 0.016000] } 11. exf6 { [%emt 0.031000] } 11... exf6 { [%emt 0.000000] } 12. Rd1 { [%emt 0.031000] } 12... Rxd1+ { [%emt 0.000000] } 13. Kxd1 { [%emt 0.032000] } 13... Bb1 { [%emt 0.000000] } 14. a4 { [%emt 0.031000] } 14... Ba2 { [%emt 0.015000] } 15. h4 { [%emt 0.032000] } 15... Bxc4 { [%emt 0.015000] } 16. g3 { [%emt 0.032000] } 16... Bd6 { [%emt 0.015000] } 17. g4 { [%emt 0.031000] } 17... Bb3+ { [%emt 0.016000] } 18. Ke1 { [%emt 0.031000] } 18... Bxa4 { [%emt 0.016000] } 19. h5 { [%emt 0.031000] } 19... a5 { [%emt 0.016000] } 20. e4 { [%emt 0.031000] } 20... Be5 { [%emt 0.016000] } 21. h6 { [%emt 0.031000] } 21... g5 { [%emt 0.000000] } 22. Rh3 { [%emt 0.031000] } 22... Bxb2 { [%emt 0.016000] } 23. Rd3 { [%emt 0.031000] } 23... b5 { [%emt 0.000000] } 24. e3 { [%emt 0.031000] } 24... c4 { [%emt 0.016000] } 25. Rd6 { [%emt 0.031000] } 25... Ke7 { [%emt 0.016000] } 26. Rd2 { [%emt 0.031000] } 26... c3 { [%emt 0.016000] } 27. Rd5 { [%emt 0.031000] } 27... c2 { [%emt 0.016000] } 28. Bxb5 { [%emt 0.031000] } 28... c1=Q+ { [%emt 0.000000] } 29. Ke2 { [%emt 0.031000] } 29... Bxb5+ { [%emt 0.016000] } 30. Rxb5 { [%emt 0.031000] } 30... Qc4+ { [%emt 0.000000] } 31. Kf3 { [%emt 0.031000] } 31... Qxb5 { [%emt 0.000000] } 32. Kf2 { [%emt 0.031000] } 32... Be5 { [%emt 0.016000] } 33. Kf3 { [%emt 0.031000] } 33... Qf1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot survival"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "survival"]
+[Seed "20261117"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.016000] } 4... bxc6 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.016000] } 5... Ne7 { [%emt 0.031000] } 6. Nc3 { [%emt 0.016000] } 6... d5 { [%emt 0.031000] } 7. O-O { [%emt 0.015000] } 7... dxe4 { [%emt 0.032000] } 8. Re1 { [%emt 0.000000] } 8... Qxd2 { [%emt 0.031000] } 9. Bxd2 { [%emt 0.000000] } 9... f5 { [%emt 0.031000] } 10. Qh5+ { [%emt 0.016000] } 10... g6 { [%emt 0.031000] } 11. Qh4 { [%emt 0.000000] } 11... Be6 { [%emt 0.031000] } 12. a4 { [%emt 0.032000] } 12... O-O-O { [%emt 0.031000] } 13. Qf6 { [%emt 0.000000] } 13... Rxd2 { [%emt 0.031000] } 14. Qxh8 { [%emt 0.000000] } 14... Rxc2 { [%emt 0.031000] } 15. Qxf8+ { [%emt 0.016000] } 15... Kb7 { [%emt 0.031000] } 16. Qxe7 { [%emt 0.000000] } 16... Rxc3 { [%emt 0.031000] } 17. bxc3 { [%emt 0.000000] } 17... Kc8 { [%emt 0.032000] } 18. Qe8+ { [%emt 0.015000] } 18... Kb7 { [%emt 0.032000] } 19. Rab1+ { [%emt 0.000000] } 19... Bb3 { [%emt 0.031000] } 20. Rxb3+ { [%emt 0.000000] } 20... Ka7 { [%emt 0.031000] } 21. Nxc6# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot survival"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "survival"]
+[Seed "20261118"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.032000] } 4... dxc6 { [%emt 0.000000] } 5. Nxe5 { [%emt 0.031000] } 5... Qd4 { [%emt 0.000000] } 6. Nxc6 { [%emt 0.031000] } 6... Qxe4+ { [%emt 0.016000] } 7. Qe2 { [%emt 0.031000] } 7... Qxe2+ { [%emt 0.000000] } 8. Kxe2 { [%emt 0.031000] } 8... bxc6 { [%emt 0.000000] } 9. Nc3 { [%emt 0.031000] } 9... Bf5 { [%emt 0.000000] } 10. d3 { [%emt 0.032000] } 10... Rb8 { [%emt 0.015000] } 11. Bf4 { [%emt 0.032000] } 11... Rxb2 { [%emt 0.015000] } 12. Bxc7 { [%emt 0.031000] } 12... Rxc2+ { [%emt 0.016000] } 13. Ke3 { [%emt 0.031000] } 13... Rxc3 { [%emt 0.016000] } 14. a4 { [%emt 0.031000] } 14... Rxd3+ { [%emt 0.016000] } 15. Kf4 { [%emt 0.031000] } 15... Ne7 { [%emt 0.016000] } 16. Rhe1 { [%emt 0.031000] } 16... g6 { [%emt 0.016000] } 17. f3 { [%emt 0.031000] } 17... Bh6+ { [%emt 0.015000] } 18. Kg3 { [%emt 0.032000] } 18... Bd2 { [%emt 0.000000] } 19. Rxe7+ { [%emt 0.031000] } 19... Kxe7 { [%emt 0.000000] } 20. h4 { [%emt 0.031000] } 20... h5 { [%emt 0.016000] } 21. Bf4 { [%emt 0.031000] } 21... c5 { [%emt 0.016000] } 22. Be5 { [%emt 0.031000] } 22... f6 { [%emt 0.016000] } 23. Bf4 { [%emt 0.031000] } 23... c4 { [%emt 0.015000] } 24. Bxd2 { [%emt 0.032000] } 24... Rxd2 { [%emt 0.000000] } 25. Re1+ { [%emt 0.031000] } 25... Kd6 { [%emt 0.000000] } 26. a5 { [%emt 0.031000] } 26... c3 { [%emt 0.000000] } 27. Kh2 { [%emt 0.031000] } 27... c2 { [%emt 0.016000] } 28. Kg1 { [%emt 0.031000] } 28... Rd1 { [%emt 0.016000] } 29. Rf1 { [%emt 0.031000] } 29... Re8 { [%emt 0.016000] } 30. g3 { [%emt 0.031000] } 30... c1=Q { [%emt 0.016000] } 31. Rxd1+ { [%emt 0.031000] } 31... Qxd1+ { [%emt 0.000000] } 32. Kf2 { [%emt 0.031000] } 32... Re2# { [%emt 0.016000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot survival"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "survival"]
+[Seed "20261119"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... exd5 { [%emt 0.031000] } 5. Nf3 { [%emt 0.016000] } 5... Nc6 { [%emt 0.031000] } 6. Bf4 { [%emt 0.000000] } 6... Nxd4 { [%emt 0.031000] } 7. Nxd4 { [%emt 0.000000] } 7... Bf5 { [%emt 0.032000] } 8. Nxf5 { [%emt 0.015000] } 8... Bc5 { [%emt 0.031000] } 9. Nxg7+ { [%emt 0.016000] } 9... Kf8 { [%emt 0.031000] } 10. Nf5 { [%emt 0.000000] } 10... Bxf2+ { [%emt 0.032000] } 11. Kxf2 { [%emt 0.000000] } 11... Kg8 { [%emt 0.031000] } 12. Kg1 { [%emt 0.000000] } 12... Ne4 { [%emt 0.031000] } 13. Nh6+ { [%emt 0.000000] } 13... Kf8 { [%emt 0.031000] } 14. Nxd5 { [%emt 0.016000] } 14... Qxd5 { [%emt 0.031000] } 15. Qxd5 { [%emt 0.000000] } 15... a5 { [%emt 0.031000] } 16. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot survival"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "survival"]
+[Seed "20261120"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.032000] } 4... Nxd5 { [%emt 0.015000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.032000] } 6... Bb4+ { [%emt 0.000000] } 7. Bd2 { [%emt 0.031000] } 7... Nc6 { [%emt 0.000000] } 8. Bxb4 { [%emt 0.031000] } 8... Nxb4 { [%emt 0.000000] } 9. Ne5 { [%emt 0.031000] } 9... O-O { [%emt 0.000000] } 10. Nxf7 { [%emt 0.032000] } 10... Rxf7 { [%emt 0.000000] } 11. a4 { [%emt 0.031000] } 11... Bd7 { [%emt 0.016000] } 12. e4 { [%emt 0.031000] } 12... Qxe4+ { [%emt 0.015000] } 13. Be2 { [%emt 0.032000] } 13... Nc2+ { [%emt 0.015000] } 14. Qxc2 { [%emt 0.032000] } 14... Qxc2 { [%emt 0.000000] } 15. O-O { [%emt 0.031000] } 15... Qxe2 { [%emt 0.000000] } 16. b4 { [%emt 0.031000] } 16... Qd2 { [%emt 0.016000] } 17. f4 { [%emt 0.031000] } 17... Qxd4+ { [%emt 0.016000] } 18. Kh1 { [%emt 0.031000] } 18... Qxb4 { [%emt 0.015000] } 19. g4 { [%emt 0.032000] } 19... Bc6+ { [%emt 0.015000] } 20. Kg1 { [%emt 0.032000] } 20... Qd4+ { [%emt 0.015000] } 21. Rf2 { [%emt 0.031000] } 21... Qxa1+ { [%emt 0.000000] } 22. Rf1 { [%emt 0.032000] } 22... Qd4+ { [%emt 0.000000] } 23. Rf2 { [%emt 0.031000] } 23... Rxf4 { [%emt 0.000000] } 24. a5 { [%emt 0.031000] } 24... Qxf2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot survival"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "survival"]
+[Seed "20261121"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. Nf3 { [%emt 0.032000] } 4... dxc4 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.000000] } 5... Qxd2+ { [%emt 0.031000] } 6. Bxd2 { [%emt 0.000000] } 6... Be6 { [%emt 0.031000] } 7. Qa4+ { [%emt 0.016000] } 7... Nc6 { [%emt 0.031000] } 8. Nxc6 { [%emt 0.016000] } 8... bxc6 { [%emt 0.031000] } 9. Qxc6+ { [%emt 0.016000] } 9... Ke7 { [%emt 0.031000] } 10. Qxa8 { [%emt 0.016000] } 10... Nd5 { [%emt 0.031000] } 11. Nxd5+ { [%emt 0.016000] } 11... Kd6 { [%emt 0.031000] } 12. Qd8+ { [%emt 0.015000] } 12... Kc5 { [%emt 0.032000] } 13. Be3+ { [%emt 0.015000] } 13... Kc6 { [%emt 0.032000] } 14. Bg2 { [%emt 0.015000] } 14... Bxd5 { [%emt 0.031000] } 15. Qxd5# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot survival"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "survival"]
+[Seed "20261122"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Nc6 { [%emt 0.000000] } 7. Nxe5 { [%emt 0.031000] } 7... Qxh1 { [%emt 0.000000] } 8. Nxc6 { [%emt 0.032000] } 8... Bh3 { [%emt 0.000000] } 9. Nxa7 { [%emt 0.031000] } 9... Qxf1# { [%emt 0.015000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot pressure"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "pressure"]
+[Seed "20261115"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.032000] } 1... Nc6 { [%emt 0.031000] } 2. d4 { [%emt 0.000000] } 2... Nf6 { [%emt 0.031000] } 3. Nf3 { [%emt 0.016000] } 3... h6 { [%emt 0.031000] } 4. Bf4 { [%emt 0.016000] } 4... Nxd4 { [%emt 0.031000] } 5. Nxd4 { [%emt 0.000000] } 5... d5 { [%emt 0.031000] } 6. Qd3 { [%emt 0.016000] } 6... Bf5 { [%emt 0.031000] } 7. Qxf5 { [%emt 0.016000] } 7... Ne4 { [%emt 0.031000] } 8. Nxd5 { [%emt 0.000000] } 8... Qxd5 { [%emt 0.031000] } 9. Qxd5 { [%emt 0.000000] } 9... Nxf2 { [%emt 0.031000] } 10. Kxf2 { [%emt 0.000000] } 10... a5 { [%emt 0.032000] } 11. Bxc7 { [%emt 0.015000] } 11... b5 { [%emt 0.031000] } 12. Qxb5# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot pressure"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "pressure"]
+[Seed "20261116"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.032000] } 1... Nc6 { [%emt 0.000000] } 2. Nf3 { [%emt 0.031000] } 2... Nf6 { [%emt 0.000000] } 3. e4 { [%emt 0.031000] } 3... d5 { [%emt 0.016000] } 4. exd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Bc4 { [%emt 0.031000] } 6... Qxc4 { [%emt 0.016000] } 7. d4 { [%emt 0.031000] } 7... Bf5 { [%emt 0.016000] } 8. Bf4 { [%emt 0.031000] } 8... Bxc2 { [%emt 0.015000] } 9. Qxc2 { [%emt 0.032000] } 9... Qxc2 { [%emt 0.000000] } 10. Bxc7 { [%emt 0.031000] } 10... Qxb2 { [%emt 0.000000] } 11. O-O { [%emt 0.031000] } 11... Nxd4 { [%emt 0.000000] } 12. Nxd4 { [%emt 0.031000] } 12... Qxd4 { [%emt 0.000000] } 13. Rfe1 { [%emt 0.032000] } 13... a5 { [%emt 0.000000] } 14. a4 { [%emt 0.031000] } 14... g5 { [%emt 0.016000] } 15. Bxa5 { [%emt 0.031000] } 15... Rxa5 { [%emt 0.015000] } 16. Rxe7+ { [%emt 0.032000] } 16... Bxe7 { [%emt 0.000000] } 17. Rb1 { [%emt 0.031000] } 17... Rxa4 { [%emt 0.016000] } 18. Rxb7 { [%emt 0.031000] } 18... Qd1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot pressure"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "pressure"]
+[Seed "20261117"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.015000] } 4... bxc6 { [%emt 0.032000] } 5. Nxe5 { [%emt 0.015000] } 5... Ne7 { [%emt 0.031000] } 6. Nc3 { [%emt 0.016000] } 6... d5 { [%emt 0.031000] } 7. O-O { [%emt 0.016000] } 7... dxe4 { [%emt 0.031000] } 8. Re1 { [%emt 0.000000] } 8... Qxd2 { [%emt 0.031000] } 9. Bxd2 { [%emt 0.000000] } 9... Bf5 { [%emt 0.032000] } 10. Nxe4 { [%emt 0.015000] } 10... Bxe4 { [%emt 0.032000] } 11. Rxe4 { [%emt 0.000000] } 11... O-O-O { [%emt 0.031000] } 12. Nxf7 { [%emt 0.000000] } 12... Rxd2 { [%emt 0.031000] } 13. Qxd2 { [%emt 0.000000] } 13... Rg8 { [%emt 0.031000] } 14. Qd8+ { [%emt 0.016000] } 14... Kb7 { [%emt 0.031000] } 15. Rxe7 { [%emt 0.000000] } 15... Bxe7 { [%emt 0.031000] } 16. Qxg8 { [%emt 0.000000] } 16... Bf6 { [%emt 0.032000] } 17. Nd8+ { [%emt 0.015000] } 17... Kb6 { [%emt 0.032000] } 18. Qb3+ { [%emt 0.015000] } 18... Kc5 { [%emt 0.031000] } 19. Ne6+ { [%emt 0.000000] } 19... Kd6 { [%emt 0.032000] } 20. Rd1+ { [%emt 0.000000] } 20... Ke5 { [%emt 0.031000] } 21. a4 { [%emt 0.016000] } 21... g6 { [%emt 0.031000] } 22. Qc4 { [%emt 0.015000] } 22... h5 { [%emt 0.032000] } 23. Qxc6 { [%emt 0.000000] } 23... a5 { [%emt 0.031000] } 24. Qd5# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot pressure"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "pressure"]
+[Seed "20261118"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.031000] } 4... dxc6 { [%emt 0.000000] } 5. Nxe5 { [%emt 0.032000] } 5... Qd4 { [%emt 0.000000] } 6. Nxc6 { [%emt 0.031000] } 6... Qxe4+ { [%emt 0.016000] } 7. Qe2 { [%emt 0.031000] } 7... Qxe2+ { [%emt 0.000000] } 8. Kxe2 { [%emt 0.031000] } 8... bxc6 { [%emt 0.000000] } 9. Nc3 { [%emt 0.031000] } 9... Bf5 { [%emt 0.000000] } 10. d3 { [%emt 0.032000] } 10... Nf6 { [%emt 0.015000] } 11. Bf4 { [%emt 0.031000] } 11... Bd6 { [%emt 0.000000] } 12. Bxd6 { [%emt 0.032000] } 12... cxd6 { [%emt 0.000000] } 13. f3 { [%emt 0.031000] } 13... Rb8 { [%emt 0.016000] } 14. Nd5 { [%emt 0.031000] } 14... Nxd5 { [%emt 0.015000] } 15. a4 { [%emt 0.032000] } 15... Rxb2 { [%emt 0.015000] } 16. g4 { [%emt 0.032000] } 16... Rxc2+ { [%emt 0.000000] } 17. Kd1 { [%emt 0.031000] } 17... Ne3+ { [%emt 0.000000] } 18. Ke1 { [%emt 0.031000] } 18... Bxd3 { [%emt 0.000000] } 19. h4 { [%emt 0.031000] } 19... Re2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot pressure"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "pressure"]
+[Seed "20261119"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... exd5 { [%emt 0.031000] } 5. Nf3 { [%emt 0.016000] } 5... Nc6 { [%emt 0.031000] } 6. Bf4 { [%emt 0.000000] } 6... Nxd4 { [%emt 0.031000] } 7. Nxd4 { [%emt 0.000000] } 7... Bf5 { [%emt 0.031000] } 8. Nxf5 { [%emt 0.016000] } 8... Bc5 { [%emt 0.031000] } 9. Nxg7+ { [%emt 0.016000] } 9... Kf8 { [%emt 0.031000] } 10. Nf5 { [%emt 0.000000] } 10... Bxf2+ { [%emt 0.031000] } 11. Kxf2 { [%emt 0.000000] } 11... Kg8 { [%emt 0.032000] } 12. Kg1 { [%emt 0.000000] } 12... Ne4 { [%emt 0.031000] } 13. Nh6+ { [%emt 0.000000] } 13... Kf8 { [%emt 0.031000] } 14. Nxd5 { [%emt 0.016000] } 14... Qxd5 { [%emt 0.031000] } 15. Qxd5 { [%emt 0.000000] } 15... a5 { [%emt 0.031000] } 16. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot pressure"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "pressure"]
+[Seed "20261120"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.015000] } 5. Nxd5 { [%emt 0.032000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Bb4+ { [%emt 0.000000] } 7. Bd2 { [%emt 0.031000] } 7... Nc6 { [%emt 0.000000] } 8. Bxb4 { [%emt 0.031000] } 8... Nxb4 { [%emt 0.000000] } 9. Ne5 { [%emt 0.032000] } 9... O-O { [%emt 0.000000] } 10. Nxf7 { [%emt 0.031000] } 10... Rxf7 { [%emt 0.000000] } 11. a4 { [%emt 0.031000] } 11... Bd7 { [%emt 0.016000] } 12. e4 { [%emt 0.031000] } 12... Qxe4+ { [%emt 0.016000] } 13. Be2 { [%emt 0.031000] } 13... Nc2+ { [%emt 0.016000] } 14. Kf1 { [%emt 0.031000] } 14... Ne3+ { [%emt 0.015000] } 15. Ke1 { [%emt 0.032000] } 15... Nxd1 { [%emt 0.000000] } 16. Kxd1 { [%emt 0.031000] } 16... Qxd4+ { [%emt 0.016000] } 17. Kc1 { [%emt 0.031000] } 17... Qc5+ { [%emt 0.015000] } 18. Kb1 { [%emt 0.032000] } 18... Rxf2 { [%emt 0.015000] } 19. b4 { [%emt 0.032000] } 19... Qxb4+ { [%emt 0.015000] } 20. Kc1 { [%emt 0.031000] } 20... Qc3+ { [%emt 0.000000] } 21. Kb1 { [%emt 0.032000] } 21... Rxe2 { [%emt 0.000000] } 22. Rd1 { [%emt 0.031000] } 22... Rb2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot pressure"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "pressure"]
+[Seed "20261121"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. Nf3 { [%emt 0.031000] } 4... dxc4 { [%emt 0.032000] } 5. Nxe5 { [%emt 0.000000] } 5... Qxd2+ { [%emt 0.031000] } 6. Bxd2 { [%emt 0.000000] } 6... Be6 { [%emt 0.031000] } 7. Qa4+ { [%emt 0.016000] } 7... Nc6 { [%emt 0.031000] } 8. Nxc6 { [%emt 0.016000] } 8... bxc6 { [%emt 0.031000] } 9. Qxc6+ { [%emt 0.016000] } 9... Ke7 { [%emt 0.031000] } 10. Qxa8 { [%emt 0.015000] } 10... Nd5 { [%emt 0.032000] } 11. Nxd5+ { [%emt 0.015000] } 11... Kd6 { [%emt 0.032000] } 12. Qd8+ { [%emt 0.015000] } 12... Kc5 { [%emt 0.031000] } 13. Be3+ { [%emt 0.016000] } 13... Kc6 { [%emt 0.031000] } 14. Bg2 { [%emt 0.016000] } 14... Bxd5 { [%emt 0.031000] } 15. Qxd5# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot pressure"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "pressure"]
+[Seed "20261122"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. cxd5 { [%emt 0.032000] } 4... Nxd5 { [%emt 0.015000] } 5. Nxd5 { [%emt 0.032000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Nc6 { [%emt 0.000000] } 7. Nxe5 { [%emt 0.031000] } 7... Qxh1 { [%emt 0.000000] } 8. Qa4 { [%emt 0.031000] } 8... Bh3 { [%emt 0.016000] } 9. Nxc6 { [%emt 0.031000] } 9... Qxf1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_ponder"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_ponder"]
+[Seed "20261115"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.016000] } 1... Nc6 { [%emt 0.031000] } 2. d4 { [%emt 0.016000] } 2... Nf6 { [%emt 0.031000] } 3. Nf3 { [%emt 0.016000] } 3... h6 { [%emt 0.031000] } 4. d5 { [%emt 0.016000] } 4... Nxd5 { [%emt 0.031000] } 5. Qxd5 { [%emt 0.016000] } 5... Nd4 { [%emt 0.031000] } 6. Nxd4 { [%emt 0.015000] } 6... a5 { [%emt 0.032000] } 7. Bf4 { [%emt 0.015000] } 7... b5 { [%emt 0.032000] } 8. Qxa8 { [%emt 0.015000] } 8... c5 { [%emt 0.031000] } 9. Ndxb5 { [%emt 0.016000] } 9... d5 { [%emt 0.031000] } 10. Nc7+ { [%emt 0.016000] } 10... Qxc7 { [%emt 0.031000] } 11. Bxc7 { [%emt 0.016000] } 11... Kd7 { [%emt 0.031000] } 12. Nxd5 { [%emt 0.016000] } 12... e6 { [%emt 0.031000] } 13. Nb6+ { [%emt 0.016000] } 13... Kxc7 { [%emt 0.031000] } 14. Qxa5 { [%emt 0.015000] } 14... Bd6 { [%emt 0.032000] } 15. Nd5+ { [%emt 0.015000] } 15... Kd7 { [%emt 0.032000] } 16. Qb5+ { [%emt 0.015000] } 16... Kd8 { [%emt 0.031000] } 17. Qc6 { [%emt 0.016000] } 17... exd5 { [%emt 0.031000] } 18. Qxd6+ { [%emt 0.016000] } 18... Bd7 { [%emt 0.031000] } 19. Qxd5 { [%emt 0.016000] } 19... f6 { [%emt 0.031000] } 20. O-O-O { [%emt 0.016000] } 20... Ke8 { [%emt 0.031000] } 21. Qa8+ { [%emt 0.016000] } 21... Ke7 { [%emt 0.031000] } 22. Qxh8 { [%emt 0.015000] } 22... g5 { [%emt 0.032000] } 23. Qg7+ { [%emt 0.015000] } 23... Ke6 { [%emt 0.032000] } 24. Qxd7+ { [%emt 0.015000] } 24... Ke5 { [%emt 0.031000] } 25. Qd5+ { [%emt 0.016000] } 25... Kf4 { [%emt 0.031000] } 26. g3+ { [%emt 0.016000] } 26... Kg4 { [%emt 0.031000] } 27. Qf3# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_ponder"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_ponder"]
+[Seed "20261116"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.032000] } 1... Nc6 { [%emt 0.015000] } 2. Nf3 { [%emt 0.032000] } 2... d5 { [%emt 0.015000] } 3. d4 { [%emt 0.031000] } 3... Nf6 { [%emt 0.016000] } 4. Be3 { [%emt 0.031000] } 4... Bf5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Nxd5 { [%emt 0.016000] } 6. Ne5 { [%emt 0.031000] } 6... Nxe5 { [%emt 0.016000] } 7. dxe5 { [%emt 0.031000] } 7... Nxe3 { [%emt 0.016000] } 8. Qxd8+ { [%emt 0.031000] } 8... Rxd8 { [%emt 0.015000] } 9. fxe3 { [%emt 0.032000] } 9... Rd5 { [%emt 0.015000] } 10. Rd1 { [%emt 0.032000] } 10... Rxe5 { [%emt 0.015000] } 11. Kd2 { [%emt 0.031000] } 11... h5 { [%emt 0.016000] } 12. b4 { [%emt 0.031000] } 12... Rh6 { [%emt 0.016000] } 13. h4 { [%emt 0.031000] } 13... Rd6+ { [%emt 0.016000] } 14. Kc1 { [%emt 0.031000] } 14... Rxe3 { [%emt 0.016000] } 15. Rxd6 { [%emt 0.031000] } 15... exd6 { [%emt 0.016000] } 16. a4 { [%emt 0.031000] } 16... Rc3 { [%emt 0.015000] } 17. e4 { [%emt 0.032000] } 17... Bxe4 { [%emt 0.015000] } 18. Bc4 { [%emt 0.032000] } 18... Rxc4 { [%emt 0.015000] } 19. g4 { [%emt 0.031000] } 19... Bxh1 { [%emt 0.016000] } 20. gxh5 { [%emt 0.031000] } 20... Rxb4 { [%emt 0.016000] } 21. a5 { [%emt 0.031000] } 21... Rxh4 { [%emt 0.016000] } 22. Kd2 { [%emt 0.031000] } 22... Rxh5 { [%emt 0.016000] } 23. c4 { [%emt 0.031000] } 23... Rxa5 { [%emt 0.016000] } 24. Ke3 { [%emt 0.031000] } 24... g5 { [%emt 0.015000] } 25. Kd4 { [%emt 0.032000] } 25... Rc5 { [%emt 0.015000] } 26. Kd3 { [%emt 0.032000] } 26... Bg7 { [%emt 0.015000] } 27. Ke3 { [%emt 0.031000] } 27... a5 { [%emt 0.016000] } 28. Kd3 { [%emt 0.031000] } 28... f5 { [%emt 0.016000] } 29. Ke3 { [%emt 0.031000] } 29... Be4 { [%emt 0.016000] } 30. Ke2 { [%emt 0.031000] } 30... f4 { [%emt 0.016000] } 31. Ke1 { [%emt 0.031000] } 31... g4 { [%emt 0.016000] } 32. Kd2 { [%emt 0.031000] } 32... g3 { [%emt 0.015000] } 33. Kd1 { [%emt 0.032000] } 33... g2 { [%emt 0.015000] } 34. Ke2 { [%emt 0.032000] } 34... Rxc4 { [%emt 0.015000] } 35. Kf2 { [%emt 0.031000] } 35... Rc1 { [%emt 0.000000] } 36. Ke2 { [%emt 0.032000] } 36... Rc2+ { [%emt 0.000000] } 37. Kd1 { [%emt 0.031000] } 37... g1=Q# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_ponder"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_ponder"]
+[Seed "20261117"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.016000] } 4... bxc6 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.016000] } 5... Ne7 { [%emt 0.031000] } 6. Qf3 { [%emt 0.016000] } 6... Nd5 { [%emt 0.031000] } 7. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_ponder"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_ponder"]
+[Seed "20261118"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.031000] } 4... dxc6 { [%emt 0.016000] } 5. Nxe5 { [%emt 0.031000] } 5... Qd4 { [%emt 0.016000] } 6. Nxc6 { [%emt 0.031000] } 6... Qxe4+ { [%emt 0.016000] } 7. Qe2 { [%emt 0.031000] } 7... Qxe2+ { [%emt 0.016000] } 8. Kxe2 { [%emt 0.031000] } 8... bxc6 { [%emt 0.015000] } 9. Nc3 { [%emt 0.032000] } 9... Bf5 { [%emt 0.015000] } 10. d3 { [%emt 0.032000] } 10... Rb8 { [%emt 0.015000] } 11. Bf4 { [%emt 0.031000] } 11... Rxb2 { [%emt 0.016000] } 12. Bxc7 { [%emt 0.031000] } 12... Rxc2+ { [%emt 0.016000] } 13. Ke1 { [%emt 0.031000] } 13... Rxc3 { [%emt 0.016000] } 14. d4 { [%emt 0.031000] } 14... Bb4 { [%emt 0.016000] } 15. h4 { [%emt 0.031000] } 15... Rc4+ { [%emt 0.016000] } 16. Ke2 { [%emt 0.031000] } 16... Rxd4 { [%emt 0.015000] } 17. f3 { [%emt 0.032000] } 17... Nf6 { [%emt 0.015000] } 18. Rad1 { [%emt 0.032000] } 18... c5 { [%emt 0.015000] } 19. Rxd4 { [%emt 0.031000] } 19... cxd4 { [%emt 0.016000] } 20. Rc1 { [%emt 0.031000] } 20... d3+ { [%emt 0.016000] } 21. Ke3 { [%emt 0.031000] } 21... d2 { [%emt 0.016000] } 22. a4 { [%emt 0.031000] } 22... dxc1=Q+ { [%emt 0.016000] } 23. Ke2 { [%emt 0.031000] } 23... Qe1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_ponder"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_ponder"]
+[Seed "20261119"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.016000] } 4... exd5 { [%emt 0.031000] } 5. Nf3 { [%emt 0.016000] } 5... Nc6 { [%emt 0.031000] } 6. Bf4 { [%emt 0.016000] } 6... Nxd4 { [%emt 0.031000] } 7. Nxd4 { [%emt 0.015000] } 7... Bf5 { [%emt 0.032000] } 8. Nxf5 { [%emt 0.015000] } 8... Bc5 { [%emt 0.032000] } 9. Nxg7+ { [%emt 0.015000] } 9... Kf8 { [%emt 0.031000] } 10. Nf5 { [%emt 0.016000] } 10... Bxf2+ { [%emt 0.031000] } 11. Kxf2 { [%emt 0.016000] } 11... Kg8 { [%emt 0.031000] } 12. Kg1 { [%emt 0.016000] } 12... Ne4 { [%emt 0.031000] } 13. Nh6+ { [%emt 0.016000] } 13... Kf8 { [%emt 0.031000] } 14. Nxd5 { [%emt 0.016000] } 14... Qxd5 { [%emt 0.031000] } 15. Qxd5 { [%emt 0.015000] } 15... a5 { [%emt 0.032000] } 16. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_ponder"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_ponder"]
+[Seed "20261120"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nf3 { [%emt 0.031000] } 5... Nc6 { [%emt 0.016000] } 6. Nxd5 { [%emt 0.031000] } 6... Qxd5 { [%emt 0.016000] } 7. Bf4 { [%emt 0.031000] } 7... Bb4+ { [%emt 0.015000] } 8. Qd2 { [%emt 0.032000] } 8... Bxd2+ { [%emt 0.015000] } 9. Nxd2 { [%emt 0.032000] } 9... Qxd4 { [%emt 0.015000] } 10. Bxc7 { [%emt 0.031000] } 10... Qxb2 { [%emt 0.016000] } 11. Ne4 { [%emt 0.031000] } 11... Qxa1+ { [%emt 0.016000] } 12. Kd2 { [%emt 0.031000] } 12... Qd4+ { [%emt 0.016000] } 13. Ke1 { [%emt 0.031000] } 13... Qxe4 { [%emt 0.016000] } 14. e3 { [%emt 0.031000] } 14... Qb1+ { [%emt 0.016000] } 15. Kd2 { [%emt 0.031000] } 15... Qxa2+ { [%emt 0.015000] } 16. Ke1 { [%emt 0.032000] } 16... Qb1+ { [%emt 0.015000] } 17. Kd2 { [%emt 0.032000] } 17... a5 { [%emt 0.015000] } 18. g4 { [%emt 0.031000] } 18... Qb4+ { [%emt 0.016000] } 19. Kc1 { [%emt 0.031000] } 19... Qe1+ { [%emt 0.016000] } 20. Kc2 { [%emt 0.031000] } 20... h5 { [%emt 0.016000] } 21. gxh5 { [%emt 0.031000] } 21... Qxf2+ { [%emt 0.016000] } 22. Kd3 { [%emt 0.031000] } 22... Nb4+ { [%emt 0.016000] } 23. Kd4 { [%emt 0.031000] } 23... Qd2+ { [%emt 0.015000] } 24. Ke4 { [%emt 0.032000] } 24... Qd5+ { [%emt 0.015000] } 25. Kf4 { [%emt 0.032000] } 25... Qxh1 { [%emt 0.015000] } 26. Bxa5 { [%emt 0.031000] } 26... Qxf1+ { [%emt 0.016000] } 27. Ke4 { [%emt 0.031000] } 27... Nc6 { [%emt 0.000000] } 28. h6 { [%emt 0.032000] } 28... f5# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_ponder"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_ponder"]
+[Seed "20261121"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. Nf3 { [%emt 0.015000] } 4... dxc4 { [%emt 0.032000] } 5. Nxe5 { [%emt 0.015000] } 5... Qxd2+ { [%emt 0.032000] } 6. Bxd2 { [%emt 0.015000] } 6... Be6 { [%emt 0.031000] } 7. Qa4+ { [%emt 0.016000] } 7... Nc6 { [%emt 0.031000] } 8. Nxc6 { [%emt 0.016000] } 8... bxc6 { [%emt 0.031000] } 9. Qxc6+ { [%emt 0.016000] } 9... Ke7 { [%emt 0.031000] } 10. Qxa8 { [%emt 0.016000] } 10... Nd5 { [%emt 0.031000] } 11. Nxd5+ { [%emt 0.016000] } 11... Kd6 { [%emt 0.031000] } 12. Qd8+ { [%emt 0.015000] } 12... Kc5 { [%emt 0.032000] } 13. Be3+ { [%emt 0.015000] } 13... Kc6 { [%emt 0.032000] } 14. Bg2 { [%emt 0.015000] } 14... Bxd5 { [%emt 0.031000] } 15. Qxd5# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_ponder"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_ponder"]
+[Seed "20261122"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.015000] } 6. Nf3 { [%emt 0.032000] } 6... Nc6 { [%emt 0.015000] } 7. Nxe5 { [%emt 0.032000] } 7... Qxh1 { [%emt 0.015000] } 8. Qa4 { [%emt 0.031000] } 8... Bh3 { [%emt 0.016000] } 9. Nxc6 { [%emt 0.031000] } 9... Qxf1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_complexity"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_complexity"]
+[Seed "20261115"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.031000] } 1... Nc6 { [%emt 0.031000] } 2. Nf3 { [%emt 0.000000] } 2... Nf6 { [%emt 0.031000] } 3. d4 { [%emt 0.000000] } 3... h6 { [%emt 0.032000] } 4. d5 { [%emt 0.015000] } 4... Nxd5 { [%emt 0.031000] } 5. Qxd5 { [%emt 0.000000] } 5... Nd4 { [%emt 0.032000] } 6. Qxd4 { [%emt 0.000000] } 6... a5 { [%emt 0.031000] } 7. Ne5 { [%emt 0.016000] } 7... b5 { [%emt 0.031000] } 8. Qd5 { [%emt 0.015000] } 8... c5 { [%emt 0.032000] } 9. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_complexity"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_complexity"]
+[Seed "20261116"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.031000] } 1... Nc6 { [%emt 0.000000] } 2. Nf3 { [%emt 0.031000] } 2... Nf6 { [%emt 0.000000] } 3. e4 { [%emt 0.032000] } 3... d5 { [%emt 0.015000] } 4. exd5 { [%emt 0.032000] } 4... Nxd5 { [%emt 0.015000] } 5. d4 { [%emt 0.031000] } 5... Bf5 { [%emt 0.016000] } 6. Nxd5 { [%emt 0.031000] } 6... Qxd5 { [%emt 0.000000] } 7. Bf4 { [%emt 0.032000] } 7... Qe4+ { [%emt 0.015000] } 8. Be3 { [%emt 0.031000] } 8... Qxc2 { [%emt 0.016000] } 9. Qxc2 { [%emt 0.031000] } 9... Bxc2 { [%emt 0.000000] } 10. Bc4 { [%emt 0.032000] } 10... h5 { [%emt 0.015000] } 11. O-O { [%emt 0.031000] } 11... a5 { [%emt 0.016000] } 12. a4 { [%emt 0.031000] } 12... Rd8 { [%emt 0.016000] } 13. Bxf7+ { [%emt 0.031000] } 13... Kxf7 { [%emt 0.000000] } 14. Ne5+ { [%emt 0.031000] } 14... Nxe5 { [%emt 0.000000] } 15. dxe5 { [%emt 0.032000] } 15... c6 { [%emt 0.000000] } 16. f4 { [%emt 0.031000] } 16... e6 { [%emt 0.016000] } 17. h4 { [%emt 0.031000] } 17... Bb4 { [%emt 0.015000] } 18. g3 { [%emt 0.032000] } 18... b5 { [%emt 0.015000] } 19. axb5 { [%emt 0.032000] } 19... cxb5 { [%emt 0.000000] } 20. Rfc1 { [%emt 0.031000] } 20... Rc8 { [%emt 0.015000] } 21. Bd4 { [%emt 0.032000] } 21... Rhd8 { [%emt 0.015000] } 22. Rxc2 { [%emt 0.032000] } 22... Rxc2 { [%emt 0.000000] } 23. Bb6 { [%emt 0.031000] } 23... Rd3 { [%emt 0.015000] } 24. Bxa5 { [%emt 0.032000] } 24... Bxa5 { [%emt 0.000000] } 25. Rxa5 { [%emt 0.031000] } 25... Rd1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_complexity"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_complexity"]
+[Seed "20261117"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.016000] } 4... bxc6 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.016000] } 5... Ne7 { [%emt 0.031000] } 6. Nc3 { [%emt 0.016000] } 6... d5 { [%emt 0.031000] } 7. O-O { [%emt 0.015000] } 7... dxe4 { [%emt 0.032000] } 8. Re1 { [%emt 0.000000] } 8... Qxd2 { [%emt 0.031000] } 9. Bxd2 { [%emt 0.000000] } 9... Bf5 { [%emt 0.031000] } 10. Nxe4 { [%emt 0.016000] } 10... Bxe4 { [%emt 0.031000] } 11. Rxe4 { [%emt 0.000000] } 11... O-O-O { [%emt 0.031000] } 12. Nxf7 { [%emt 0.000000] } 12... Rxd2 { [%emt 0.032000] } 13. Qxd2 { [%emt 0.000000] } 13... Rg8 { [%emt 0.031000] } 14. Qd8+ { [%emt 0.015000] } 14... Kb7 { [%emt 0.032000] } 15. Rb4+ { [%emt 0.000000] } 15... Ka7 { [%emt 0.031000] } 16. Qb8# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_complexity"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_complexity"]
+[Seed "20261118"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.031000] } 4... dxc6 { [%emt 0.000000] } 5. Nxe5 { [%emt 0.032000] } 5... Qd4 { [%emt 0.000000] } 6. Nxc6 { [%emt 0.031000] } 6... Qxe4+ { [%emt 0.016000] } 7. Qe2 { [%emt 0.031000] } 7... Qxe2+ { [%emt 0.000000] } 8. Kxe2 { [%emt 0.031000] } 8... bxc6 { [%emt 0.000000] } 9. Nc3 { [%emt 0.031000] } 9... Bf5 { [%emt 0.000000] } 10. d3 { [%emt 0.032000] } 10... Rb8 { [%emt 0.015000] } 11. Bf4 { [%emt 0.031000] } 11... Rxb2 { [%emt 0.016000] } 12. Bxc7 { [%emt 0.031000] } 12... Rxc2+ { [%emt 0.016000] } 13. Ke3 { [%emt 0.031000] } 13... Rxc3 { [%emt 0.016000] } 14. a4 { [%emt 0.031000] } 14... Rxd3+ { [%emt 0.016000] } 15. Kf4 { [%emt 0.031000] } 15... Ne7 { [%emt 0.016000] } 16. Rhe1 { [%emt 0.031000] } 16... g6 { [%emt 0.015000] } 17. f3 { [%emt 0.032000] } 17... Bh6+ { [%emt 0.015000] } 18. Kg3 { [%emt 0.032000] } 18... Bd2 { [%emt 0.000000] } 19. Rxe7+ { [%emt 0.031000] } 19... Kxe7 { [%emt 0.000000] } 20. h4 { [%emt 0.031000] } 20... h5 { [%emt 0.016000] } 21. Bf4 { [%emt 0.031000] } 21... c5 { [%emt 0.016000] } 22. Be5 { [%emt 0.031000] } 22... f6 { [%emt 0.015000] } 23. Bf4 { [%emt 0.032000] } 23... c4 { [%emt 0.015000] } 24. Bxd2 { [%emt 0.032000] } 24... Rxd2 { [%emt 0.000000] } 25. Re1+ { [%emt 0.031000] } 25... Kd6 { [%emt 0.000000] } 26. a5 { [%emt 0.031000] } 26... c3 { [%emt 0.000000] } 27. Kh2 { [%emt 0.031000] } 27... c2 { [%emt 0.016000] } 28. Kg1 { [%emt 0.031000] } 28... Rd1 { [%emt 0.016000] } 29. Rf1 { [%emt 0.031000] } 29... Re8 { [%emt 0.016000] } 30. g3 { [%emt 0.031000] } 30... c1=Q { [%emt 0.016000] } 31. Rxd1+ { [%emt 0.031000] } 31... Qxd1+ { [%emt 0.000000] } 32. Kf2 { [%emt 0.031000] } 32... Re2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_complexity"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_complexity"]
+[Seed "20261119"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.032000] } 4... exd5 { [%emt 0.031000] } 5. Nf3 { [%emt 0.015000] } 5... Nc6 { [%emt 0.032000] } 6. Bf4 { [%emt 0.000000] } 6... Nxd4 { [%emt 0.031000] } 7. Nxd4 { [%emt 0.016000] } 7... Bf5 { [%emt 0.031000] } 8. Nxf5 { [%emt 0.015000] } 8... Bc5 { [%emt 0.032000] } 9. Nxg7+ { [%emt 0.015000] } 9... Kf8 { [%emt 0.032000] } 10. Nf5 { [%emt 0.000000] } 10... Bxf2+ { [%emt 0.031000] } 11. Kxf2 { [%emt 0.000000] } 11... Kg8 { [%emt 0.031000] } 12. Kg1 { [%emt 0.000000] } 12... Ne4 { [%emt 0.031000] } 13. Nxd5 { [%emt 0.000000] } 13... Qxd5 { [%emt 0.032000] } 14. Qxd5 { [%emt 0.000000] } 14... Re8 { [%emt 0.031000] } 15. Nh6+ { [%emt 0.000000] } 15... Kf8 { [%emt 0.031000] } 16. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_complexity"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_complexity"]
+[Seed "20261120"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.032000] } 4... Nxd5 { [%emt 0.015000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.032000] } 6... Bb4+ { [%emt 0.000000] } 7. Bd2 { [%emt 0.031000] } 7... Nc6 { [%emt 0.000000] } 8. Bxb4 { [%emt 0.031000] } 8... Nxb4 { [%emt 0.000000] } 9. Ne5 { [%emt 0.031000] } 9... O-O { [%emt 0.000000] } 10. Nxf7 { [%emt 0.032000] } 10... Rxf7 { [%emt 0.000000] } 11. a4 { [%emt 0.031000] } 11... Bd7 { [%emt 0.016000] } 12. e4 { [%emt 0.031000] } 12... Qxe4+ { [%emt 0.015000] } 13. Be2 { [%emt 0.032000] } 13... Nc2+ { [%emt 0.015000] } 14. Qxc2 { [%emt 0.032000] } 14... Qxc2 { [%emt 0.000000] } 15. O-O { [%emt 0.031000] } 15... Qxe2 { [%emt 0.000000] } 16. b4 { [%emt 0.031000] } 16... Qd2 { [%emt 0.016000] } 17. f4 { [%emt 0.031000] } 17... Qxd4+ { [%emt 0.016000] } 18. Kh1 { [%emt 0.031000] } 18... Qxb4 { [%emt 0.015000] } 19. g4 { [%emt 0.032000] } 19... Bc6+ { [%emt 0.015000] } 20. Kg1 { [%emt 0.032000] } 20... Qd4+ { [%emt 0.015000] } 21. Rf2 { [%emt 0.031000] } 21... Qxa1+ { [%emt 0.000000] } 22. Rf1 { [%emt 0.032000] } 22... Qd4+ { [%emt 0.000000] } 23. Rf2 { [%emt 0.031000] } 23... Rxf4 { [%emt 0.000000] } 24. a5 { [%emt 0.031000] } 24... Qxf2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_complexity"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_complexity"]
+[Seed "20261121"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. Nf3 { [%emt 0.016000] } 4... dxc4 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.000000] } 5... Qxd2+ { [%emt 0.032000] } 6. Bxd2 { [%emt 0.000000] } 6... Be6 { [%emt 0.031000] } 7. Qa4+ { [%emt 0.015000] } 7... Nc6 { [%emt 0.032000] } 8. Nxc6 { [%emt 0.015000] } 8... bxc6 { [%emt 0.032000] } 9. Qxc6+ { [%emt 0.015000] } 9... Ke7 { [%emt 0.031000] } 10. Qxa8 { [%emt 0.016000] } 10... h5 { [%emt 0.031000] } 11. a4 { [%emt 0.016000] } 11... Nd5 { [%emt 0.031000] } 12. Nxd5+ { [%emt 0.016000] } 12... Kd6 { [%emt 0.031000] } 13. Qd8+ { [%emt 0.016000] } 13... Kc6 { [%emt 0.031000] } 14. e4 { [%emt 0.016000] } 14... Bxd5 { [%emt 0.031000] } 15. Qxd5+ { [%emt 0.000000] } 15... Kb6 { [%emt 0.031000] } 16. Qb5# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_complexity"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_complexity"]
+[Seed "20261122"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Nc6 { [%emt 0.000000] } 7. Nxe5 { [%emt 0.032000] } 7... Qxh1 { [%emt 0.000000] } 8. Qa4 { [%emt 0.031000] } 8... Bh3 { [%emt 0.015000] } 9. Nxc6 { [%emt 0.032000] } 9... Qxf1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_exchange_preference"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_exchange_preference"]
+[Seed "20261115"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.031000] } 1... Nc6 { [%emt 0.031000] } 2. d4 { [%emt 0.000000] } 2... Nf6 { [%emt 0.032000] } 3. Nf3 { [%emt 0.015000] } 3... h6 { [%emt 0.032000] } 4. d5 { [%emt 0.015000] } 4... Nxd5 { [%emt 0.031000] } 5. Qxd5 { [%emt 0.000000] } 5... Nd4 { [%emt 0.032000] } 6. Qxd4 { [%emt 0.000000] } 6... a5 { [%emt 0.031000] } 7. Ne5 { [%emt 0.016000] } 7... b5 { [%emt 0.031000] } 8. Qd5 { [%emt 0.015000] } 8... c5 { [%emt 0.032000] } 9. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_exchange_preference"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_exchange_preference"]
+[Seed "20261116"]
+[Termination "checkmate"]
+
+1. Nc3 { [%emt 0.031000] } 1... Nc6 { [%emt 0.000000] } 2. Nf3 { [%emt 0.031000] } 2... Nf6 { [%emt 0.000000] } 3. e4 { [%emt 0.032000] } 3... d5 { [%emt 0.015000] } 4. exd5 { [%emt 0.032000] } 4... Nxd5 { [%emt 0.015000] } 5. d4 { [%emt 0.031000] } 5... Bf5 { [%emt 0.016000] } 6. Nxd5 { [%emt 0.031000] } 6... Qxd5 { [%emt 0.000000] } 7. Bf4 { [%emt 0.032000] } 7... Qe4+ { [%emt 0.015000] } 8. Be3 { [%emt 0.031000] } 8... Qxc2 { [%emt 0.016000] } 9. Qxc2 { [%emt 0.031000] } 9... Bxc2 { [%emt 0.000000] } 10. Bc4 { [%emt 0.032000] } 10... h5 { [%emt 0.015000] } 11. O-O { [%emt 0.031000] } 11... a5 { [%emt 0.016000] } 12. Bxf7+ { [%emt 0.031000] } 12... Kxf7 { [%emt 0.000000] } 13. Ne5+ { [%emt 0.032000] } 13... Nxe5 { [%emt 0.000000] } 14. dxe5 { [%emt 0.031000] } 14... c6 { [%emt 0.000000] } 15. f4 { [%emt 0.031000] } 15... Bd3 { [%emt 0.016000] } 16. Rfd1 { [%emt 0.031000] } 16... Be4 { [%emt 0.016000] } 17. Rd7 { [%emt 0.031000] } 17... b5 { [%emt 0.015000] } 18. a4 { [%emt 0.032000] } 18... h4 { [%emt 0.015000] } 19. axb5 { [%emt 0.032000] } 19... cxb5 { [%emt 0.000000] } 20. Rc1 { [%emt 0.031000] } 20... Rh6 { [%emt 0.015000] } 21. g4 { [%emt 0.032000] } 21... Ke8 { [%emt 0.015000] } 22. Rcc7 { [%emt 0.032000] } 22... Rd8 { [%emt 0.015000] } 23. Rxd8+ { [%emt 0.031000] } 23... Kxd8 { [%emt 0.000000] } 24. Rc1 { [%emt 0.032000] } 24... Rc6 { [%emt 0.015000] } 25. Rd1+ { [%emt 0.032000] } 25... Ke8 { [%emt 0.015000] } 26. h3 { [%emt 0.031000] } 26... e6 { [%emt 0.016000] } 27. b3 { [%emt 0.031000] } 27... Rc3 { [%emt 0.016000] } 28. Kf2 { [%emt 0.031000] } 28... Rxb3 { [%emt 0.016000] } 29. Ke2 { [%emt 0.031000] } 29... Bg2 { [%emt 0.016000] } 30. Rd7 { [%emt 0.031000] } 30... Kxd7 { [%emt 0.016000] } 31. f5 { [%emt 0.031000] } 31... Bxh3 { [%emt 0.000000] } 32. fxe6+ { [%emt 0.031000] } 32... Kxe6 { [%emt 0.000000] } 33. Bd4 { [%emt 0.031000] } 33... Kd5 { [%emt 0.016000] } 34. Bf2 { [%emt 0.031000] } 34... g5 { [%emt 0.016000] } 35. Kd2 { [%emt 0.031000] } 35... Rb2+ { [%emt 0.016000] } 36. Ke3 { [%emt 0.031000] } 36... Bc5+ { [%emt 0.016000] } 37. Kd3 { [%emt 0.031000] } 37... Bxf2 { [%emt 0.000000] } 38. e6 { [%emt 0.031000] } 38... Bf1+ { [%emt 0.000000] } 39. Kc3 { [%emt 0.031000] } 39... Bd4# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_exchange_preference"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_exchange_preference"]
+[Seed "20261117"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.015000] } 4... bxc6 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.016000] } 5... Ne7 { [%emt 0.031000] } 6. Qf3 { [%emt 0.016000] } 6... Nd5 { [%emt 0.031000] } 7. Qxf7# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_exchange_preference"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_exchange_preference"]
+[Seed "20261118"]
+[Termination "checkmate"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 { [%emt 0.031000] } 4... dxc6 { [%emt 0.000000] } 5. Nxe5 { [%emt 0.032000] } 5... Qd4 { [%emt 0.000000] } 6. Nxc6 { [%emt 0.031000] } 6... Qxe4+ { [%emt 0.015000] } 7. Qe2 { [%emt 0.032000] } 7... Qxe2+ { [%emt 0.000000] } 8. Kxe2 { [%emt 0.031000] } 8... bxc6 { [%emt 0.000000] } 9. Nc3 { [%emt 0.031000] } 9... Bf5 { [%emt 0.000000] } 10. d3 { [%emt 0.031000] } 10... Rb8 { [%emt 0.016000] } 11. Bf4 { [%emt 0.031000] } 11... Rxb2 { [%emt 0.016000] } 12. Bxc7 { [%emt 0.031000] } 12... Rxc2+ { [%emt 0.016000] } 13. Ke3 { [%emt 0.031000] } 13... Rxc3 { [%emt 0.016000] } 14. a4 { [%emt 0.031000] } 14... Bc5+ { [%emt 0.016000] } 15. Kf4 { [%emt 0.031000] } 15... Bxd3 { [%emt 0.015000] } 16. f3 { [%emt 0.032000] } 16... Ne7 { [%emt 0.015000] } 17. Rhe1 { [%emt 0.032000] } 17... O-O { [%emt 0.000000] } 18. h4 { [%emt 0.031000] } 18... Nd5+ { [%emt 0.015000] } 19. Kg3 { [%emt 0.032000] } 19... Nxc7 { [%emt 0.000000] } 20. Ra2 { [%emt 0.031000] } 20... Rb8 { [%emt 0.016000] } 21. Rd2 { [%emt 0.031000] } 21... Nd5 { [%emt 0.015000] } 22. a5 { [%emt 0.032000] } 22... Be3 { [%emt 0.015000] } 23. Rdd1 { [%emt 0.032000] } 23... Rb2 { [%emt 0.015000] } 24. h5 { [%emt 0.031000] } 24... Bf2+ { [%emt 0.016000] } 25. Kh3 { [%emt 0.031000] } 25... Bf5+ { [%emt 0.016000] } 26. Kh2 { [%emt 0.031000] } 26... Bxe1 { [%emt 0.016000] } 27. Rxe1 { [%emt 0.031000] } 27... Nf6 { [%emt 0.016000] } 28. Kg1 { [%emt 0.031000] } 28... Be6 { [%emt 0.016000] } 29. Re5 { [%emt 0.031000] } 29... Bg4 { [%emt 0.015000] } 30. fxg4 { [%emt 0.032000] } 30... Rc1+ { [%emt 0.000000] } 31. Kh2 { [%emt 0.031000] } 31... Nxg4+ { [%emt 0.016000] } 32. Kg3 { [%emt 0.031000] } 32... Nxe5 { [%emt 0.000000] } 33. Kf4 { [%emt 0.031000] } 33... Rc5 { [%emt 0.016000] } 34. g4 { [%emt 0.031000] } 34... Rb4+ { [%emt 0.016000] } 35. Ke3 { [%emt 0.031000] } 35... Nxg4+ { [%emt 0.000000] } 36. Kd3 { [%emt 0.031000] } 36... Rxh5 { [%emt 0.000000] } 37. Kc3 { [%emt 0.031000] } 37... Rhb5 { [%emt 0.016000] } 38. Kd3 { [%emt 0.031000] } 38... h5 { [%emt 0.000000] } 39. Kc3 { [%emt 0.031000] } 39... g5 { [%emt 0.016000] } 40. Kd2 { [%emt 0.031000] } 40... c5 { [%emt 0.016000] } 41. Kd3 { [%emt 0.031000] } 41... h4 { [%emt 0.000000] } 42. Ke2 { [%emt 0.031000] } 42... h3 { [%emt 0.016000] } 43. Kd2 { [%emt 0.031000] } 43... h2 { [%emt 0.016000] } 44. Kc3 { [%emt 0.031000] } 44... Rd4 { [%emt 0.000000] } 45. Kc2 { [%emt 0.031000] } 45... h1=Q { [%emt 0.000000] } 46. Kc3 { [%emt 0.032000] } 46... Qc1# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_exchange_preference"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_exchange_preference"]
+[Seed "20261119"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... exd5 { [%emt 0.031000] } 5. Nf3 { [%emt 0.016000] } 5... Nc6 { [%emt 0.031000] } 6. Bf4 { [%emt 0.000000] } 6... Nxd4 { [%emt 0.032000] } 7. Nxd4 { [%emt 0.000000] } 7... Bf5 { [%emt 0.031000] } 8. Nxf5 { [%emt 0.015000] } 8... Bc5 { [%emt 0.032000] } 9. Nxg7+ { [%emt 0.015000] } 9... Kf8 { [%emt 0.032000] } 10. Nf5 { [%emt 0.000000] } 10... Bxf2+ { [%emt 0.031000] } 11. Kxf2 { [%emt 0.000000] } 11... Kg8 { [%emt 0.031000] } 12. Kg1 { [%emt 0.000000] } 12... Ne4 { [%emt 0.031000] } 13. Nh6+ { [%emt 0.000000] } 13... Kf8 { [%emt 0.032000] } 14. Nxd5 { [%emt 0.015000] } 14... Qxd5 { [%emt 0.031000] } 15. Qxd5 { [%emt 0.000000] } 15... a5 { [%emt 0.032000] } 16. Qxf7# { [%emt 0.015000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_exchange_preference"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_exchange_preference"]
+[Seed "20261120"]
+[Termination "checkmate"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.015000] } 5. Nxd5 { [%emt 0.032000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Bb4+ { [%emt 0.000000] } 7. Bd2 { [%emt 0.031000] } 7... Nc6 { [%emt 0.000000] } 8. Bxb4 { [%emt 0.031000] } 8... Nxb4 { [%emt 0.000000] } 9. Ne5 { [%emt 0.032000] } 9... O-O { [%emt 0.000000] } 10. Nxf7 { [%emt 0.031000] } 10... Rxf7 { [%emt 0.000000] } 11. a4 { [%emt 0.031000] } 11... Bd7 { [%emt 0.016000] } 12. e4 { [%emt 0.031000] } 12... Qxe4+ { [%emt 0.016000] } 13. Be2 { [%emt 0.031000] } 13... Nc2+ { [%emt 0.016000] } 14. Qxc2 { [%emt 0.031000] } 14... Qxc2 { [%emt 0.000000] } 15. O-O { [%emt 0.031000] } 15... Qxe2 { [%emt 0.000000] } 16. b4 { [%emt 0.031000] } 16... Qd2 { [%emt 0.016000] } 17. f4 { [%emt 0.031000] } 17... Qxd4+ { [%emt 0.016000] } 18. Kh1 { [%emt 0.031000] } 18... Qxb4 { [%emt 0.016000] } 19. g4 { [%emt 0.031000] } 19... Bc6+ { [%emt 0.016000] } 20. Kg1 { [%emt 0.031000] } 20... Qd4+ { [%emt 0.015000] } 21. Rf2 { [%emt 0.032000] } 21... Qxa1+ { [%emt 0.000000] } 22. Rf1 { [%emt 0.031000] } 22... Qd4+ { [%emt 0.000000] } 23. Rf2 { [%emt 0.031000] } 23... Rxf4 { [%emt 0.000000] } 24. a5 { [%emt 0.031000] } 24... Qxf2# { [%emt 0.000000] } 0-1
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepSpeedBot no_exchange_preference"]
+[Black "DeepMoveBot"]
+[Result "1-0"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_exchange_preference"]
+[Seed "20261121"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. Nf3 { [%emt 0.031000] } 4... dxc4 { [%emt 0.031000] } 5. Nxe5 { [%emt 0.000000] } 5... Qxd2+ { [%emt 0.031000] } 6. Bxd2 { [%emt 0.000000] } 6... Be6 { [%emt 0.032000] } 7. Qa4+ { [%emt 0.015000] } 7... Nc6 { [%emt 0.032000] } 8. Nxc6 { [%emt 0.015000] } 8... bxc6 { [%emt 0.031000] } 9. Qxc6+ { [%emt 0.016000] } 9... Ke7 { [%emt 0.031000] } 10. Qxa8 { [%emt 0.016000] } 10... Nd5 { [%emt 0.031000] } 11. Nxd5+ { [%emt 0.016000] } 11... Kd6 { [%emt 0.031000] } 12. Qd8+ { [%emt 0.016000] } 12... Kc5 { [%emt 0.031000] } 13. Be3+ { [%emt 0.016000] } 13... Kc6 { [%emt 0.031000] } 14. Bg2 { [%emt 0.015000] } 14... Bxd5 { [%emt 0.032000] } 15. Qxd5# { [%emt 0.000000] } 1-0
+
+[Event "DeepSpeedBot local paired benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "DeepSpeedBot no_exchange_preference"]
+[Result "0-1"]
+[TimeControl "300+0"]
+[BotMoveLimit "3"]
+[VariantLabel "no_exchange_preference"]
+[Seed "20261122"]
+[Termination "checkmate"]
+
+1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. cxd5 { [%emt 0.031000] } 4... Nxd5 { [%emt 0.016000] } 5. Nxd5 { [%emt 0.031000] } 5... Qxd5 { [%emt 0.000000] } 6. Nf3 { [%emt 0.031000] } 6... Nc6 { [%emt 0.000000] } 7. Nxe5 { [%emt 0.032000] } 7... Qxh1 { [%emt 0.000000] } 8. Nxc6 { [%emt 0.031000] } 8... Bh3 { [%emt 0.000000] } 9. Nxa7 { [%emt 0.031000] } 9... Qxf1# { [%emt 0.000000] } 0-1
+
