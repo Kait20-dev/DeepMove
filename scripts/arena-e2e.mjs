@@ -45,6 +45,8 @@ try {
   await page.getByRole('button', { name: 'Создать аккаунт', exact: true }).click();
   await page.getByRole('heading', { name: 'Новая партия', exact: true }).waitFor();
   await post(bob, '/register', { handle: 'e2e_black', name: 'E2E Black', password: 'e2e-password-black-123' });
+  await page.getByLabel('Контроль времени').selectOption('hardbullet');
+  await page.getByText('15 секунд суммарно каждому. Максимум 1 секунда на ход — и боту, и человеку. Без добавления.', { exact: true }).waitFor();
   await page.getByLabel('Контроль времени').selectOption('rapid');
   const created = page.waitForResponse(response => response.url() === `${base}/api/arena/games` && response.request().method() === 'POST');
   await page.getByRole('button', { name: 'Создать партию', exact: true }).click();
@@ -153,6 +155,33 @@ try {
   const timeout = await (await spectator.request.get(`${base}/api/arena/games/${botGame.id}`)).json();
   assert.equal(timeout.reason, 'timeout'); assert.equal(timeout.result, '1-0'); assert.equal(timeout.moves.length, 1);
   console.log('PASS: bot keys, readiness, cross-game denial, concurrent duplicate prevention, automatic 3-second forfeit');
+  const hardGame = await post(alice, '/games', { side: 'w', kind: 'bot', opponentKind: 'bot', format: 'hardbullet', startDelaySeconds: 3 }, 201);
+  assert.deepEqual(hardGame.clocks, { w: 15000, b: 15000 });
+  assert.equal(hardGame.format.botMoveMs, 1000);
+  assert.equal(hardGame.format.humanMoveMs, 1000);
+  await post(bob, `/games/${hardGame.id}/join`, { joinCode: hardGame.joinCode });
+  const hardWhite = (await post(alice, `/games/${hardGame.id}/key`)).token;
+  const hardBlack = (await post(bob, `/games/${hardGame.id}/key`)).token;
+  await post(spectator, `/games/${hardGame.id}/ready`, {}, 200, { Authorization: `Bearer ${hardWhite}` });
+  const hardScheduled = await post(spectator, `/games/${hardGame.id}/ready`, {}, 200, { Authorization: `Bearer ${hardBlack}` });
+  await post(spectator, `/games/${hardGame.id}/move`, { move: 'e2e4', expectedPly: 0 }, 409, { Authorization: `Bearer ${hardWhite}` });
+  await new Promise(resolve => setTimeout(resolve, Math.max(0, hardScheduled.startsAt - Date.now() + 25)));
+  const hardMoved = await post(spectator, `/games/${hardGame.id}/move`, { move: 'e2e4', expectedPly: 0 }, 200, { Authorization: `Bearer ${hardWhite}` });
+  assert.equal(hardMoved.status, 'playing');
+  assert.ok(hardMoved.clocks.w < 15000);
+  assert.equal(hardMoved.clocks.b, 15000);
+  assert.equal(hardMoved.deadline - hardMoved.turnStartedAt, 1000);
+  await new Promise(resolve => setTimeout(resolve, Math.max(0, hardMoved.deadline - Date.now() + 30)));
+  const hardFinished = await (await spectator.request.get(`${base}/api/arena/games/${hardGame.id}`)).json();
+  assert.equal(hardFinished.result, '1-0');
+  assert.equal(hardFinished.reason, 'timeout');
+  assert.equal(hardFinished.moves.length, 1);
+  assert.equal(hardFinished.clocks.b, 14000);
+  const hardPgn = new Chess(); hardPgn.loadPgn(hardFinished.pgn);
+  assert.equal(hardPgn.getHeaders().TimeControl, '15+0');
+  assert.equal(hardPgn.getHeaders().BotMoveLimit, '1');
+  assert.equal(hardPgn.getHeaders().HumanMoveLimit, '1');
+  console.log('PASS: HardBullet UI preset, 15-second clocks, countdown, no increment, real one-second forfeit and PGN');
   const pythonGame = await post(alice, '/games', { side: 'w', kind: 'bot', opponentKind: 'bot', format: 'arena' }, 201);
   await post(bob, `/games/${pythonGame.id}/join`, { joinCode: pythonGame.joinCode });
   const pythonWhiteKey = (await post(alice, `/games/${pythonGame.id}/key`)).token;
@@ -181,14 +210,14 @@ try {
   // Responsive real pages, screenshots, logs and assets.
   for (const [width, height] of [[1920, 1080], [1366, 768], [390, 844]]) {
     await observer.setViewportSize({ width, height });
-    for (const [name, path] of [['lobby', '/arena'], ['game', `/arena/games/${game.id}`], ['docs', '/arena/docs']]) {
+    for (const [name, path] of [['lobby', '/arena'], ['game', `/arena/games/${game.id}`], ['hardbullet', `/arena/games/${hardGame.id}`], ['docs', '/arena/docs']]) {
       await observer.goto(base + path, { waitUntil: 'networkidle' });
       assert.equal(await observer.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `${name} overflow at ${width}`);
       await observer.screenshot({ path: `test-results/arena-${name}-${width}.png`, fullPage: true });
     }
   }
   assert.deepEqual(errors, []);
-  console.log('PASS: 3 viewport sizes × lobby/game/docs; no horizontal overflow or browser runtime errors');
+  console.log('PASS: 3 viewport sizes × lobby/game/HardBullet/docs; no horizontal overflow or browser runtime errors');
   for (const context of [alice, bob, spectator]) await Promise.all(context.pages().map(page => page.close()));
   const exited = once(server, 'exit'); server.kill(); await exited;
   server = startServer();

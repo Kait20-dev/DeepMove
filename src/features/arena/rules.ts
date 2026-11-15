@@ -18,7 +18,7 @@ export function finish(game: Game, result: Game['result'], reason: string) {
 export function deadlineFor(game: Game): number | null {
   if (game.status !== 'playing' || game.turnStartedAt === null) return null;
   const turn = chessFor(game).turn();
-  const cap = game.seats[turn].kind === 'bot' ? game.format.botMoveMs : null;
+  const cap = game.seats[turn].kind === 'bot' ? game.format.botMoveMs : game.format.humanMoveMs;
   return game.turnStartedAt + Math.min(game.clocks[turn], cap ?? Infinity);
 }
 function canPossiblyMate(chess: Chess, side: Side): boolean {
@@ -72,6 +72,7 @@ export function pgnFor(game: Game): string {
   const chess = new Chess();
   const headers = { Event: 'DeepMove Arena', Site: 'DeepMove', Date: new Date(game.createdAt).toISOString().slice(0, 10).replaceAll('-', '.'), Round: '-', White: safeHeader(game.seats.w.name), Black: safeHeader(game.seats.b.name), Result: game.result, TimeControl: `${game.format.initialMs / 1000}+${game.format.incrementMs / 1000}`, BotMoveLimit: game.format.botMoveMs === null ? '-' : `${game.format.botMoveMs / 1000}`, Termination: game.reason || 'unterminated' };
   for (const [key, value] of Object.entries(headers)) chess.setHeader(key, value);
+  if (game.format.humanMoveMs != null) chess.setHeader('HumanMoveLimit', `${game.format.humanMoveMs / 1000}`);
   for (const record of game.moves) {
     chess.move(record.uci);
     const seconds = record.remainingMs / 1000;

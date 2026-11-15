@@ -14,6 +14,19 @@ function user(): { user: UserView; request: Request } {
   db().prepare('INSERT INTO sessions(hash,user_id,expires) VALUES(?,?,?)').run(hash(token), id, Date.now() + 100000);
   return { user: { id, handle: id, name: 'Test', bio: '', createdAt: Date.now() }, request: new Request('http://localhost:3000', { headers: { cookie: `dm_session=${token}` } }) };
 }
+test('HardBullet is a server-owned preset: 15 seconds and one second per move for both player kinds', () => {
+  const alice = user(), bob = user();
+  const game = createGame(alice.user, { format: 'hardbullet', side: 'w', kind: 'human', opponentKind: 'bot', initialSeconds: 7200, botMoveSeconds: 60, humanMoveMs: 60000 });
+  assert.deepEqual(game.clocks, { w: 15000, b: 15000 });
+  assert.equal(game.format.incrementMs, 0);
+  assert.equal(game.format.botMoveMs, 1000);
+  assert.equal(game.format.humanMoveMs, 1000);
+  const joined = joinGame(game.id, bob.user, { joinCode: game.joinCode });
+  assert.equal(joined.status, 'waiting');
+  assert.deepEqual(joined.clocks, { w: 15000, b: 15000 });
+  assert.equal(joined.deadline, null);
+  assert.throws(() => createGame(alice.user, { format: 'custom', side: 'w', kind: 'bot', opponentKind: 'bot', initialSeconds: 15, incrementSeconds: 0, botMoveSeconds: 1 }), /30 до 7200/);
+});
 test('invites protect vacant seats; spectator and other accounts cannot move, ready or rotate keys', () => {
   const alice = user(), bob = user(), mallory = user();
   const game = createGame(alice.user, { format: 'arena', side: 'w', kind: 'bot', opponentKind: 'human' });

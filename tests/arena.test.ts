@@ -31,6 +31,54 @@ test('bot limit is a 3s deadline, not an increment, including the exact boundary
   assert.equal(game.reason, 'timeout');
   assert.equal(game.moves.length, 1);
 });
+test('HardBullet gives both humans and bots 15 seconds, with a strict one-second move limit and no increment', () => {
+  assert.equal(formats.hardbullet.initialMs, 15000);
+  assert.equal(formats.hardbullet.incrementMs, 0);
+  for (const kind of ['bot', 'human'] as const) {
+    const game = fixture(kind, formats.hardbullet);
+    game.status = 'waiting'; game.startsAt = 5000; game.turnStartedAt = null;
+    settleClock(game, 4999);
+    assert.equal(game.status, 'waiting');
+    assert.equal(deadlineFor(game), null);
+    assert.deepEqual(game.clocks, { w: 15000, b: 15000 });
+    settleClock(game, 5000);
+    assert.equal(deadlineFor(game), 6000);
+    applyMove(game, 'w', 'e2e4', 0, 5999);
+    assert.equal(game.clocks.w, 14001);
+    assert.equal(game.clocks.b, 15000);
+    assert.equal(deadlineFor(game), 6999);
+    assert.throws(() => applyMove(game, 'b', 'e7e5', 1, 6999), /не идёт/);
+    assert.equal(game.reason, 'timeout');
+    assert.equal(game.result, '1-0');
+    assert.equal(game.moves.length, 1);
+  }
+});
+test('HardBullet total clock takes priority when less than a second remains', () => {
+  for (const kind of ['bot', 'human'] as const) {
+    const game = fixture(kind, formats.hardbullet);
+    game.clocks.w = 450;
+    assert.equal(deadlineFor(game), 1450);
+    applyMove(game, 'w', 'e2e4', 0, 1449);
+    assert.equal(game.clocks.w, 1);
+    const expired = fixture(kind, formats.hardbullet);
+    expired.clocks.w = 450;
+    settleClock(expired, 1450);
+    assert.equal(expired.reason, 'timeout');
+    assert.equal(expired.result, '0-1');
+    assert.equal(expired.clocks.w, 0);
+    assert.equal(expired.moves.length, 0);
+  }
+});
+test('HardBullet PGN preserves the 15+0 control and one-second limits for both kinds of player', () => {
+  const game = fixture('human', formats.hardbullet);
+  applyMove(game, 'w', 'e2e4', 0, 1250);
+  const pgn = pgnFor(game);
+  const replay = new Chess(); replay.loadPgn(pgn);
+  assert.equal(replay.getHeaders().TimeControl, '15+0');
+  assert.equal(replay.getHeaders().BotMoveLimit, '1');
+  assert.equal(replay.getHeaders().HumanMoveLimit, '1');
+  assert.deepEqual(replay.history(), ['e4']);
+});
 test('countdown blocks early moves and clocks start at the scheduled instant', () => {
   const game = fixture('bot');
   game.status = 'waiting'; game.turnStartedAt = null; game.startsAt = 9000;
