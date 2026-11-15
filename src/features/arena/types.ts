@@ -34,9 +34,9 @@ export interface GameSummary extends Pick<Game, 'id' | 'createdAt' | 'status' | 
   seats: Record<Side, PublicSeat>; moveCount: number;
 }
 export interface MaterialSummary { white: number; black: number; balance: number; capturedByWhite: string[]; capturedByBlack: string[] }
-export type MoveQuality = 'best' | 'good' | 'inaccuracy' | 'mistake' | 'blunder' | 'brilliant-candidate';
+export type MoveQuality = 'book' | 'great' | 'brilliant' | 'best' | 'good' | 'inaccuracy' | 'mistake' | 'blunder' | 'brilliant-candidate';
 export interface MoveAnalysis { ply: number; san: string; evaluation: number; mate: number | null; loss: number; accuracy: number; quality: MoveQuality; bestMove: string | null }
-export interface AnalysisReport { engine: string; depth: number; createdAt: number; moves: MoveAnalysis[]; accuracy: Record<Side, number | null>; methodology: string }
+export interface AnalysisReport { version?: number; engine: string; depth: number; createdAt: number; moves: MoveAnalysis[]; accuracy: Record<Side, number | null>; methodology: string }
 export interface UserView { id: string; handle: string; name: string; bio: string; createdAt: number }
 export interface TeamView { id: string; name: string; ownerId: string; members: UserView[] }
 export interface Dashboard { user: UserView | null; games: GameSummary[]; teams: TeamView[] }

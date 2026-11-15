@@ -2,10 +2,11 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { Chess, type Square } from 'chess.js';
 import { pieceGlyphs, pieceNames } from './client';
-import type { Side } from './types';
+import type { MoveQuality, Side } from './types';
+import { MoveQualityBadge } from './MoveQualityBadge';
 import type { BoardPiece } from './board-position';
 
-export function ChessBoard({ fen, pieces, orientation = 'w', legalMoves = [], onMove, lastMove, busy = false, animate = true }: { fen: string; pieces: BoardPiece[]; orientation?: Side; legalMoves?: string[]; onMove?: (uci: string) => void; lastMove?: string; busy?: boolean; animate?: boolean }) {
+export function ChessBoard({ fen, pieces, orientation = 'w', legalMoves = [], onMove, lastMove, busy = false, animate = true, quality }: { fen: string; pieces: BoardPiece[]; orientation?: Side; legalMoves?: string[]; onMove?: (uci: string) => void; lastMove?: string; busy?: boolean; animate?: boolean; quality?: MoveQuality }) {
   const [selection, setSelection] = useState<{ fen: string; square: Square } | null>(null);
   const [promotion, setPromotion] = useState<{ fen: string; from: Square; to: Square } | null>(null);
   const chess = new Chess(fen);
@@ -14,6 +15,9 @@ export function ChessBoard({ fen, pieces, orientation = 'w', legalMoves = [], on
   const files = orientation === 'w' ? 'abcdefgh' : 'hgfedcba';
   const ranks = orientation === 'w' ? '87654321' : '12345678';
   const king = chess.isCheck() ? chess.board().flat().find(piece => piece?.type === 'k' && piece.color === chess.turn())?.square : null;
+  const destination = lastMove?.slice(2, 4);
+  const markerFile = destination ? destination.charCodeAt(0) - 97 : 0;
+  const markerRank = destination ? Number(destination[1]) - 1 : 0;
   function click(square: Square) {
     if (!onMove || busy || pending) return;
     const options = selected ? legalMoves.filter(move => move.startsWith(selected + square)) : [];
@@ -34,7 +38,7 @@ export function ChessBoard({ fen, pieces, orientation = 'w', legalMoves = [], on
       {column === 0 && <span className="rank-label" aria-hidden="true">{rank}</span>}{row === 7 && <span className="file-label" aria-hidden="true">{file}</span>}
       {target && <span className={piece ? 'capture-target' : 'move-target'} aria-hidden="true" />}
     </button>;
-  }))}</div><div key={animate ? 'animated' : 'instant'} className="piece-layer" aria-hidden="true">{pieces.map(piece => <MovingPiece animate={animate} key={piece.id} piece={piece} orientation={orientation} moving={piece.active && piece.square === lastMove?.slice(2, 4)} />)}</div>{pending && <div className="promotion-overlay" role="dialog" aria-modal="true" aria-label="Превращение пешки"><p>Выбери фигуру</p><div>{['q', 'r', 'b', 'n'].map(type => <button type="button" autoFocus={type === 'q'} key={type} aria-label={pieceNames[type]} onClick={() => { onMove?.(pending.from + pending.to + type); setPromotion(null); setSelection(null); }}>{pieceGlyphs[type]}</button>)}</div><button className="text-button" onClick={() => setPromotion(null)}>Отмена</button></div>}</div>;
+  }))}</div><div key={animate ? 'animated' : 'instant'} className="piece-layer" aria-hidden="true">{pieces.map(piece => <MovingPiece animate={animate} key={piece.id} piece={piece} orientation={orientation} moving={piece.active && piece.square === lastMove?.slice(2, 4)} />)}</div>{quality && destination && <span className="board-review-marker" data-square={destination} style={{ left: `${(orientation === 'w' ? markerFile : 7 - markerFile) * 12.5}%`, top: `${(orientation === 'w' ? 7 - markerRank : markerRank) * 12.5}%` }}><MoveQualityBadge quality={quality} /></span>}{pending && <div className="promotion-overlay" role="dialog" aria-modal="true" aria-label="Превращение пешки"><p>Выбери фигуру</p><div>{['q', 'r', 'b', 'n'].map(type => <button type="button" autoFocus={type === 'q'} key={type} aria-label={pieceNames[type]} onClick={() => { onMove?.(pending.from + pending.to + type); setPromotion(null); setSelection(null); }}>{pieceGlyphs[type]}</button>)}</div><button className="text-button" onClick={() => setPromotion(null)}>Отмена</button></div>}</div>;
 }
 
 function MovingPiece({ piece, orientation, moving, animate }: { piece: BoardPiece; orientation: Side; moving: boolean; animate: boolean }) {

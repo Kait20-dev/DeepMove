@@ -87,6 +87,21 @@ try {
   const replay = new Chess(); replay.loadPgn(pgn); assert.equal(replay.isCheckmate(), true);
   await page.getByRole('button', { name: 'Анализировать партию', exact: true }).click();
   await page.getByText('Белые · точность', { exact: true }).waitFor({ timeout: 20000 });
+  assert.equal(await page.locator('.move-table [data-quality=blunder]').count(), 1);
+  await page.getByRole('button', { name: 'В начало партии', exact: true }).click();
+  assert.equal(await page.locator('.board-review-marker').count(), 0);
+  assert.match(await page.locator('.evaluation-bar').getAttribute('aria-label'), /недоступна/);
+  for (let index = 0; index < 3; index++) await page.getByRole('button', { name: 'Следующий ход', exact: true }).click();
+  assert.equal(await page.locator('.board-review-marker').getAttribute('data-square'), 'g4');
+  assert.equal(await page.locator('.board-review-marker [data-quality=blunder]').count(), 1);
+  assert.equal(await page.locator('.evaluation-fill').evaluate(element => element.style.bottom), '0px');
+  await page.getByRole('button', { name: 'Перевернуть доску', exact: true }).click();
+  assert.equal(await page.locator('.board-review-marker').evaluate(element => element.style.left), '12.5%');
+  assert.equal(await page.locator('.evaluation-fill').evaluate(element => element.style.top), '0px');
+  await page.getByRole('button', { name: 'Перевернуть доску', exact: true }).click();
+  await page.locator('.room-top a').focus();
+  await page.keyboard.press('ArrowLeft');
+  assert.equal(await page.locator('.replay-controls span').innerText(), '2 / 4');
   await page.getByRole('button', { name: 'В начало партии', exact: true }).click();
   assert.equal(await page.locator('.chess-piece').count(), 32);
   await page.getByRole('button', { name: 'В конец партии', exact: true }).click();
@@ -169,6 +184,12 @@ try {
   }
   for (const captured of ['a8', 'h1']) assert.equal(await fastPage.locator(`[data-piece-id="${captured}"]`).evaluate(element => getComputedStyle(element).opacity), '0');
   assert.equal(await fastPage.locator('[data-piece-id="a2"]').evaluate(element => getComputedStyle(element).transitionDuration), '0s');
+  burstCount = 11;
+  await fastPage.getByText(caption(11), { exact: true }).waitFor({ timeout: 1500 });
+  assert.equal(await fastPage.locator('.player-bar[data-side=w] .material-advantage').innerText(), '+3');
+  assert.match(await fastPage.locator('.player-bar[data-side=w] .captured-glyphs').getAttribute('aria-label'), /конь/);
+  assert.equal(await fastPage.locator('.evaluation-bar.unavailable').count(), 1, 'live positions never reveal engine analysis');
+  assert.equal(await fastPage.locator('.board-review-marker').count(), 0);
   burstCount = 12;
   await fastPage.getByText(caption(12), { exact: true }).waitFor({ timeout: 1500 });
   await fastPage.waitForRequest(request => request.url() === `${base}/api/arena/games/${game.id}`);
@@ -196,6 +217,46 @@ try {
   await motionSwitch.click();
   assert.equal(await motionSwitch.getAttribute('aria-checked'), 'false', 'switch still works when storage is blocked');
   await fastContext.close();
+  // A long archive stays in a single viewport, with a separate move-list scroller.
+  const reviewContext = await browser.newContext(), reviewPage = await reviewContext.newPage();
+  reviewPage.on('pageerror', error => errors.push(error.message));
+  const longPosition = new Chess(), longMoves = [];
+  for (let index = 0; index < 128; index++) {
+    const uci = ['g1f3', 'g8f6', 'f3g1', 'f6g8'][index % 4], move = longPosition.move(uci);
+    longMoves.push({ uci, san: move.san, fen: longPosition.fen(), elapsedMs: 100, remainingMs: 600000 - Math.ceil((index + 1) / 2) * 100 });
+  }
+  const qualities = ['blunder', 'inaccuracy', 'good', 'best', 'book', 'great', 'brilliant'];
+  await reviewPage.route(`${base}/api/arena/games/${game.id}`, route => route.fulfill({ json: {
+    ...game, status: 'finished', result: '1/2-1/2', reason: 'repetition', moves: longMoves, fen: longPosition.fen(), turn: 'w',
+    serverNow: Date.now(), version: 500, legalMoves: [], startsAt: null, turnStartedAt: null, timeout: null,
+    analysis: { version: 2, engine: 'UI fixture', depth: 12, createdAt: Date.now(), accuracy: { w: 80, b: 85 }, methodology: 'Deterministic UI fixture',
+      moves: longMoves.map((move, index) => ({ ply: index + 1, san: move.san, evaluation: index % 2 ? -1 : 1, mate: null, loss: 0, accuracy: 90, quality: qualities[index % qualities.length], bestMove: null })) },
+  } }));
+  await reviewPage.goto(`${base}/arena/games/${game.id}`);
+  await reviewPage.locator('.move-table button').last().waitFor({ state: 'attached' });
+  for (const [width, height] of [[1920, 1080], [1366, 768], [390, 844], [375, 667], [844, 390]]) {
+    await reviewPage.setViewportSize({ width, height });
+    const geometry = await reviewPage.evaluate(() => ({
+      width: innerWidth, height: innerHeight, pageWidth: document.documentElement.scrollWidth, pageHeight: document.documentElement.scrollHeight,
+      board: document.querySelector('.play-board').getBoundingClientRect().toJSON(),
+      controls: document.querySelector('.replay-controls').getBoundingClientRect().toJSON(),
+      list: document.querySelector('.move-table').getBoundingClientRect().toJSON(),
+    }));
+    assert.ok(geometry.pageHeight <= height + 1 && geometry.pageWidth <= width, `room must fit ${width}×${height}: ${JSON.stringify(geometry)}`);
+    assert.ok(geometry.controls.bottom <= height && geometry.board.bottom <= height);
+    assert.ok(geometry.list.height >= 50, `move list must remain usable at ${width}×${height}`);
+    const boardTop = geometry.board.top;
+    await reviewPage.locator('.move-table').evaluate(element => { element.scrollTop = 0; });
+    assert.equal(await reviewPage.evaluate(() => window.scrollY), 0);
+    assert.equal(await reviewPage.locator('.play-board').evaluate(element => element.getBoundingClientRect().top), boardTop);
+    await reviewPage.locator('.move-table button').first().click();
+    assert.equal(await reviewPage.locator('.board-review-marker [data-quality=blunder]').count(), 1);
+    await reviewPage.getByRole('button', { name: 'В конец партии', exact: true }).click();
+    await reviewPage.screenshot({ path: `test-results/arena-review-${width}.png` });
+  }
+  for (const quality of qualities) assert.ok(await reviewPage.locator(`.move-table [data-quality=${quality}]`).count() > 0);
+  await reviewContext.close();
+  console.log('PASS: quality icons, board markers, orientation-aware evaluation, immediate captured material, keyboard replay and single-viewport long archives');
   console.log('PASS: animation switch discards backlog, updates captures/promotions instantly, polls at 200ms, persists/syncs preferences and re-enables without rewinding');
   console.log('PASS: human vs human, spectator, real board input, PGN, finished-game review and local Stockfish');
   // Key-scoped bots: ready, stale moves, request races, total+per-move deadline.
@@ -250,9 +311,11 @@ try {
   const timingPage = await spectator.newPage();
   timingPage.on('pageerror', error => errors.push(error.message));
   await timingPage.goto(`${base}/arena/games/${hardGame.id}`);
-  await timingPage.locator('.game-state').getByText('Чёрные: истёк лимит на ход', { exact: true }).waitFor();
+  await timingPage.locator('.game-state>.arena-muted').getByText('Чёрные: истёк лимит на ход', { exact: true }).waitFor();
+  await timingPage.getByLabel('Подробнее о партии', { exact: true }).click();
   assert.match(await timingPage.locator('.game-state .timeout-arrival').innerText(), /пока не получен/);
   assert.match(await timingPage.locator('.timeout-event').innerText(), /Ход 1\.\.\. не принят/);
+  await timingPage.getByLabel('Подробнее о партии', { exact: true }).click();
   const whiteClock = timingPage.getByLabel('Белые: остаток времени', { exact: true });
   const blackClock = timingPage.getByLabel('Чёрные: остаток времени', { exact: true });
   const preciseClock = ms => `${Math.floor(ms / 60000)}:${((ms % 60000) / 1000).toFixed(3).padStart(6, '0')}`;
@@ -276,18 +339,20 @@ try {
   assert.equal(lateAttempt.timeout.lateMove.uci, 'e7e5');
   assert.equal(lateAttempt.timeout.lateMove.delayMs, lateAttempt.timeout.lateMove.receivedAt - hardMoved.deadline);
   assert.ok(lateAttempt.timeout.lateMove.delayMs > 0);
+  await timingPage.getByLabel('Подробнее о партии', { exact: true }).click();
   await timingPage.locator('.game-state .timeout-arrival').getByText(new RegExp(`Опоздание: ${lateAttempt.timeout.lateMove.delayMs} мс`)).waitFor();
   const lateHeaders = new Chess(); lateHeaders.loadPgn(lateAttempt.pgn);
   assert.equal(lateHeaders.getHeaders().LateMoveDelayMs, String(lateAttempt.timeout.lateMove.delayMs));
   // Legacy snapshots must render the same explanation without a persisted timeout object.
   await timingPage.route(`${base}/api/arena/games/${hardGame.id}`, route => route.fulfill({ json: { ...hardFinished, timeout: undefined } }));
   await timingPage.reload();
-  await timingPage.locator('.game-state').getByText('Чёрные: истёк лимит на ход', { exact: true }).waitFor();
+  await timingPage.locator('.game-state>.arena-muted').getByText('Чёрные: истёк лимит на ход', { exact: true }).waitFor();
+  await timingPage.getByLabel('Подробнее о партии', { exact: true }).click();
   assert.match(await timingPage.locator('.game-state .timeout-arrival').innerText(), /не записывалось/);
   await timingPage.unroute(`${base}/api/arena/games/${hardGame.id}`);
   await timingPage.route(`${base}/api/arena/games/${hardGame.id}`, route => route.fulfill({ json: { ...hardFinished, clocks: { ...hardFinished.clocks, b: 0 }, timeout: { side: 'b', kind: 'total', ply: 2, limitMs: 15000, remainingMs: 0 } } }));
   await timingPage.reload();
-  await timingPage.locator('.game-state').getByText('Чёрные: закончилось общее время', { exact: true }).waitFor();
+  await timingPage.locator('.game-state>.arena-muted').getByText('Чёрные: закончилось общее время', { exact: true }).waitFor();
   assert.equal(await blackClock.innerText(), '0:00.000');
   await timingPage.screenshot({ path: 'test-results/arena-timeout-replay.png' });
   await timingPage.close();

@@ -252,14 +252,26 @@ test('promotion must be explicit and records the promoted piece', () => {
 });
 test('analysis refuses live games and classifies losses with documented boundaries', async () => {
   await assert.rejects(analyzeGame(fixture()), /после завершения/);
-  assert.equal(classifyLoss(0), 'best'); assert.equal(classifyLoss(101), 'mistake'); assert.equal(classifyLoss(251), 'blunder');
+  assert.equal(classifyLoss(0), 'best'); assert.equal(classifyLoss(101), 'inaccuracy'); assert.equal(classifyLoss(251), 'blunder');
 });
 test('real Stockfish analysis returns finite scores and notices the losing move', { timeout: 30000 }, async () => {
   const game = fixture(); play(game, ['f2f3', 'e7e5', 'g2g4', 'd8h4']);
   const analysis = await analyzeGame(game);
+  assert.equal(analysis.version, 2);
   assert.equal(analysis.moves.length, 4);
   assert.equal(analysis.moves[2].quality, 'blunder');
   assert.equal(analysis.moves[3].mate, -1);
   for (const side of ['w', 'b'] as Side[]) assert.ok(analysis.accuracy[side]! >= 0 && analysis.accuracy[side]! <= 100);
   assert.ok(analysis.moves.every(move => Number.isFinite(move.evaluation) && Number.isFinite(move.loss)));
+});
+
+test('real Stockfish distinguishes catalogue theory and a compensated queen sacrifice', { timeout: 30000 }, async () => {
+  const game = fixture();
+  play(game, ['e2e4', 'e7e5', 'g1f3', 'd7d6', 'f1c4', 'c8g4', 'b1c3', 'g7g6', 'f3e5', 'g4d1', 'c4f7', 'e8e7', 'c3d5']);
+  assert.equal(game.reason, 'checkmate');
+  const analysis = await analyzeGame(game);
+  assert.equal(analysis.moves[0].quality, 'book');
+  assert.equal(analysis.moves[1].quality, 'book');
+  assert.equal(analysis.moves[8].quality, 'brilliant');
+  assert.equal(analysis.moves[8].san, 'Nxe5');
 });
