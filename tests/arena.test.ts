@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { applyMove, settleClock, viewGame, pgnFor, deadlineFor } from '../src/features/arena/rules';
 import { formats, type Game, type Side } from '../src/features/arena/types';
 import { analyzeGame, classifyLoss } from '../src/server/analysis';
+import { clocksAtPly, clockText, timeoutFor } from '../src/features/arena/timing';
 
 function fixture(kind: 'human' | 'bot' = 'human', format = formats.arena): Game {
   return { id: randomUUID(), createdBy: 'alice', joinHash: 'secret-never-public', createdAt: 1700000000000, status: 'playing', result: '*', reason: null, seats: { w: { userId: 'alice', name: 'Alice', kind, ready: true, tokenHash: 'white-secret' }, b: { userId: 'bob', name: 'Bob', kind, ready: true, tokenHash: 'black-secret' } }, format: { ...format }, moves: [], clocks: { w: format.initialMs, b: format.initialMs }, turnStartedAt: 1000, startDelayMs: 8000, startsAt: null, version: 0 };
@@ -78,6 +79,59 @@ test('HardBullet PGN preserves the 15+0 control and one-second limits for both k
   assert.equal(replay.getHeaders().BotMoveLimit, '1');
   assert.equal(replay.getHeaders().HumanMoveLimit, '1');
   assert.deepEqual(replay.history(), ['e4']);
+});
+
+test('timeout records the failed side and unaccepted ply separately from the last accepted move', () => {
+  const game = fixture('bot', formats.hardbullet);
+  applyMove(game, 'w', 'e2e4', 0, 1300);
+  settleClock(game, 9000); // Late observation must still settle at the official deadline.
+  assert.deepEqual(game.timeout, { side: 'b', kind: 'move', ply: 2, limitMs: 1000, remainingMs: 14000 });
+  assert.equal(game.moves.length, 1);
+  assert.equal(game.moves[0].elapsedMs, 300);
+  const saved = JSON.parse(JSON.stringify(game)) as Game;
+  assert.deepEqual(viewGame(saved, 10000).timeout, game.timeout);
+  delete saved.timeout;
+  assert.deepEqual(timeoutFor(saved), game.timeout, 'old archives infer the same cause without changing their result');
+  const parsed = new Chess(); parsed.loadPgn(pgnFor(saved));
+  assert.equal(parsed.getHeaders().TimeoutKind, 'move');
+  assert.equal(parsed.getHeaders().TimeoutSide, 'b');
+  assert.equal(parsed.getHeaders().TimeoutPly, '2');
+  assert.equal(parsed.getHeaders().TimeoutRemainingMs, '14000');
+  assert.deepEqual(parsed.history(), ['e4']);
+});
+
+test('total timeout wins ties with the move cap and old archives recover total exhaustion', () => {
+  for (const remaining of [450, 1000]) {
+    const game = fixture('bot', formats.hardbullet);
+    game.clocks.w = remaining;
+    settleClock(game, 2000);
+    assert.deepEqual(game.timeout, { side: 'w', kind: 'total', ply: 1, limitMs: remaining, remainingMs: 0 });
+  }
+  const game = fixture('human', formats.rapid);
+  applyMove(game, 'w', 'e2e4', 0, 1300);
+  settleClock(game, 601300);
+  const expected = game.timeout;
+  delete game.timeout;
+  assert.deepEqual(timeoutFor(game), expected);
+  game.reason = 'checkmate';
+  assert.equal(timeoutFor(game), null);
+});
+
+test('replay clocks retain both sides, increments and the position before a final timeout', () => {
+  const game = fixture('human', formats.blitz);
+  assert.deepEqual(clocksAtPly(game, 0), { w: 180000, b: 180000 });
+  applyMove(game, 'w', 'e2e4', 0, 1300);
+  applyMove(game, 'b', 'e7e5', 1, 1700);
+  applyMove(game, 'w', 'g1f3', 2, 2200);
+  assert.deepEqual(clocksAtPly(game, 1), { w: 181700, b: 180000 });
+  assert.deepEqual(clocksAtPly(game, 2), { w: 181700, b: 181600 });
+  assert.deepEqual(clocksAtPly(game, 3), { w: 183200, b: 181600 });
+  settleClock(game, 183800);
+  assert.equal(game.clocks.b, 0);
+  assert.equal(clocksAtPly(game, 3).b, 181600);
+  assert.equal(clockText(12288, true), '0:12.288');
+  assert.equal(clockText(59999, true), '0:59.999');
+  assert.equal(clockText(60000, true), '1:00.000');
 });
 test('countdown blocks early moves and clocks start at the scheduled instant', () => {
   const game = fixture('bot');

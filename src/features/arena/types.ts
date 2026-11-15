@@ -9,6 +9,9 @@ export const formats: Record<string, TimeFormat> = {
 };
 export interface Seat { userId: string | null; name: string; kind: PlayerKind; ready: boolean; tokenHash: string | null }
 export interface MoveRecord { uci: string; san: string; fen: string; elapsedMs: number; remainingMs: number }
+export interface TimeoutDetails {
+  side: Side; kind: 'move' | 'total'; ply: number; limitMs: number; remainingMs: number;
+}
 export interface Game {
   id: string; createdAt: number; createdBy: string; joinHash: string;
   status: 'waiting' | 'playing' | 'finished'; result: '*' | '1-0' | '0-1' | '1/2-1/2'; reason: string | null;
@@ -16,6 +19,7 @@ export interface Game {
   clocks: Record<Side, number>; turnStartedAt: number | null; version: number;
   startDelayMs: number; startsAt: number | null;
   analysis?: AnalysisReport;
+  timeout?: TimeoutDetails | null;
 }
 export interface PublicSeat { userId: string | null; name: string; kind: PlayerKind; ready: boolean }
 export interface GameView extends Omit<Game, 'seats' | 'analysis' | 'joinHash'> {

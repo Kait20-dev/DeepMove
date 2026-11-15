@@ -1,6 +1,7 @@
 import { Chess, type Color, type PieceSymbol } from 'chess.js';
 import type { Game, GameView, MaterialSummary, Side } from './types';
 import { ApiError, ensure } from '@/server/errors';
+import { timeoutFor } from './timing';
 
 export const values: Record<PieceSymbol, number> = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };
 export const opposite = (side: Side): Side => side === 'w' ? 'b' : 'w';
@@ -38,7 +39,10 @@ export function settleClock(game: Game, now: number) {
   if (deadline === null || now < deadline) return;
   const chess = chessFor(game);
   const side = chess.turn();
+  const cap = game.seats[side].kind === 'bot' ? game.format.botMoveMs : game.format.humanMoveMs;
+  const total = game.clocks[side];
   game.clocks[side] = Math.max(0, game.clocks[side] - (deadline - game.turnStartedAt!));
+  game.timeout = { side, kind: cap != null && cap < total ? 'move' : 'total', ply: game.moves.length + 1, limitMs: deadline - game.turnStartedAt!, remainingMs: game.clocks[side] };
   const winner = opposite(side);
   finish(game, canPossiblyMate(chess, winner) ? winner === 'w' ? '1-0' : '0-1' : '1/2-1/2', 'timeout');
 }
@@ -73,6 +77,14 @@ export function pgnFor(game: Game): string {
   const headers = { Event: 'DeepMove Arena', Site: 'DeepMove', Date: new Date(game.createdAt).toISOString().slice(0, 10).replaceAll('-', '.'), Round: '-', White: safeHeader(game.seats.w.name), Black: safeHeader(game.seats.b.name), Result: game.result, TimeControl: `${game.format.initialMs / 1000}+${game.format.incrementMs / 1000}`, BotMoveLimit: game.format.botMoveMs === null ? '-' : `${game.format.botMoveMs / 1000}`, Termination: game.reason || 'unterminated' };
   for (const [key, value] of Object.entries(headers)) chess.setHeader(key, value);
   if (game.format.humanMoveMs != null) chess.setHeader('HumanMoveLimit', `${game.format.humanMoveMs / 1000}`);
+  const timeout = timeoutFor(game);
+  if (timeout) {
+    chess.setHeader('TimeoutSide', timeout.side);
+    chess.setHeader('TimeoutKind', timeout.kind);
+    chess.setHeader('TimeoutPly', String(timeout.ply));
+    chess.setHeader('TimeoutLimitMs', String(timeout.limitMs));
+    chess.setHeader('TimeoutRemainingMs', String(timeout.remainingMs));
+  }
   for (const record of game.moves) {
     chess.move(record.uci);
     const seconds = record.remainingMs / 1000;
@@ -87,5 +99,5 @@ export function viewGame(game: Game, now: number): GameView {
   })) as GameView['seats'];
   const { joinHash: _joinHash, ...publicGame } = game;
   void _joinHash;
-  return { ...publicGame, seats, analysis: game.status === 'finished' ? game.analysis || null : null, fen: chess.fen(), turn: chess.turn(), legalMoves: game.status === 'playing' ? chess.moves({ verbose: true }).map(move => `${move.from}${move.to}${move.promotion || ''}`) : [], serverNow: now, deadline: deadlineFor(game), pgn: pgnFor(game), material: material(chess) };
+  return { ...publicGame, seats, timeout: timeoutFor(game), analysis: game.status === 'finished' ? game.analysis || null : null, fen: chess.fen(), turn: chess.turn(), legalMoves: game.status === 'playing' ? chess.moves({ verbose: true }).map(move => `${move.from}${move.to}${move.promotion || ''}`) : [], serverNow: now, deadline: deadlineFor(game), pgn: pgnFor(game), material: material(chess) };
 }
