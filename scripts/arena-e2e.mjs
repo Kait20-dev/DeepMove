@@ -132,6 +132,71 @@ try {
   await queuePage.getByText('1... e5', { exact: true }).waitFor();
   await queuePage.close();
   console.log('PASS: two moves in one network snapshot are shown one at a time');
+  // A spectator can discard a large animation backlog and follow current snapshots.
+  const fastContext = await browser.newContext();
+  const fastPage = await fastContext.newPage();
+  fastPage.on('pageerror', error => errors.push(error.message));
+  const burst = new Chess();
+  const burstMoves = ['a2a4', 'h7h5', 'a4a5', 'h5h4', 'a5a6', 'h4h3', 'a6b7', 'h3g2', 'b7a8q', 'g2h1q', 'a8b8', 'h1g1', 'b8c8', 'g1f1'].map(uci => {
+    const move = burst.move(uci);
+    return { uci, san: move.san, fen: burst.fen(), elapsedMs: 100, remainingMs: 14000 };
+  });
+  let burstCount = 0;
+  await fastPage.route(`${base}/api/arena/games/${game.id}`, async route => {
+    const count = burstCount;
+    const position = new Chess();
+    for (const record of burstMoves.slice(0, count)) position.move(record.uci);
+    const now = Date.now();
+    await route.fulfill({ json: { ...game, moves: burstMoves.slice(0, count), fen: position.fen(), pgn: position.pgn(),
+      format: { name: 'HardBullet Arena', initialMs: 15000, incrementMs: 0, botMoveMs: 1000, humanMoveMs: 1000 },
+      clocks: { w: 15000, b: 15000 }, status: 'playing', result: '*', reason: null, turn: position.turn(), legalMoves: [],
+      analysis: null, startsAt: null, serverNow: now, turnStartedAt: now, deadline: now + 1000, version: 100 + count } });
+  });
+  const caption = count => `${Math.ceil(count / 2)}${count % 2 ? '.' : '...'} ${burstMoves[count - 1].san}`;
+  await fastPage.goto(`${base}/arena/games/${game.id}`);
+  await fastPage.getByText('Ожидаем первый ход', { exact: true }).waitFor();
+  const motionSwitch = fastPage.getByRole('switch', { name: 'Анимации фигур' });
+  assert.equal(await motionSwitch.getAttribute('aria-checked'), 'true');
+  burstCount = 10;
+  await fastPage.getByText(caption(1), { exact: true }).waitFor();
+  await motionSwitch.click();
+  await fastPage.getByText(caption(10), { exact: true }).waitFor();
+  assert.equal(await motionSwitch.getAttribute('aria-checked'), 'false');
+  assert.equal(await fastPage.locator('[data-piece-id="a2"]').getAttribute('data-square'), 'a8');
+  assert.equal(await fastPage.locator('[data-piece-id="h7"]').getAttribute('data-square'), 'h1');
+  for (const [pawn, queen] of [['a2', 'd1'], ['h7', 'd8']]) {
+    assert.equal(await fastPage.locator(`[data-piece-id="${pawn}"] .chess-piece`).textContent(), await fastPage.locator(`[data-piece-id="${queen}"] .chess-piece`).textContent(), 'promotions must update instantly');
+  }
+  for (const captured of ['a8', 'h1']) assert.equal(await fastPage.locator(`[data-piece-id="${captured}"]`).evaluate(element => getComputedStyle(element).opacity), '0');
+  assert.equal(await fastPage.locator('[data-piece-id="a2"]').evaluate(element => getComputedStyle(element).transitionDuration), '0s');
+  burstCount = 12;
+  await fastPage.getByText(caption(12), { exact: true }).waitFor({ timeout: 1500 });
+  await fastPage.waitForRequest(request => request.url() === `${base}/api/arena/games/${game.id}`);
+  const pollStarted = Date.now();
+  await fastPage.waitForRequest(request => request.url() === `${base}/api/arena/games/${game.id}`);
+  assert.ok(Date.now() - pollStarted < 800, 'unanimated live view must poll faster than the one-second animation mode');
+  await fastPage.reload();
+  await fastPage.getByText(caption(12), { exact: true }).waitFor();
+  assert.equal(await motionSwitch.getAttribute('aria-checked'), 'false', 'preference survives reload');
+  const sibling = await fastContext.newPage();
+  sibling.on('pageerror', error => errors.push(error.message));
+  await sibling.goto(`${base}/arena/games/${game.id}`);
+  const siblingSwitch = sibling.getByRole('switch', { name: 'Анимации фигур' });
+  await siblingSwitch.waitFor();
+  assert.equal(await siblingSwitch.getAttribute('aria-checked'), 'false', 'preference carries into another game view');
+  await sibling.getByRole('button', { name: 'В начало партии', exact: true }).click();
+  assert.equal(await sibling.locator('[data-piece-id="f2"]').evaluate(element => getComputedStyle(element).transitionDuration), '0s');
+  await motionSwitch.click();
+  await fastPage.getByText(caption(12), { exact: true }).waitFor();
+  await sibling.waitForFunction(() => document.querySelector('[role="switch"][aria-label="Анимации фигур"]')?.getAttribute('aria-checked') === 'true');
+  burstCount = 14;
+  await fastPage.getByText(caption(13), { exact: true }).waitFor();
+  await fastPage.getByText(caption(14), { exact: true }).waitFor();
+  await fastPage.evaluate(() => { Object.defineProperty(window, 'localStorage', { configurable: true, get() { throw new Error('Storage blocked'); } }); });
+  await motionSwitch.click();
+  assert.equal(await motionSwitch.getAttribute('aria-checked'), 'false', 'switch still works when storage is blocked');
+  await fastContext.close();
+  console.log('PASS: animation switch discards backlog, updates captures/promotions instantly, polls at 200ms, persists/syncs preferences and re-enables without rewinding');
   console.log('PASS: human vs human, spectator, real board input, PGN, finished-game review and local Stockfish');
   // Key-scoped bots: ready, stale moves, request races, total+per-move deadline.
   const botGame = await post(alice, '/games', { side: 'w', kind: 'bot', opponentKind: 'bot', format: 'arena', engineName: 'E2E Alpha', startDelaySeconds: 3 }, 201);

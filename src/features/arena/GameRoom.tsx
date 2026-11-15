@@ -1,13 +1,14 @@
 'use client';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download, Eye, RotateCw, Link2 } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download, Eye, RotateCw, Link2, Zap } from 'lucide-react';
 import { api, statusLabel, reasonLabel } from './client';
 import { ChessBoard } from './ChessBoard';
 import { MaterialPanel, ReviewPanel } from './ReviewPanel';
 import { AuthPanel } from './AuthPanel';
 import { CopyPgn } from './CopyPgn';
 import { boardPosition } from './board-position';
+import { useBoardAnimations } from './board-motion';
 import type { GameView, Side, UserView } from './types';
 
 export function GameRoom({ id }: { id: string }) {
@@ -16,41 +17,41 @@ export function GameRoom({ id }: { id: string }) {
   const [now, setNow] = useState(0), [sync, setSync] = useState({ server: 0, local: 0 });
   const [ply, setPly] = useState<number | null>(null), [flipped, setFlipped] = useState(false);
   const [livePly, setLivePly] = useState<number | null>(null);
+  const { animate, reduced, setEnabled } = useBoardAnimations();
   const lastAdvance = useRef(0);
   const [secret, setSecret] = useState<{ label: string; value: string } | null>(null);
   const [copyMessage, setCopyMessage] = useState('');
   const receive = useCallback((incoming: GameView) => {
     setGame(previous => !previous || incoming.id !== previous.id || incoming.serverNow >= previous.serverNow && incoming.version >= previous.version ? incoming : previous);
-    setLivePly(previous => previous ?? incoming.moves.length);
+    setLivePly(previous => animate ? previous ?? incoming.moves.length : incoming.moves.length);
     setSync(previous => incoming.serverNow >= previous.server ? { server: incoming.serverNow, local: performance.now() } : previous);
-  }, []);
+  }, [animate]);
   useEffect(() => {
     let alive = true; const controller = new AbortController(); let timer: ReturnType<typeof setTimeout>;
     const poll = async () => {
       try { const incoming = await api<GameView>(`/games/${id}`, undefined, controller.signal); if (alive) { receive(incoming); setConnectionError(''); } }
       catch (error) { if (alive) setConnectionError((error as Error).message); }
-      finally { if (alive) timer = setTimeout(poll, 1000); }
+      finally { if (alive) timer = setTimeout(poll, animate ? 1000 : 200); }
     };
     void poll();
     api<{ user: UserView | null }>('/me', undefined, controller.signal).then(data => { if (alive) setUser(data.user); }).catch(() => {});
     const invite = sessionStorage.getItem(`invite:${id}`);
     if (invite) { queueMicrotask(() => { if (alive) setSecret({ label: 'Код приглашения соперника', value: invite }); }); sessionStorage.removeItem(`invite:${id}`); }
     return () => { alive = false; controller.abort(); clearTimeout(timer); };
-  }, [id, receive]);
+  }, [id, receive, animate]);
   useEffect(() => { const interval = setInterval(() => setNow(sync.server + performance.now() - sync.local), 100); return () => clearInterval(interval); }, [sync]);
   useEffect(() => {
-    if (!game || ply !== null || livePly === null || livePly >= game.moves.length) return;
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const wait = reduced ? 0 : Math.max(0, lastAdvance.current + 480 - performance.now());
+    if (!animate || !game || ply !== null || livePly === null || livePly >= game.moves.length) return;
+    const wait = Math.max(0, lastAdvance.current + 480 - performance.now());
     const target = game.moves.length;
     const timer = setTimeout(() => {
       lastAdvance.current = performance.now();
-      setLivePly(current => reduced ? target : Math.min((current ?? target) + 1, target));
+      setLivePly(current => Math.min((current ?? target) + 1, target));
     }, wait);
     return () => clearTimeout(timer);
-  }, [game, livePly, ply]);
+  }, [game, livePly, ply, animate]);
   const side: Side | null = game && user ? game.seats.w.userId === user.id ? 'w' : game.seats.b.userId === user.id ? 'b' : null : null;
-  const index = game ? Math.min(ply ?? livePly ?? game.moves.length, game.moves.length) : 0;
+  const index = game ? Math.min(ply ?? (animate ? livePly ?? game.moves.length : game.moves.length), game.moves.length) : 0;
   const { chess, pieces } = useMemo(() => boardPosition(game?.moves || [], index), [game, index]);
   async function action(name: string, input: object = {}) {
     setBusy(true); setError('');
@@ -63,6 +64,11 @@ export function GameRoom({ id }: { id: string }) {
     finally { setBusy(false); }
   }
   async function copyLink() { try { await navigator.clipboard.writeText(window.location.href); setCopyMessage('Ссылка скопирована'); } catch { setCopyMessage('Скопируй адрес страницы из браузера'); } }
+  function toggleAnimations() {
+    setLivePly(game?.moves.length ?? null);
+    lastAdvance.current = performance.now();
+    setEnabled(!animate);
+  }
   if (!game) return <div className="container arena-loading"><Link href="/arena">← На арену</Link><p role={connectionError ? 'alert' : 'status'}>{connectionError || 'Открываем партию…'}</p></div>;
   const orientation: Side = flipped ? side === 'b' ? 'w' : 'b' : side || 'w';
   const ownSeat = side ? game.seats[side] : null;
@@ -74,9 +80,9 @@ export function GameRoom({ id }: { id: string }) {
   function join(event: FormEvent<HTMLFormElement>) { event.preventDefault(); void action('join', Object.fromEntries(new FormData(event.currentTarget))); }
   return <div className="container game-room"><div className="room-top"><Link href="/arena"><ArrowLeft size={15} /> На арену</Link><span className={`game-status ${game.status}`}>{statusLabel[game.status]}</span><span className="arena-muted">{game.format.name}</span><button className="text-button spectator-link" onClick={copyLink}><Link2 size={16} />Пригласить зрителей</button></div>
     {copyMessage && <p role="status" className="field-hint">{copyMessage}</p>}{connectionError && <p role="alert" className="arena-error">Связь потеряна: {connectionError}. Часы на сервере продолжают идти.</p>}{error && <p role="alert" className="arena-error">{error}</p>}
-    <div className="room-layout"><div className="board-column"><PlayerBar game={game} side={orientation === 'w' ? 'b' : 'w'} now={now} /><div className="countdown-board"><ChessBoard fen={chess.fen()} pieces={pieces} orientation={orientation} legalMoves={canMove ? game.legalMoves : []} onMove={canMove ? move => action('move', { move, expectedPly: game.moves.length }) : undefined} busy={busy} lastMove={game.moves[index - 1]?.uci} />{starting && <div className="start-countdown" role="timer" aria-label={`До старта ${startSeconds} секунд`}><span>ОБА ИГРОКА ГОТОВЫ</span><strong>{startSeconds || 'Старт'}</strong><p>Приготовьтесь к первому ходу.<br />Часы ещё не идут.</p></div>}</div><PlayerBar game={game} side={orientation} now={now} />
+    <div className="room-layout"><div className="board-column"><PlayerBar game={game} side={orientation === 'w' ? 'b' : 'w'} now={now} /><div className="countdown-board"><ChessBoard animate={animate} fen={chess.fen()} pieces={pieces} orientation={orientation} legalMoves={canMove ? game.legalMoves : []} onMove={canMove ? move => action('move', { move, expectedPly: game.moves.length }) : undefined} busy={busy} lastMove={game.moves[index - 1]?.uci} />{starting && <div className="start-countdown" role="timer" aria-label={`До старта ${startSeconds} секунд`}><span>ОБА ИГРОКА ГОТОВЫ</span><strong>{startSeconds || 'Старт'}</strong><p>Приготовьтесь к первому ходу.<br />Часы ещё не идут.</p></div>}</div><PlayerBar game={game} side={orientation} now={now} />
       <div className="last-move-caption" aria-live="polite">{index ? <><span>Последний показанный ход</span><strong>{Math.ceil(index / 2)}{index % 2 ? '.' : '...'} {game.moves[index - 1].san}</strong></> : <span>{starting ? 'Старт после обратного отсчёта' : 'Ожидаем первый ход'}</span>}</div>
-      <div className="board-toolbar"><span><Eye size={15} />{side ? ownSeat?.kind === 'bot' ? 'Ты управляешь ботом' : canMove ? 'Твой ход' : 'Ты участник' : 'Ты зритель'}</span><button className="text-button" onClick={() => setFlipped(!flipped)}><RotateCw size={15} />Перевернуть</button><CopyPgn pgn={game.pgn} /><a className="text-button" href={`/api/arena/games/${id}/pgn`}><Download size={15} />Скачать PGN</a></div>
+      <div className="board-toolbar"><span><Eye size={15} />{side ? ownSeat?.kind === 'bot' ? 'Ты управляешь ботом' : canMove ? 'Твой ход' : 'Ты участник' : 'Ты зритель'}</span><button className="text-button" onClick={() => setFlipped(!flipped)}><RotateCw size={15} />Перевернуть</button><button type="button" className="text-button animation-toggle" role="switch" aria-label="Анимации фигур" aria-checked={animate} disabled={reduced} title={reduced ? 'Анимации отключены системной настройкой уменьшения движения' : 'Без анимаций доска сразу догоняет игру'} onClick={toggleAnimations}><Zap size={15} />Анимации: {animate ? 'вкл' : 'выкл'}</button><CopyPgn pgn={game.pgn} /><a className="text-button" href={`/api/arena/games/${id}/pgn`}><Download size={15} />Скачать PGN</a></div>
       {game.status === 'finished' && <div className="replay-controls"><div><button aria-label="В начало партии" onClick={() => setPly(0)} disabled={!index}><ChevronsLeft /></button><button aria-label="Предыдущий ход" onClick={() => setPly(Math.max(0, index - 1))} disabled={!index}><ChevronLeft /></button><span>{index} / {game.moves.length}</span><button aria-label="Следующий ход" onClick={() => setPly(Math.min(game.moves.length, index + 1))} disabled={index === game.moves.length}><ChevronRight /></button><button aria-label="В конец партии" onClick={() => setPly(null)} disabled={index === game.moves.length}><ChevronsRight /></button></div><input type="range" aria-label="Полуход партии" min={0} max={game.moves.length} value={index} onChange={event => setPly(Number(event.target.value))} /></div>}
       <MaterialPanel chess={chess} />
     </div><aside className="room-sidebar"><section className="arena-panel game-state"><div className="arena-kicker">{game.status === 'finished' ? 'РЕЗУЛЬТАТ' : 'ПАРТИЯ'}</div><h1>{game.status === 'finished' ? game.result : starting ? `Старт через ${startSeconds} с` : game.status === 'waiting' ? 'Готовим доску.' : game.turn === 'w' ? 'Ход белых.' : 'Ход чёрных.'}</h1><p className="arena-muted">{game.status === 'finished' ? reasonLabel[game.reason || ''] || game.reason : starting ? 'Можно открыть зрительскую ссылку. До конца отсчёта ходы заблокированы, время не расходуется.' : game.status === 'waiting' ? `После готовности обоих игроков будет ${game.startDelayMs / 1000} секунд на подготовку к старту.` : 'Время и ходы подтверждает сервер.'}</p>{game.format.botMoveMs !== null && <p className="field-hint">{game.format.humanMoveMs === game.format.botMoveMs ? 'Лимит каждого хода' : 'Лимит одного хода бота'}: {game.format.botMoveMs / 1000} с. Это ограничение, не добавление времени.</p>}

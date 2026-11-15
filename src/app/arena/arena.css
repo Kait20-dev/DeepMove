@@ -13,3 +13,5 @@
 @media(max-width:760px){.piece-token .chess-piece{font-size:9vw}}
 @media(max-width:420px){.piece-token .chess-piece{font-size:9.5vw}.start-countdown>span{font-size:8px}.start-countdown>p{font-size:11px}.last-move-caption{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.piece-token{transition:none!important}}
+.instant-board .piece-token{transition:none!important}
+.animation-toggle[aria-checked=false]{color:#c5dfc7}
