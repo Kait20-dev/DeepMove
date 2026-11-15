@@ -2,13 +2,15 @@
   "name": "deepmove",
   "version": "0.1.0",
   "private": true,
+  "engines": { "node": ">=24" },
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
     "start": "next start --hostname 127.0.0.1",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/*.test.ts"
+    "test": "tsx --test tests/*.test.ts",
+    "test:e2e": "node scripts/arena-e2e.mjs"
   },
   "dependencies": {
     "chess.js": "^1.4.0",
