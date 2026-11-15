@@ -113,6 +113,22 @@ test('team join requires invitation and rotation is restricted to its owner', ()
   teamAction(team.id, 'leave', bob, {});
   assert.equal(listTeams().find(item => item.id === team.id)?.members.length, 1);
 });
+
+test('local login accepts loopback aliases on the same port and keeps cross-site protection', t => {
+  const previous = process.env.APP_ORIGIN;
+  process.env.APP_ORIGIN = 'http://localhost:3000';
+  t.after(() => { if (previous === undefined) delete process.env.APP_ORIGIN; else process.env.APP_ORIGIN = previous; });
+  for (const origin of ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://[::1]:3000']) {
+    assert.doesNotThrow(() => sameOrigin(new Request('http://localhost:3000/api/arena/register', { headers: { origin } })));
+  }
+  for (const origin of ['null', 'https://evil.example', 'http://localhost:3001', 'https://localhost:3000', 'http://localhost:3000.evil.example', 'http://user@localhost:3000']) {
+    assert.throws(() => sameOrigin(new Request('http://localhost:3000/api/arena/login', { headers: { origin } })), /другого сайта/);
+  }
+  assert.throws(() => sameOrigin(new Request('http://localhost:3000/api/arena/login')), /другого сайта/);
+  process.env.APP_ORIGIN = 'https://deepmove.example';
+  assert.throws(() => sameOrigin(new Request('http://localhost:3000', { headers: { origin: 'http://127.0.0.1:3000' } })), /другого сайта/);
+  assert.doesNotThrow(() => sameOrigin(new Request('http://localhost:3000', { headers: { origin: 'https://deepmove.example' } })));
+});
 test('rate limits persist and oversized or malformed JSON requests are rejected', async () => {
   rateLimit('test-rate', 1, 1000, 0); assert.throws(() => rateLimit('test-rate', 1, 1000, 1), /много запросов/);
   assert.doesNotThrow(() => rateLimit('test-rate', 1, 1000, 1001));

@@ -25,8 +25,15 @@ export function requireUser(request: Request): UserView {
   return user;
 }
 export function sameOrigin(request: Request) {
-  const allowed = process.env.APP_ORIGIN || new URL(request.url).origin;
-  ensure(request.headers.get('origin') === allowed, 403, 'Запрос с другого сайта запрещён', 'origin_rejected');
+  const allowed = new URL(process.env.APP_ORIGIN || request.url);
+  let origin: URL | null = null;
+  try { origin = new URL(request.headers.get('origin') || ''); } catch { /* Missing/opaque origins are rejected. */ }
+  const loopback = (hostname: string) => ['localhost', '127.0.0.1', '[::1]'].includes(hostname);
+  // Next's internal URL can use localhost even when the browser used 127.0.0.1.
+  // Only loopback aliases with the same scheme AND port are interchangeable.
+  const valid = origin && origin.origin === request.headers.get('origin') && (origin.origin === allowed.origin
+    || loopback(origin.hostname) && loopback(allowed.hostname) && origin.protocol === allowed.protocol && origin.port === allowed.port);
+  ensure(valid, 403, 'Запрос с другого сайта запрещён', 'origin_rejected');
 }
 export async function authenticate(input: Record<string, unknown>, register: boolean): Promise<{ user: UserView; token: string }> {
   const handle = text(input.handle, 3, 30, 'Логин').toLowerCase();
