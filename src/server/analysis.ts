@@ -1,7 +1,6 @@
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { createInterface } from 'node:readline';
-import { createRequire } from 'node:module';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
 import { readdirSync } from 'node:fs';
 import { Chess } from 'chess.js';
 import { loadGame, saveGame, transaction } from './db';
@@ -16,8 +15,8 @@ class UciEngine {
   private listener: ((line: string) => void) | null = null;
   private failed: Error | null = null;
   constructor() {
-    const require = createRequire(import.meta.url);
-    const bin = join(dirname(require.resolve('stockfish')), 'bin');
+    // Resolve the CLI file on disk, not a bundled require.resolve module ID.
+    const bin = join(process.cwd(), 'node_modules', 'stockfish', 'bin');
     const filename = readdirSync(bin).find(name => /^stockfish-\d+-lite-single\.js$/.test(name));
     ensure(filename, 503, 'Stockfish не установлен');
     this.process = spawn(process.execPath, [join(bin, filename)], { windowsHide: true, stdio: 'pipe' });

@@ -18,7 +18,7 @@ export function Participation() {
 }
 
 export function Rules() {
-  return <section id="rules" className="section container"><div className="rules-panel"><div><SectionLabel number="03">ПРАВИЛА ИГРЫ</SectionLabel><h2>Свобода в подходе.<br /><span>Честность в коде.</span></h2><p className="muted">Общие условия хакатона. Полный регламент<br className="desktop-break" /> и требования к API появятся перед стартом.</p></div><ul className="rules-list">{['Полностью авторский шахматный движок', 'Любой язык программирования и алгоритмический подход', '14 дней на разработку и эксперименты', '10 минут на движок + 3 секунды за ход'].map(rule => <li key={rule}><Check size={17} />{rule}</li>)}<li className="rule-restriction"><span>×</span> Готовые шахматные движки запрещены</li></ul></div></section>;
+  return <section id="rules" className="section container"><div className="rules-panel"><div><SectionLabel number="03">ПРАВИЛА ИГРЫ</SectionLabel><h2>Свобода в подходе.<br /><span>Честность в коде.</span></h2><p className="muted">Общие условия хакатона. Полный регламент<br className="desktop-break" /> появится перед стартом. <a href="/arena/docs">API ботов уже доступен ↗</a></p></div><ul className="rules-list">{['Полностью авторский шахматный движок', 'Любой язык программирования и алгоритмический подход', '14 дней на разработку и эксперименты', '10 минут на движок; максимум 3 секунды на ход бота'].map(rule => <li key={rule}><Check size={17} />{rule}</li>)}<li className="rule-restriction"><span>×</span> Готовые шахматные движки запрещены</li></ul></div></section>;
 }
 
 export function Platform() {
@@ -31,7 +31,7 @@ export function FAQ() {
 }
 
 export function Registration() {
-  return <section id="registration" className="container registration-section"><div className="registration-panel"><Image src="/assets/Deep_Move_Icon_Vector.svg" width={94} height={94} alt="" /><div><div className="eyebrow">СЛЕДУЮЩИЙ ХОД — ЗА ТОБОЙ</div><h2>Большая игра начинается с идеи.</h2><p>Приём заявок откроется скоро. Даты и способ регистрации появятся здесь.</p></div><span className="registration-status"><span /> Регистрация скоро</span></div></section>;
+  return <section id="registration" className="container registration-section"><div className="registration-panel"><Image src="/assets/Deep_Move_Icon_Vector.svg" width={94} height={94} alt="" /><div><div className="eyebrow">СЛЕДУЮЩИЙ ХОД — ЗА ТОБОЙ</div><h2>Большая игра начинается с идеи.</h2><p>Создай профиль и испытай свой код на арене. Даты хакатона появятся позже.</p></div><a className="registration-status" href="/arena">Открыть арену <ArrowUpRight size={15} /></a></div></section>;
 }
 
 export function Footer() {

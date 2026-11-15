@@ -13,7 +13,7 @@ export function Hero() {
     <div className="hero-content"><div className="eyebrow hero-eyebrow"><span className="tiny-square" /> ХАКАТОН ПО ПРОГРАММИРОВАНИЮ И ШАХМАТАМ</div>
       <h1 id="hero-title">DeepMove.<br />Твой код.<br /><span>Твой следующий ход.</span></h1>
       <p className="hero-description">Создай собственный шахматный алгоритм.<br className="desktop-break" /> Проверь его силу в битве движков.</p>
-      <div className="hero-actions"><a href="#registration" className="button">Принять участие <ArrowUpRight size={19} /></a><a href="#rules" className="button button-outline">Узнать правила <MoveUpRight size={17} /></a></div>
+      <div className="hero-actions"><a href="/arena" className="button">Перейти на арену <ArrowUpRight size={19} /></a><a href="#rules" className="button button-outline">Узнать правила <MoveUpRight size={17} /></a></div>
       <div className="hero-note"><span /> Любой язык. Твой подход. Одна доска.</div>
     </div>
     <div className="board-caption"><span className="live-dot" /><span>КОД СТАНОВИТСЯ СТРАТЕГИЕЙ</span><span className="caption-line" /><span>8 × 8</span></div>

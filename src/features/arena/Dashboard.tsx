@@ -1,0 +1,60 @@
+'use client';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { ArrowUpRight, Swords, Users, UserRound, Radio, BookOpen, LogOut, Plus } from 'lucide-react';
+import { api, statusLabel } from './client';
+import { AuthPanel } from './AuthPanel';
+import { formats, type Dashboard as DashboardData, type GameView, type UserView } from './types';
+
+type Tab = 'games' | 'profile' | 'teams';
+export function Dashboard() {
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [tab, setTab] = useState<Tab>('games');
+  const [filter, setFilter] = useState('all');
+  const [error, setError] = useState('');
+  const refresh = useCallback(async () => { try { setData(await api<DashboardData>('')); setError(''); } catch (error) { setError((error as Error).message); } }, []);
+  useEffect(() => { let alive = true; const load = async () => { try { const result = await api<DashboardData>(''); if (alive) { setData(result); setError(''); } } catch (error) { if (alive) setError((error as Error).message); } }; void load(); const interval = setInterval(load, 5000); return () => { alive = false; clearInterval(interval); }; }, []);
+  const onAuth = (user: UserView) => setData(previous => previous ? { ...previous, user } : { user, games: [], teams: [] });
+  return <div className="arena-shell container"><aside className="arena-sidebar"><Link href="/arena" className="arena-sidebar-title"><Swords size={22} /> Арена<span>β</span></Link><p className="arena-kicker">РАБОЧЕЕ ПРОСТРАНСТВО</p>
+    {[{ key: 'games', icon: Radio, label: 'Партии' }, { key: 'profile', icon: UserRound, label: 'Мой профиль' }, { key: 'teams', icon: Users, label: 'Команды' }].map(({ key, icon: Icon, label }) => <button key={key} className={tab === key ? 'active' : ''} onClick={() => setTab(key as Tab)}><Icon size={17} />{label}</button>)}
+    <Link href="/arena/docs"><BookOpen size={17} />Подключение бота <ArrowUpRight size={13} /></Link><div className="sidebar-note"><span className="live-dot" /> Сервер проверяет каждый ход.<br />Твой код играет на твоей машине.</div>
+  </aside><div className="arena-main"><div className="arena-page-top"><div><div className="arena-kicker">DEEPMOVE / КАИТ №20</div><h1>{tab === 'games' ? 'Здесь играют алгоритмы.' : tab === 'profile' ? 'Твой профиль.' : 'Сильнее вместе.'}</h1></div>{data?.user && <button className="arena-user" onClick={async () => { await api('/logout', {}); await refresh(); }} title="Выйти"><span>{data.user.name}</span><LogOut size={16} /></button>}</div>
+    {error && <p role="alert" className="arena-error">{error} <button className="text-button" onClick={refresh}>Повторить</button></p>}
+    {!data && !error && <p className="arena-muted" role="status">Загружаем арену…</p>}
+    {data && tab === 'games' && <><div className="arena-intro"><p>Создай партию, подключи свой движок или займи место за доской.<br />За чужой игрой можно наблюдать без регистрации.</p><span className="arena-outline-badge">PGN · Серверные часы · Live</span></div><div className="lobby-grid"><section><div className="arena-tabs">{[{ id: 'all', name: 'Все партии' }, { id: 'playing', name: 'В эфире' }, { id: 'finished', name: 'Архив' }, { id: 'mine', name: 'Мои' }].map(item => <button key={item.id} className={filter === item.id ? 'active' : ''} onClick={() => setFilter(item.id)}>{item.name}</button>)}</div><div className="game-list">{data.games.filter(game => filter === 'all' || filter === 'mine' && [game.seats.w.userId, game.seats.b.userId].includes(data.user?.id || '') || filter === game.status).map(game => <GameCard game={game} key={game.id} />)}{!data.games.some(game => filter === 'all' || filter === 'mine' && [game.seats.w.userId, game.seats.b.userId].includes(data.user?.id || '') || filter === game.status) && <div className="arena-empty"><Swords size={34} strokeWidth={1} /><h3>Доска ждёт первый ход.</h3><p>В этом разделе пока нет партий.<br />Создай свою или загляни позже.</p></div>}</div></section>{data.user ? <CreateGame /> : <AuthPanel onAuth={onAuth} />}</div></>}
+    {data && tab !== 'games' && !data.user && <AuthPanel onAuth={onAuth} />}
+    {data?.user && tab === 'profile' && <Profile user={data.user} games={data.games} onUpdate={refresh} />}
+    {data?.user && tab === 'teams' && <Teams data={data} onUpdate={refresh} />}
+  </div></div>;
+}
+function GameCard({ game }: { game: GameView }) {
+  return <Link href={`/arena/games/${game.id}`} className="game-card"><div className="game-card-top"><span className={`game-status ${game.status}`}>{game.status === 'playing' && <span className="live-dot" />}{statusLabel[game.status]}</span><span>{game.format.name}</span></div><div className="game-opponents"><strong><span className="side-dot white" />{game.seats.w.name}<small>{game.seats.w.kind === 'bot' ? 'BOT' : 'ЧЕЛОВЕК'}</small></strong><span className="versus">{game.result === '*' ? 'vs' : game.result}</span><strong><span className="side-dot black" />{game.seats.b.name}<small>{game.seats.b.kind === 'bot' ? 'BOT' : 'ЧЕЛОВЕК'}</small></strong><ArrowUpRight size={18} /></div><div className="game-card-bottom"><span>{game.moves.length} полуходов · {new Date(game.createdAt).toLocaleDateString('ru-RU')}</span><span>{game.status === 'finished' ? 'Смотреть и разбирать' : 'Открыть партию'} →</span></div></Link>;
+}
+function CreateGame() {
+  const router = useRouter();
+  const [format, setFormat] = useState('arena');
+  const [busy, setBusy] = useState(false), [error, setError] = useState('');
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setBusy(true); setError('');
+    const fields = Object.fromEntries(new FormData(event.currentTarget));
+    try {
+      const game = await api<GameView & { joinCode: string }>('/games', { ...fields, initialSeconds: Number(fields.initialSeconds), incrementSeconds: Number(fields.incrementSeconds), botMoveSeconds: fields.botMoveSeconds ? Number(fields.botMoveSeconds) : null });
+      // An invitation is a secret: keep it in this tab, never in a spectator URL.
+      sessionStorage.setItem(`invite:${game.id}`, game.joinCode);
+      router.push(`/arena/games/${game.id}`);
+    } catch (error) { setError((error as Error).message); setBusy(false); }
+  }
+  return <section className="arena-panel create-panel"><div className="arena-panel-title"><Plus size={18} /><h2>Новая партия</h2></div><form onSubmit={submit}><label>Контроль времени<select name="format" value={format} onChange={event => setFormat(event.target.value)}>{Object.entries(formats).map(([key, value]) => <option key={key} value={key}>{value.name}</option>)}<option value="custom">Свой формат</option></select></label>{format === 'arena' && <p className="field-hint">10 минут суммарно каждому. Боту — максимум 3 секунды на ход, без добавления. Человеку — без лимита хода.</p>}{format === 'custom' && <div className="custom-format"><label>Секунд на партию<input type="number" name="initialSeconds" min={30} max={7200} defaultValue={600} required /></label><label>Добавление, сек<input type="number" name="incrementSeconds" min={0} max={60} defaultValue={0} required /></label><label>Лимит боту, сек<input type="number" name="botMoveSeconds" min={1} max={60} placeholder="Без лимита" /></label></div>}<div className="form-row"><label>Мой цвет<select name="side"><option value="w">Белые</option><option value="b">Чёрные</option></select></label><label>Я играю как<select name="kind"><option value="human">Человек</option><option value="bot">Бот</option></select></label></div><label>Соперник<select name="opponentKind"><option value="human">Человек</option><option value="bot">Бот</option></select></label><label>Имя игрока / движка<input name="engineName" maxLength={50} placeholder="По умолчанию — имя профиля" /></label>{error && <p className="arena-error" role="alert">{error}</p>}<button className="button" disabled={busy}>{busy ? 'Создаём…' : 'Создать партию'}<ArrowUpRight size={17} /></button><p className="field-hint">Второй участник входит по отдельному коду приглашения. Ссылка на партию даёт только просмотр.</p></form></section>;
+}
+function Profile({ user, games, onUpdate }: { user: UserView; games: GameView[]; onUpdate: () => Promise<void> }) {
+  const [message, setMessage] = useState(''), [busy, setBusy] = useState(false);
+  const mine = games.filter(game => [game.seats.w.userId, game.seats.b.userId].includes(user.id));
+  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setBusy(true); try { await api('/profile', Object.fromEntries(new FormData(event.currentTarget))); await onUpdate(); setMessage('Профиль сохранён'); } catch (error) { setMessage((error as Error).message); } finally { setBusy(false); } }
+  return <div className="profile-grid"><section className="arena-panel"><div className="profile-avatar">{user.name[0]?.toUpperCase()}</div><h2>@{user.handle}</h2><p className="arena-muted">На арене с {new Date(user.createdAt).toLocaleDateString('ru-RU')}</p><form onSubmit={submit}><label>Имя<input name="name" defaultValue={user.name} maxLength={50} required /></label><label>О себе<textarea name="bio" defaultValue={user.bio} maxLength={500} rows={4} placeholder="Какой движок ты создаёшь?" /></label><button className="button" disabled={busy}>Сохранить</button><p role="status" className="arena-muted">{message}</p></form></section><section><h2>Мои последние партии</h2><p className="arena-muted">До 50 последних партий арены. Без выдуманного рейтинга.</p>{mine.map(game => <GameCard key={game.id} game={game} />)}{!mine.length && <p className="arena-muted">Пока ни одной партии.</p>}</section></div>;
+}
+function Teams({ data, onUpdate }: { data: DashboardData; onUpdate: () => Promise<void> }) {
+  const [invite, setInvite] = useState(''), [error, setError] = useState(''), [busy, setBusy] = useState(false);
+  async function action(path: string, input: object) { setBusy(true); setError(''); try { const result = await api<{ invite?: string }>(path, input); setInvite(result.invite || ''); await onUpdate(); } catch (error) { setError((error as Error).message); } finally { setBusy(false); } }
+  return <><p className="arena-muted">Создай команду и передай участникам код приглашения. До 20 человек в команде.</p><div className="team-forms"><form className="arena-panel" onSubmit={event => { event.preventDefault(); void action('/teams', Object.fromEntries(new FormData(event.currentTarget))); }}><label>Новая команда<input name="name" minLength={2} maxLength={50} required /></label><button className="button" disabled={busy}>Создать команду</button></form><form className="arena-panel" onSubmit={event => { event.preventDefault(); void action('/teams/join', Object.fromEntries(new FormData(event.currentTarget))); }}><label>Код приглашения<input name="invite" minLength={20} maxLength={100} autoComplete="off" required /></label><button className="button button-outline" disabled={busy}>Вступить</button></form></div>{error && <p className="arena-error" role="alert">{error}</p>}{invite && <div className="secret-box"><strong>Код приглашения — показывается только сейчас</strong><code>{invite}</code><p>Передай его будущим участникам. Новый код отменяет старый.</p></div>}<div className="teams-grid">{data.teams.map(team => <article className="arena-panel team-card" key={team.id}><Users size={24} /><h2>{team.name}</h2><p className="arena-muted">{team.members.length} / 20 участников{team.members.some(user => user.id === data.user?.id) && ' · Ты в команде'}</p><ul>{team.members.map(user => <li key={user.id}>{user.name}<span>@{user.handle}{team.ownerId === user.id ? ' · капитан' : ''}</span></li>)}</ul>{team.ownerId === data.user?.id ? <button className="text-button" disabled={busy} onClick={() => action(`/teams/${team.id}/invite`, {})}>Создать новый код приглашения</button> : team.members.some(user => user.id === data.user?.id) && <button className="text-button" disabled={busy} onClick={() => action(`/teams/${team.id}/leave`, {})}>Покинуть команду</button>}</article>)}</div></>;
+}
