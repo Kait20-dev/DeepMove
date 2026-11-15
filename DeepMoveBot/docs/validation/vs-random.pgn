@@ -1,0 +1,43 @@
+[Event "DeepMoveBot local benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "random"]
+[Result "1-0"]
+[Termination "normal"]
+
+1. Nf3 Na6 2. Nc3 Nh6 3. Ne5 g6 4. Nd5 Nc5 5. g4 Na6 6. b4 Nf5 7. gxf5 Rb8 8. fxg6 b5 9. gxf7# 1-0
+
+[Event "DeepMoveBot local benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "random"]
+[Black "DeepMoveBot"]
+[Result "0-1"]
+[Termination "normal"]
+
+1. Nc3 Nc6 2. e4 Nf6 3. g4 Nd4 4. Nb5 Nxb5 5. Nh3 Nd4 6. Ng1 Nxe4 7. Bh3 e5 8. Rb1 Bc5 9. b4 Bxb4 10. a4 Bxd2+ 11. Kf1 Bxc1 12. Rb2 Bxb2 13. Qf3 Nd2+ 14. Ke1 N2xf3+ 15. Kf1 Nd2+ 16. Ke1 Ne4 17. c3 Bxc3+ 18. Kd1 Nxf2+ 19. Kc1 Qg5+ 20. Kb1 Nxh1 21. a5 Bxa5 22. Ne2 Nxe2 23. Kc2 d5 24. Kd3 Qd2# 0-1
+
+[Event "DeepMoveBot local benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "DeepMoveBot"]
+[Black "random"]
+[Result "1-0"]
+[Termination "normal"]
+
+1. Nc3 h6 2. Nf3 e6 3. Ne5 d5 4. e4 f6 5. exd5 Bd6 6. dxe6 Kf8 7. Ng6+ Ke8 8. Nxh8 Qe7 9. Nf7 Be5 10. Nxe5 Qxe6 11. Bc4 Qxe5+ 12. Qe2 c5 13. Qxe5+ Kf8 14. Qxc5+ Ne7 15. d4 Bf5 16. Qxf5 a6 17. Bxh6 Nd7 18. Qxd7 Nf5 19. Qxf5 b5 20. Nxb5 a5 21. Qxf6+ Ke8 22. Nc7+ Kd7 23. Nxa8 a4 24. Nb6+ Ke8 25. Bb5# 1-0
+
+[Event "DeepMoveBot local benchmark"]
+[Site "?"]
+[Date "2026.11.15"]
+[Round "?"]
+[White "random"]
+[Black "DeepMoveBot"]
+[Result "0-1"]
+[Termination "normal"]
+
+1. Nf3 Nc6 2. a4 Nf6 3. Na3 Ne4 4. Ra2 e5 5. Nh4 Qxh4 6. g3 Bxa3 7. Bh3 Qxh3 8. f4 exf4 9. gxf4 Bxb2 10. a5 Bxc1 11. d3 Bxf4 12. a6 bxa6 13. Ra1 Bxh2 14. Rc1 Bg3# 0-1

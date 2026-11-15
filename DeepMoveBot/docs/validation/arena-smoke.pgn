@@ -1,0 +1,12 @@
+[Event "DeepMove Arena"]
+[Site "DeepMove"]
+[Date "2026.11.15"]
+[Round "-"]
+[White "DeepMoveBot White"]
+[Black "DeepMoveBot Black"]
+[Result "0-1"]
+[TimeControl "600+0"]
+[Termination "resignation"]
+[BotMoveLimit "3"]
+
+1. Nf3 {[%clk 0:09:58.158] [%emt 1.842]} Nf6 {[%clk 0:09:57.982] [%emt 2.018]} 2. d3 {[%clk 0:09:56.131] [%emt 2.027]} d6 {[%clk 0:09:56.127] [%emt 1.855]} 3. c4 {[%clk 0:09:54.175] [%emt 1.956]} e5 {[%clk 0:09:54.269] [%emt 1.858]} 4. Nc3 {[%clk 0:09:52.156] [%emt 2.019]} Nc6 {[%clk 0:09:52.386] [%emt 1.883]} 5. h3 {[%clk 0:09:50.178] [%emt 1.978]} h6 {[%clk 0:09:50.405] [%emt 1.981]} 6. Be3 {[%clk 0:09:48.229] [%emt 1.949]} Bf5 {[%clk 0:09:48.449] [%emt 1.956]} 0-1
