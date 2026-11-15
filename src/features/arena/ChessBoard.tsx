@@ -1,10 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { Chess, type Square } from 'chess.js';
 import { pieceGlyphs, pieceNames } from './client';
 import type { Side } from './types';
+import type { BoardPiece } from './board-position';
 
-export function ChessBoard({ fen, orientation = 'w', legalMoves = [], onMove, lastMove, busy = false }: { fen: string; orientation?: Side; legalMoves?: string[]; onMove?: (uci: string) => void; lastMove?: string; busy?: boolean }) {
+export function ChessBoard({ fen, pieces, orientation = 'w', legalMoves = [], onMove, lastMove, busy = false }: { fen: string; pieces: BoardPiece[]; orientation?: Side; legalMoves?: string[]; onMove?: (uci: string) => void; lastMove?: string; busy?: boolean }) {
   const [selection, setSelection] = useState<{ fen: string; square: Square } | null>(null);
   const [promotion, setPromotion] = useState<{ fen: string; from: Square; to: Square } | null>(null);
   const chess = new Chess(fen);
@@ -31,7 +32,20 @@ export function ChessBoard({ fen, orientation = 'w', legalMoves = [], onMove, la
       if (event.key === 'Escape') setSelection(null);
     }}>
       {column === 0 && <span className="rank-label" aria-hidden="true">{rank}</span>}{row === 7 && <span className="file-label" aria-hidden="true">{file}</span>}
-      {piece && <span className={`chess-piece ${piece.color === 'w' ? 'white-piece' : 'black-piece'}`} aria-hidden="true">{pieceGlyphs[piece.type]}</span>}{target && <span className={piece ? 'capture-target' : 'move-target'} aria-hidden="true" />}
+      {target && <span className={piece ? 'capture-target' : 'move-target'} aria-hidden="true" />}
     </button>;
-  }))}</div>{pending && <div className="promotion-overlay" role="dialog" aria-modal="true" aria-label="Превращение пешки"><p>Выбери фигуру</p><div>{['q', 'r', 'b', 'n'].map(type => <button type="button" autoFocus={type === 'q'} key={type} aria-label={pieceNames[type]} onClick={() => { onMove?.(pending.from + pending.to + type); setPromotion(null); setSelection(null); }}>{pieceGlyphs[type]}</button>)}</div><button className="text-button" onClick={() => setPromotion(null)}>Отмена</button></div>}</div>;
+  }))}</div><div className="piece-layer" aria-hidden="true">{pieces.map(piece => <MovingPiece key={piece.id} piece={piece} orientation={orientation} moving={piece.active && piece.square === lastMove?.slice(2, 4)} />)}</div>{pending && <div className="promotion-overlay" role="dialog" aria-modal="true" aria-label="Превращение пешки"><p>Выбери фигуру</p><div>{['q', 'r', 'b', 'n'].map(type => <button type="button" autoFocus={type === 'q'} key={type} aria-label={pieceNames[type]} onClick={() => { onMove?.(pending.from + pending.to + type); setPromotion(null); setSelection(null); }}>{pieceGlyphs[type]}</button>)}</div><button className="text-button" onClick={() => setPromotion(null)}>Отмена</button></div>}</div>;
+}
+
+function MovingPiece({ piece, orientation, moving }: { piece: BoardPiece; orientation: Side; moving: boolean }) {
+  const [type, setType] = useState(piece.type);
+  useEffect(() => {
+    if (type === piece.type) return;
+    const timer = setTimeout(() => setType(piece.type), matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 420);
+    return () => clearTimeout(timer);
+  }, [piece.type, type]);
+  const file = piece.square.charCodeAt(0) - 97;
+  const rank = Number(piece.square[1]) - 1;
+  const style = { '--file': orientation === 'w' ? file : 7 - file, '--rank': orientation === 'w' ? 7 - rank : rank } as CSSProperties;
+  return <span data-piece-id={piece.id} data-square={piece.square} data-active={piece.active} className={`piece-token ${piece.active ? '' : 'captured'} ${moving ? 'moving' : ''}`} style={style}><span className={`chess-piece ${piece.color === 'w' ? 'white-piece' : 'black-piece'}`}>{pieceGlyphs[type]}</span></span>;
 }

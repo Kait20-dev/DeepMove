@@ -31,6 +31,8 @@ function validateFormat(input: Record<string, unknown>): TimeFormat {
 }
 export function createGame(user: UserView, input: Record<string, unknown>): GameView & { joinCode: string } {
   const format = validateFormat(input);
+  const startDelaySeconds = input.startDelaySeconds ?? 8;
+  ensure(Number.isInteger(startDelaySeconds) && Number(startDelaySeconds) >= 3 && Number(startDelaySeconds) <= 120, 400, 'Задержка старта: от 3 до 120 секунд');
   ensure(input.side === 'w' || input.side === 'b', 400, 'Выберите цвет');
   ensure(['human', 'bot'].includes(String(input.kind)) && ['human', 'bot'].includes(String(input.opponentKind)), 400, 'Выберите тип игроков');
   return transaction(() => {
@@ -41,7 +43,7 @@ export function createGame(user: UserView, input: Record<string, unknown>): Game
     const seat = { userId: user.id, name: input.engineName ? text(input.engineName, 1, 50, 'Название движка') : user.name, kind, ready: kind === 'human', tokenHash: null };
     const vacant = { userId: null, name: 'Ожидаем соперника', kind: input.opponentKind as 'human' | 'bot', ready: false, tokenHash: null };
     const joinCode = secret();
-    const game: Game = { id: randomUUID(), joinHash: hash(joinCode), createdBy: user.id, createdAt: Date.now(), status: 'waiting', result: '*', reason: null, seats: side === 'w' ? { w: seat, b: vacant } : { w: vacant, b: seat }, format, moves: [], clocks: { w: format.initialMs, b: format.initialMs }, turnStartedAt: null, version: 0 };
+    const game: Game = { id: randomUUID(), joinHash: hash(joinCode), createdBy: user.id, createdAt: Date.now(), status: 'waiting', result: '*', reason: null, seats: side === 'w' ? { w: seat, b: vacant } : { w: vacant, b: seat }, format, moves: [], clocks: { w: format.initialMs, b: format.initialMs }, turnStartedAt: null, startDelayMs: Number(startDelaySeconds) * 1000, startsAt: null, version: 0 };
     saveGame(game);
     return { ...viewGame(game, Date.now()), joinCode };
   });
@@ -65,8 +67,10 @@ export function actorSide(request: Request, game: Game): { side: Side; isBot: bo
   return { side, isBot: false };
 }
 function maybeStart(game: Game, now: number) {
-  if (game.status === 'waiting' && game.seats.w.userId && game.seats.b.userId && game.seats.w.ready && game.seats.b.ready) {
-    game.status = 'playing'; game.turnStartedAt = now; game.version++;
+  if (game.status === 'waiting' && game.startsAt === null && game.seats.w.userId && game.seats.b.userId && game.seats.w.ready && game.seats.b.ready) {
+    game.startsAt = now + game.startDelayMs;
+    game.version++;
+    settleClock(game, now);
   }
 }
 export function joinGame(id: string, user: UserView, input: Record<string, unknown>): GameView {

@@ -7,7 +7,7 @@ import { formats, type Game, type Side } from '../src/features/arena/types';
 import { analyzeGame, classifyLoss } from '../src/server/analysis';
 
 function fixture(kind: 'human' | 'bot' = 'human', format = formats.arena): Game {
-  return { id: randomUUID(), createdBy: 'alice', joinHash: 'secret-never-public', createdAt: 1700000000000, status: 'playing', result: '*', reason: null, seats: { w: { userId: 'alice', name: 'Alice', kind, ready: true, tokenHash: 'white-secret' }, b: { userId: 'bob', name: 'Bob', kind, ready: true, tokenHash: 'black-secret' } }, format: { ...format }, moves: [], clocks: { w: format.initialMs, b: format.initialMs }, turnStartedAt: 1000, version: 0 };
+  return { id: randomUUID(), createdBy: 'alice', joinHash: 'secret-never-public', createdAt: 1700000000000, status: 'playing', result: '*', reason: null, seats: { w: { userId: 'alice', name: 'Alice', kind, ready: true, tokenHash: 'white-secret' }, b: { userId: 'bob', name: 'Bob', kind, ready: true, tokenHash: 'black-secret' } }, format: { ...format }, moves: [], clocks: { w: format.initialMs, b: format.initialMs }, turnStartedAt: 1000, startDelayMs: 8000, startsAt: null, version: 0 };
 }
 function play(game: Game, moves: string[]) { for (const move of moves) applyMove(game, game.moves.length % 2 ? 'b' : 'w', move, game.moves.length, (game.turnStartedAt || 0) + 100); }
 test('authority rejects illegal moves, wrong turn and stale requests without changing the board', () => {
@@ -30,6 +30,26 @@ test('bot limit is a 3s deadline, not an increment, including the exact boundary
   assert.equal(game.result, '1-0');
   assert.equal(game.reason, 'timeout');
   assert.equal(game.moves.length, 1);
+});
+test('countdown blocks early moves and clocks start at the scheduled instant', () => {
+  const game = fixture('bot');
+  game.status = 'waiting'; game.turnStartedAt = null; game.startsAt = 9000;
+  settleClock(game, 8999);
+  assert.equal(game.status, 'waiting'); assert.equal(deadlineFor(game), null);
+  assert.equal(game.clocks.w, 600000);
+  assert.throws(() => applyMove(game, 'w', 'e2e4', 0, 8999), /обратный отсчёт/);
+  settleClock(game, 9000);
+  assert.equal(game.status, 'playing'); assert.equal(game.turnStartedAt, 9000);
+  assert.equal(deadlineFor(game), 12000);
+  applyMove(game, 'w', 'e2e4', 0, 9500);
+  assert.equal(game.clocks.w, 599500);
+});
+test('a delayed read does not shift the scheduled start or forgive a bot timeout', () => {
+  const game = fixture('bot');
+  game.status = 'waiting'; game.turnStartedAt = null; game.startsAt = 9000;
+  settleClock(game, 12000);
+  assert.equal(game.status, 'finished'); assert.equal(game.reason, 'timeout');
+  assert.equal(game.clocks.w, 597000); assert.equal(game.result, '0-1');
 });
 test('humans use total time; rapid gives a bot the same 10 minutes; blitz increments only accepted moves', () => {
   const human = fixture(); applyMove(human, 'w', 'e2e4', 0, 11000); assert.equal(human.clocks.w, 590000);

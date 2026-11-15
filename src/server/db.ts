@@ -31,7 +31,11 @@ export function transaction<T>(fn: () => T): T {
 export function loadGame(id: string): Game {
   const row = db().prepare('SELECT data FROM games WHERE id=?').get(id) as { data: string } | undefined;
   ensure(row, 404, 'Партия не найдена');
-  return JSON.parse(row.data) as Game;
+  const game = JSON.parse(row.data) as Game;
+  // Existing matches keep their original immediate-start semantics.
+  game.startDelayMs ??= 0;
+  game.startsAt ??= null;
+  return game;
 }
 export function saveGame(game: Game) {
   db().prepare('INSERT INTO games(id,data,updated_at) VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data,updated_at=excluded.updated_at').run(game.id, JSON.stringify(game), Date.now());

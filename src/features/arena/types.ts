@@ -13,6 +13,7 @@ export interface Game {
   status: 'waiting' | 'playing' | 'finished'; result: '*' | '1-0' | '0-1' | '1/2-1/2'; reason: string | null;
   seats: Record<Side, Seat>; format: TimeFormat; moves: MoveRecord[];
   clocks: Record<Side, number>; turnStartedAt: number | null; version: number;
+  startDelayMs: number; startsAt: number | null;
   analysis?: AnalysisReport;
 }
 export interface PublicSeat { userId: string | null; name: string; kind: PlayerKind; ready: boolean }

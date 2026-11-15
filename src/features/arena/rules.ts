@@ -29,6 +29,11 @@ function canPossiblyMate(chess: Chess, side: Side): boolean {
   return chess.board().flat().some(piece => piece && piece.color !== side && piece.type !== 'k');
 }
 export function settleClock(game: Game, now: number) {
+  if (game.status === 'waiting' && game.startsAt !== null && now >= game.startsAt) {
+    game.status = 'playing';
+    game.turnStartedAt = game.startsAt;
+    game.version++;
+  }
   const deadline = deadlineFor(game);
   if (deadline === null || now < deadline) return;
   const chess = chessFor(game);
@@ -39,6 +44,7 @@ export function settleClock(game: Game, now: number) {
 }
 export function applyMove(game: Game, side: Side, uci: string, expectedPly: number, now: number) {
   settleClock(game, now);
+  ensure(!(game.status === 'waiting' && game.startsAt !== null), 409, 'Идёт обратный отсчёт до старта', 'not_started');
   ensure(game.status === 'playing', 409, 'Партия не идёт', 'not_playing');
   ensure(expectedPly === game.moves.length, 409, 'Позиция устарела. Обновите состояние.', 'stale_position');
   const chess = fullChess(game);

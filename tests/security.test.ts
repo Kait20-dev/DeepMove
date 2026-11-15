@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
-import { db, loadGame, rateLimit } from '../src/server/db';
+import { db, loadGame, rateLimit, saveGame } from '../src/server/db';
 import { hash, secret, authenticate, sessionUser, sameOrigin } from '../src/server/auth';
 import { actorSide, createGame, gameAction, getGame, joinGame, rotateBotKey, rotateGameInvite } from '../src/server/games';
 import { createTeam, teamAction, listTeams } from '../src/server/teams';
@@ -24,7 +24,13 @@ test('invites protect vacant seats; spectator and other accounts cannot move, re
   joinGame(game.id, bob.user, { joinCode: game.joinCode });
   const { token } = rotateBotKey(game.id, alice.user);
   const request = new Request('http://localhost', { headers: { authorization: `Bearer ${token}` } });
-  const ready = gameAction(game.id, request, 'ready', {}); assert.equal(ready.status, 'playing');
+  const ready = gameAction(game.id, request, 'ready', {}); assert.equal(ready.status, 'waiting');
+  assert.ok(ready.startsAt && ready.startsAt >= ready.serverNow + 7900);
+  assert.throws(() => gameAction(game.id, request, 'move', { move: 'e2e4', expectedPly: 0 }), /не идёт/);
+  const again = gameAction(game.id, request, 'ready', {});
+  assert.equal(again.startsAt, ready.startsAt, 'repeated ready cannot postpone the countdown');
+  const scheduled = loadGame(game.id); scheduled.startsAt = Date.now() - 1; saveGame(scheduled);
+  assert.equal(getGame(game.id).status, 'playing');
   assert.throws(() => gameAction(game.id, alice.request, 'move', { move: 'e2e4', expectedPly: 0 }), /Bearer/);
   const moved = gameAction(game.id, request, 'move', { move: 'e2e4', expectedPly: 0 }); assert.equal(moved.moves.length, 1);
   assert.throws(() => gameAction(game.id, request, 'move', { move: 'e2e4', expectedPly: 0 }), /устарела/);
