@@ -376,6 +376,20 @@ try {
   await page.goto(`${base}/arena`); await page.getByRole('button', { name: 'Мой профиль', exact: true }).click();
   await page.getByLabel('О себе', { exact: true }).fill('An original test engine.'); await page.getByRole('button', { name: 'Сохранить', exact: true }).click();
   await page.getByText('Профиль сохранён', { exact: true }).waitFor();
+  await page.getByLabel('Организация', { exact: true }).fill('КАИТ №20');
+  await page.getByLabel('Город', { exact: true }).fill('Москва');
+  await page.getByLabel('Сайт', { exact: true }).fill('https://example.com');
+  await page.getByLabel('Загрузить аватар', { exact: true }).setInputFiles({ name: 'avatar.png', mimeType: 'image/png', buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 'base64') });
+  await page.getByRole('button', { name: 'Убрать фото', exact: true }).waitFor();
+  const profileSaved = page.waitForResponse(response => response.url().endsWith('/api/arena/profile') && response.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Сохранить', exact: true }).click();
+  assert.equal((await profileSaved).status(), 200);
+  await page.getByRole('link', { name: 'Открыть публичный профиль' }).click();
+  await page.waitForURL(`${base}/arena/players/e2e_white`);
+  await page.getByText('КАИТ №20', { exact: true }).waitFor();
+  await page.getByRole('img', { name: 'Аватар E2E White', exact: true }).waitFor();
+  const aliasLogin = await alice.request.post(`${base}/api/arena/login`, { headers: { Origin: `http://localhost:${port}` }, data: { handle: 'e2e_white', password: 'e2e-password-white-123' } });
+  assert.equal(aliasLogin.status(), 200, 'loopback alias login must work with configured APP_ORIGIN');
   const team = await post(alice, '/teams', { name: 'E2E Team' }, 201);
   await post(bob, `/teams/${team.id}/invite`, {}, 403);
   await post(bob, '/teams/join', { invite: team.invite });
@@ -383,10 +397,58 @@ try {
   assert.equal(dashboard.teams.find(item => item.id === team.id).members.length, 2);
   const csrf = await alice.request.post(`${base}/api/arena/profile`, { data: { name: 'Hacked', bio: '' }, headers: { Origin: 'https://evil.example' } }); assert.equal(csrf.status(), 403);
   console.log('PASS: profile editing, team membership, owner-only invites, cross-origin rejection');
+  // Real four-round series: browser registration, public spectator and Python SDK auto-colors.
+  await post(bob, `/teams/${team.id}/leave`);
+  const opponentTeam = await post(bob, '/teams', { name: 'E2E Opponents' }, 201);
+  await page.goto(`${base}/arena?tab=bots`);
+  await page.getByLabel('Название бота', { exact: true }).fill('E2E Series White');
+  await page.getByLabel('Команда бота').selectOption(team.id);
+  await page.getByLabel('Описание бота', { exact: true }).fill('Four-round connector test.');
+  await page.getByRole('button', { name: 'Зарегистрировать', exact: true }).click();
+  await page.getByText('Бот сохранён', { exact: true }).waitFor();
+  const myBots = (await (await alice.request.get(`${base}/api/arena`)).json()).bots;
+  const myBot = myBots.find(item => item.name === 'E2E Series White');
+  const otherBot = (await post(bob, '/bots', { name: 'E2E Series Black', teamId: opponentTeam.id }, 201)).bot;
+  await post(bob, `/bots/${myBot.id}`, { name: 'Hijacked' }, 403);
+  await page.getByRole('button', { name: 'Кубки и зачёты', exact: true }).click();
+  await page.getByLabel('Формат серии').selectOption('rapid');
+  const seriesCreated = page.waitForResponse(response => response.url().endsWith('/api/arena/series') && response.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Создать серию', exact: true }).click();
+  const cup = await (await seriesCreated).json();
+  await page.waitForURL(`${base}/arena/series/${cup.series.id}`);
+  await page.getByText('Код приглашения серии', { exact: true }).waitFor();
+  await post(bob, `/series/${cup.series.id}/join`, { botId: otherBot.id, invite: cup.invite });
+  await page.getByRole('button', { name: 'Получить ключ серии', exact: true }).click();
+  await page.getByText('Ключ серии · сохрани сейчас', { exact: true }).waitFor();
+  // Rotate via API for process setup; UI-issued key must be invalidated immediately.
+  const seriesWhiteKey = (await post(alice, `/series/${cup.series.id}/key`)).token;
+  const seriesBlackKey = (await post(bob, `/series/${cup.series.id}/key`)).token;
+  await post(spectator, `/series/${cup.series.id}/key`, {}, 401);
+  const publicSeries = await (await spectator.request.get(`${base}/api/arena/series/${cup.series.id}`)).json();
+  assert.equal(publicSeries.series.games.length, 4);
+  assert.ok(!JSON.stringify(publicSeries).includes(seriesWhiteKey));
+  async function runPythonSeries(token) {
+    const code = `import os\nfrom deepmove_client import DeepMoveSeriesClient\nc=DeepMoveSeriesClient(os.environ['DEEPMOVE_URL'],os.environ['DEEPMOVE_SERIES'],os.environ['DEEPMOVE_SERIES_TOKEN'])\nmoves=['f2f3','e7e5','g2g4','d8h4']\nr=c.play(lambda state,budget:moves[len(state['moves'])])\nassert r['status']=='finished' and r['counted'] and r['score']=={'a':2,'b':2}\nprint('four rounds complete')`;
+    const child = spawn('python', ['-c', code], { cwd: resolve('clients'), windowsHide: true, env: { ...process.env, DEEPMOVE_URL: base, DEEPMOVE_SERIES: cup.series.id, DEEPMOVE_SERIES_TOKEN: token }, stdio: ['ignore', 'pipe', 'pipe'] });
+    let output = ''; child.stderr.on('data', chunk => { output += chunk; });
+    const timer = setTimeout(() => child.kill(), 65000);
+    try { const [exitCode] = await once(child, 'exit'); assert.equal(exitCode, 0, `Python series client failed: ${output}`); }
+    finally { clearTimeout(timer); }
+  }
+  await Promise.all([runPythonSeries(seriesWhiteKey), runPythonSeries(seriesBlackKey)]);
+  const ranking = await (await spectator.request.get(`${base}/api/arena/leaderboard`)).json();
+  assert.equal(ranking.bots.find(item => item.id === myBot.id).points, 2);
+  assert.equal(ranking.teams.find(item => item.id === team.id).points, 2);
+  assert.equal(ranking.bots.find(item => item.id === otherBot.id).played, 4);
+  await observer.goto(`${base}/arena?tab=cups`);
+  await observer.getByRole('cell', { name: 'E2E Series White', exact: false }).waitFor();
+  await observer.getByRole('button', { name: 'Кубок конструкторов', exact: true }).click();
+  await observer.getByRole('cell', { name: 'E2E Team', exact: false }).waitFor();
+  console.log('PASS: avatar upload and public profile, local alias login, registered bot ownership, four sequential games with two real Python series clients, both cup tables');
   // Responsive real pages, screenshots, logs and assets.
   for (const [width, height] of [[1920, 1080], [1366, 768], [390, 844]]) {
     await observer.setViewportSize({ width, height });
-    for (const [name, path] of [['lobby', '/arena'], ['game', `/arena/games/${game.id}`], ['hardbullet', `/arena/games/${hardGame.id}`], ['docs', '/arena/docs']]) {
+    for (const [name, path] of [['lobby', '/arena'], ['game', `/arena/games/${game.id}`], ['hardbullet', `/arena/games/${hardGame.id}`], ['docs', '/arena/docs'], ['cups', '/arena?tab=cups'], ['series', `/arena/series/${cup.series.id}`], ['profile', '/arena/players/e2e_white']]) {
       await observer.goto(base + path, { waitUntil: 'networkidle' });
       assert.equal(await observer.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `${name} overflow at ${width}`);
       await observer.screenshot({ path: `test-results/arena-${name}-${width}.png`, fullPage: true });

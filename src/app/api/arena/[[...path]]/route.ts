@@ -1,7 +1,10 @@
 import { authenticate, hash, requireUser, sameOrigin, sessionUser } from '@/server/auth';
 import { db, rateLimit } from '@/server/db';
 import { body, failure, json } from '@/server/http';
-import { ensure, text } from '@/server/errors';
+import { ensure } from '@/server/errors';
+import { publicProfile, updateProfile } from '@/server/profiles';
+import { listBots, saveBot } from '@/server/bots';
+import { createSeries, getSeries, joinSeries, leaderboard, listSeries, seriesConnection, seriesInvite, seriesKey } from '@/server/series';
 import { createGame, gameAction, getGame, joinGame, listGames, rotateBotKey, rotateGameInvite } from '@/server/games';
 import { createTeam, listTeams, teamAction } from '@/server/teams';
 import { requestAnalysis } from '@/server/analysis';
@@ -13,8 +16,15 @@ export async function GET(request: Request, context: Context) {
   try {
     rateLimit('public-reads', 12000, 60_000);
     const path = (await context.params).path || [];
-    if (path.length === 0) return json({ user: sessionUser(request), games: listGames(), teams: listTeams() });
+    if (path.length === 0) { const user = sessionUser(request); return json({ user, games: listGames(), teams: listTeams(), bots: user ? listBots(user.id) : [] }); }
     if (path[0] === 'me') return json({ user: sessionUser(request) });
+    if (path[0] === 'players' && path.length === 2) { const profile = publicProfile(path[1]); return json({ ...profile, bots: listBots(profile.user.id) }); }
+    if (path[0] === 'leaderboard' && path.length === 1) return json(leaderboard());
+    if (path[0] === 'series') {
+      if (path.length === 1) return json({ series: listSeries() });
+      if (path.length === 2) return json({ series: getSeries(path[1]) });
+      if (path.length === 3 && path[2] === 'connect') return json(seriesConnection(path[1], request));
+    }
     if (path[0] === 'games' && path[1]) {
       const game = getGame(path[1]);
       if (path[2] === 'pgn') return new Response(game.pgn, { headers: { 'Content-Type': 'application/x-chess-pgn; charset=utf-8', 'Content-Disposition': `attachment; filename="deepmove-${game.id}.pgn"`, 'Cache-Control': 'no-store' } });
@@ -50,10 +60,16 @@ export async function POST(request: Request, context: Context) {
     const user = requireUser(request);
     rateLimit(`write:${user.id}`, 180, 60_000);
     if (path[0] === 'profile') {
-      const name = text(input.name, 1, 50, 'Имя'), bio = typeof input.bio === 'string' ? input.bio.trim() : '';
-      ensure(bio.length <= 500, 400, 'Описание: максимум 500 символов');
-      db().prepare('UPDATE users SET name=?,bio=? WHERE id=?').run(name, bio, user.id);
-      return json({ ok: true });
+      return json(await updateProfile(user, input));
+    }
+    if (path[0] === 'bots' && path.length <= 2) return json(saveBot(user, input, path[1]), path.length === 1 ? 201 : 200);
+    if (path[0] === 'series') {
+      if (path.length === 1) { rateLimit(`series:${user.id}`, 20, 3600_000); return json(createSeries(user, input), 201); }
+      ensure(path.length === 3, 404, 'Не найдено');
+      if (path[2] === 'join') return json(joinSeries(path[1], user, input));
+      if (path[2] === 'key') return json(seriesKey(path[1], user));
+      if (path[2] === 'invite') return json(seriesInvite(path[1], user));
+      ensure(false, 404, 'Неизвестное действие');
     }
     if (path[0] === 'games') {
       if (path.length === 1) { rateLimit(`create:${user.id}`, 20, 3600_000); return json(createGame(user, input), 201); }

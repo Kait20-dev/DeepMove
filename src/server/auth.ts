@@ -7,8 +7,8 @@ import type { UserView } from '@/features/arena/types';
 const scrypt = promisify(scryptCallback);
 export const secret = () => randomBytes(32).toString('base64url');
 export const hash = (value: string) => createHash('sha256').update(value).digest('hex');
-export interface UserRow { id: string; handle: string; name: string; bio: string; password: string; created_at: number }
-export const publicUser = (row: UserRow): UserView => ({ id: row.id, handle: row.handle, name: row.name, bio: row.bio, createdAt: row.created_at });
+export interface UserRow { id: string; handle: string; name: string; bio: string; password: string; created_at: number; avatar?: string; organization?: string; city?: string; website?: string }
+export const publicUser = (row: UserRow): UserView => ({ id: row.id, handle: row.handle, name: row.name, bio: row.bio, createdAt: row.created_at, avatar: row.avatar || null, organization: row.organization || '', city: row.city || '', website: row.website || '' });
 export function getUser(id: string): UserView | null {
   const row = db().prepare('SELECT * FROM users WHERE id=?').get(id) as unknown as UserRow | undefined;
   return row ? publicUser(row) : null;

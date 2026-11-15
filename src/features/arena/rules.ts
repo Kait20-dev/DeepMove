@@ -92,6 +92,7 @@ export function pgnFor(game: Game, chess = fullChess(game, true)): string {
   const headers = { Event: 'DeepMove Arena', Site: 'DeepMove', Date: new Date(game.createdAt).toISOString().slice(0, 10).replaceAll('-', '.'), Round: '-', White: safeHeader(game.seats.w.name), Black: safeHeader(game.seats.b.name), Result: game.result, TimeControl: `${game.format.initialMs / 1000}+${game.format.incrementMs / 1000}`, BotMoveLimit: game.format.botMoveMs === null ? '-' : `${game.format.botMoveMs / 1000}`, Termination: game.reason || 'unterminated' };
   for (const [key, value] of Object.entries(headers)) chess.setHeader(key, value);
   if (game.format.humanMoveMs != null) chess.setHeader('HumanMoveLimit', `${game.format.humanMoveMs / 1000}`);
+  if (game.series) { chess.setHeader('Event', 'DeepMove Cup'); chess.setHeader('Round', String(game.series.round)); chess.setHeader('SeriesId', game.series.id); }
   const timeout = timeoutFor(game);
   if (timeout) {
     chess.setHeader('TimeoutSide', timeout.side);
@@ -125,7 +126,7 @@ function positionView(game: Game): PositionView {
 export function viewGame(game: Game, now: number): GameView {
   const position = positionView(game);
   const seats = Object.fromEntries((['w', 'b'] as Color[]).map(side => {
-    const { userId, name, kind, ready } = game.seats[side]; return [side, { userId, name, kind, ready }];
+    const { userId, name, kind, ready, botId, teamId, teamName } = game.seats[side]; return [side, { userId, name, kind, ready, botId, teamId, teamName }];
   })) as GameView['seats'];
   const { joinHash: _joinHash, ...publicGame } = game;
   void _joinHash;

@@ -7,7 +7,8 @@ export const formats: Record<string, TimeFormat> = {
   rapid: { name: 'Рапид · 10 мин', initialMs: 600_000, incrementMs: 0, botMoveMs: null },
   blitz: { name: 'Блиц · 3+2', initialMs: 180_000, incrementMs: 2000, botMoveMs: null },
 };
-export interface Seat { userId: string | null; name: string; kind: PlayerKind; ready: boolean; tokenHash: string | null }
+export interface BotIdentity { botId?: string; teamId?: string | null; teamName?: string | null }
+export interface Seat extends BotIdentity { userId: string | null; name: string; kind: PlayerKind; ready: boolean; tokenHash: string | null }
 export interface MoveRecord { uci: string; san: string; fen: string; elapsedMs: number; remainingMs: number }
 export interface TimeoutDetails {
   side: Side; kind: 'move' | 'total'; ply: number; limitMs: number; remainingMs: number;
@@ -22,8 +23,9 @@ export interface Game {
   startDelayMs: number; startsAt: number | null;
   analysis?: AnalysisReport;
   timeout?: TimeoutDetails | null;
+  series?: { id: string; round: number };
 }
-export interface PublicSeat { userId: string | null; name: string; kind: PlayerKind; ready: boolean }
+export interface PublicSeat extends BotIdentity { userId: string | null; name: string; kind: PlayerKind; ready: boolean }
 export interface GameView extends Omit<Game, 'seats' | 'analysis' | 'joinHash'> {
   seats: Record<Side, PublicSeat>; fen: string; turn: Side; legalMoves: string[];
   serverNow: number; deadline: number | null; pgn: string; material: MaterialSummary;
@@ -37,6 +39,10 @@ export interface MaterialSummary { white: number; black: number; balance: number
 export type MoveQuality = 'book' | 'great' | 'brilliant' | 'best' | 'good' | 'inaccuracy' | 'mistake' | 'blunder' | 'brilliant-candidate';
 export interface MoveAnalysis { ply: number; san: string; evaluation: number; mate: number | null; loss: number; accuracy: number; quality: MoveQuality; bestMove: string | null }
 export interface AnalysisReport { version?: number; engine: string; depth: number; createdAt: number; moves: MoveAnalysis[]; accuracy: Record<Side, number | null>; methodology: string }
-export interface UserView { id: string; handle: string; name: string; bio: string; createdAt: number }
+export interface UserView { id: string; handle: string; name: string; bio: string; createdAt: number; avatar?: string | null; organization?: string; city?: string; website?: string }
 export interface TeamView { id: string; name: string; ownerId: string; members: UserView[] }
-export interface Dashboard { user: UserView | null; games: GameSummary[]; teams: TeamView[] }
+export interface BotView { id: string; name: string; description: string; ownerId: string; ownerHandle: string; teamId: string | null; teamName: string | null; createdAt: number }
+export interface Standing { id: string; name: string; points: number; played: number; wins: number; draws: number; losses: number; ownerHandle?: string; teamName?: string | null; bots?: number }
+export interface Leaderboard { bots: Standing[]; teams: Standing[]; completedSeries: number; pendingSeries: number }
+export interface SeriesView { id: string; creatorId: string; botA: BotView; botB: BotView | null; format: TimeFormat; createdAt: number; games: { id: string; round: number; white: string; black: string; status: Game['status']; result: Game['result'] }[]; status: 'inviting' | 'playing' | 'finished'; score: { a: number; b: number }; counted: boolean }
+export interface Dashboard { user: UserView | null; games: GameSummary[]; teams: TeamView[]; bots?: BotView[] }

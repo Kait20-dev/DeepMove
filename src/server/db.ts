@@ -17,8 +17,19 @@ export function db(): DatabaseSync {
       CREATE TABLE IF NOT EXISTS team_members (team_id TEXT NOT NULL REFERENCES teams(id), user_id TEXT NOT NULL REFERENCES users(id), PRIMARY KEY(team_id,user_id));
       CREATE TABLE IF NOT EXISTS games (id TEXT PRIMARY KEY, data TEXT NOT NULL, updated_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS rate_limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, reset_at INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS bots (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL REFERENCES users(id), name TEXT NOT NULL COLLATE NOCASE, description TEXT NOT NULL DEFAULT '', team_id TEXT REFERENCES teams(id), created_at INTEGER NOT NULL, UNIQUE(owner_id,name));
+      CREATE TABLE IF NOT EXISTS series (id TEXT PRIMARY KEY, data TEXT NOT NULL, created_at INTEGER NOT NULL);
+      CREATE INDEX IF NOT EXISTS series_completed ON series(json_extract(data,'$.completedView.counted'));
+      CREATE INDEX IF NOT EXISTS series_creator ON series(json_extract(data,'$.creatorId'));
+      CREATE TABLE IF NOT EXISTS cup_results (series_id TEXT NOT NULL REFERENCES series(id), game_id TEXT NOT NULL REFERENCES games(id), bot_id TEXT NOT NULL REFERENCES bots(id), team_id TEXT REFERENCES teams(id), points REAL NOT NULL, PRIMARY KEY(game_id,bot_id));
+      CREATE INDEX IF NOT EXISTS cup_bot ON cup_results(bot_id);
+      CREATE INDEX IF NOT EXISTS cup_team ON cup_results(team_id);
       CREATE INDEX IF NOT EXISTS games_updated ON games(updated_at DESC);
       CREATE INDEX IF NOT EXISTS sessions_expires ON sessions(expires);`);
+    const columns = new Set((database.prepare('PRAGMA table_info(users)').all() as { name: string }[]).map(row => row.name));
+    for (const column of ['avatar', 'organization', 'city', 'website']) {
+      if (!columns.has(column)) database.exec(`ALTER TABLE users ADD COLUMN ${column} TEXT NOT NULL DEFAULT ''`);
+    }
   }
   return database;
 }

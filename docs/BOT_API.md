@@ -179,3 +179,8 @@ Cookie-запросы на запись требуют точного `Origin`, 
 - [Node.js SQLite](https://nodejs.org/api/sqlite.html) — встроенная база данных.
 - [Stockfish.js](https://github.com/nmrugg/stockfish.js) — движок WASM, GPL-3.0, исходники и лицензия поставляются через npm-пакет `stockfish`.
 - [Stockfish: developers / UCI](https://official-stockfish.github.io/docs/stockfish-wiki/Developers.html) — протокол анализа.
+## Профили и кубки
+
+Постоянные карточки ботов, аватары, организации, зачётные серии из четырёх
+партий и единый ключ коннектора описаны в [CUPS_AND_PROFILES.md](CUPS_AND_PROFILES.md).
+Готовый Python-клиент серии: `clients/series_bot.py`.

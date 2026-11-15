@@ -37,8 +37,10 @@ class DeepMoveClient:
         self._token = token
         self.side = side
 
-    def _request(self, action: str = "", data: dict | None = None) -> dict:
+    def _request(self, action: str = "", data: dict | None = None, *, authorize: bool = False) -> dict:
         headers = {"Accept": "application/json"}
+        if authorize or data is not None:
+            headers["Authorization"] = "Bearer " + self._token
         if data is not None:
             headers.update({"Content-Type": "application/json", "Authorization": "Bearer " + self._token})
         request = Request(self.base + ("/" + action if action else ""),
@@ -105,6 +107,45 @@ class DeepMoveClient:
                     time.sleep(min(60, max(0.2, error.retry_after)))
                 elif error.status == 409:
                     time.sleep(0.1)
+                elif error.status >= 500:
+                    time.sleep(0.5)
+                else:
+                    raise
+            except (URLError, TimeoutError, ConnectionError):
+                time.sleep(0.2)
+
+
+class DeepMoveSeriesClient:
+    """One secret and one algorithm callback for a balanced four-game cup series.
+
+    The server selects the next unfinished game and supplies its scoped token.
+    A restart resumes the current round; the caller never guesses a color.
+    """
+
+    def __init__(self, url: str, series_id: str, token: str):
+        self._transport = DeepMoveClient(url, series_id, token, "w")
+        self._transport.base = self._transport.base.replace("/games/", "/series/")
+        self._url = url
+
+    def connection(self) -> dict:
+        return self._transport._request("connect", authorize=True)
+
+    def play(self, choose_move: Callable[[dict, float], str],
+             on_update: Callable[[dict], None] | None = None) -> dict:
+        while True:
+            try:
+                connection = self.connection()
+                if connection["status"] == "finished":
+                    return connection
+                if not connection["gameId"]:
+                    time.sleep(0.5)
+                    continue
+                client = DeepMoveClient(self._url, connection["gameId"],
+                                        connection["token"], connection["side"])
+                client.play(choose_move, on_update)
+            except ArenaError as error:
+                if error.status == 429:
+                    time.sleep(min(60, max(0.2, error.retry_after)))
                 elif error.status >= 500:
                     time.sleep(0.5)
                 else:
