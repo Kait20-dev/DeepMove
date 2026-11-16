@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepneuro-bot"
+version = "0.1.0"
+description = "DeepMove neuroevolution engine and resumable self-play league"
+requires-python = ">=3.10"
+dependencies = ["deepmove-botkit==0.1.0"]
+readme = "README.md"
+
+[project.scripts]
+deepneuro-bot = "deepneuro_bot.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,42 @@
+name: Learning bots
+
+on:
+  push:
+    paths:
+      - 'DeepMoveBot/**'
+      - 'DeepNeuroBot/**'
+      - 'DeepPatternBot/**'
+      - 'clients/python/**'
+      - '.github/workflows/learning-bots.yml'
+  pull_request:
+    paths:
+      - 'DeepMoveBot/**'
+      - 'DeepNeuroBot/**'
+      - 'DeepPatternBot/**'
+      - 'clients/python/**'
+      - '.github/workflows/learning-bots.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.13']
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ./DeepMoveBot -e ./clients/python -e ./DeepNeuroBot -e ./DeepPatternBot
+      - run: python -m unittest discover -s DeepMoveBot/tests -v
+      - run: python -m unittest discover -s clients/python/tests -v
+      - run: python -m unittest discover -s DeepNeuroBot/tests -v
+      - run: python -m unittest discover -s DeepPatternBot/tests -v
+      - run: python -m deepneuro_bot analyze --time 0.1 --nodes 128
+      - run: python -m deeppattern_bot analyze --time 0.1 --nodes 128

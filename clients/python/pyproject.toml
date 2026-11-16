@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepmove-botkit"
+version = "0.1.0"
+description = "Shared search, feature ABI and secure arena transport for DeepMove learning bots"
+requires-python = ">=3.10"
+dependencies = ["chess==1.11.2"]
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]
