@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101015">
+  <meta name="description" content="DeepMove — открытая шахматная арена КАИТ №20. Напиши свой движок, подключи его по API и проверь стратегию в битве алгоритмов.">
+  <meta property="og:title" content="DeepMove — твой код делает ход">
+  <meta property="og:description" content="Шахматы × программирование. Собственные движки, честные серверные часы и открытая математика.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://kait20-dev.github.io/DeepMove/assets/social.png">
+  <meta property="og:url" content="https://kait20-dev.github.io/DeepMove/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://kait20-dev.github.io/DeepMove/">
+  <link rel="icon" type="image/svg+xml" href="assets/mark.svg">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <script type="module" src="assets/site.js"></script>
+  <title>DeepMove — твой код делает ход</title>
+</head>
+<body class="landing-home" id="home">
+  <a href="#main" class="skip-link">Перейти к содержимому</a>
+  <header class="header"><div class="wrap header-inner">
+    <a class="college-brand" href="./" aria-label="КАИТ №20 — главная"><img src="assets/kait.webp" alt="КАИТ №20" width="90" height="44"></a>
+    <span class="brand-divider"></span>
+    <a class="original-brand" href="./" aria-label="DeepMove — главная"><img src="assets/deepmove.webp" alt="DeepMove" width="150" height="45"></a>
+    <nav class="nav" aria-label="Навигация"><a href="#arena">О проекте</a><a href="#formats">Режимы игры</a><a href="#engines">Движки</a><a href="#faq">FAQ</a><a href="docs/">Документация ↗</a></nav>
+    <a class="github-link" href="https://github.com/Kait20-dev/DeepMove">GitHub <span>↗</span></a>
+    <button class="menu-button" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-nav">☰</button>
+  </div><nav id="mobile-nav" class="mobile-nav wrap" hidden aria-label="Мобильная навигация"><a href="#arena">О проекте</a><a href="#formats">Режимы игры</a><a href="#engines">Движки</a><a href="#faq">FAQ</a><a href="docs/">Документация ↗</a><a href="https://github.com/Kait20-dev/DeepMove">GitHub ↗</a></nav></header>
+
+  <main id="main">
+    <div class="hero-stage">
+      <div class="chess-scene" aria-hidden="true"><canvas id="hero-canvas"></canvas><div class="scene-shade"></div><div class="scene-vignette"></div></div>
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-copy"><div class="eyebrow hero-eyebrow"><span class="tiny-square"></span> ХАКАТОН ПО ПРОГРАММИРОВАНИЮ И ШАХМАТАМ</div>
+          <h1 id="hero-title">DeepMove.<br>Твой код.<br><span class="accent">Твой следующий ход.</span></h1>
+          <p class="hero-lead">Создай собственный шахматный алгоритм.<br>Проверь его силу в битве движков.</p>
+          <div class="hero-actions"><a class="button primary" href="docs/getting-started/">Сделать первый ход <span>↗</span></a><a class="button secondary" href="#arena">Узнать о проекте <span>↗</span></a></div>
+          <div class="hero-note"><span class="status-dot"></span>Любой язык. Твой подход. Одна доска.</div>
+        </div>
+        <div class="scene-caption"><span class="status-dot"></span> КОД СТАНОВИТСЯ СТРАТЕГИЕЙ <i></i> 8 × 8</div>
+        <div class="hero-bottom"><a href="#arena">↓ <span>Открой игру по-новому</span></a><button id="scene-toggle" aria-label="Приостановить фоновую анимацию" aria-pressed="true" type="button"><span>Ⅱ</span> Пауза</button><span class="hero-edition">DEEPMOVE / КАИТ №20</span></div>
+        <div class="hero-highlights"><div><span class="highlight-icon">⌘</span><p><strong>Твой алгоритм</strong><small>Полностью авторский код</small></p></div><div><span class="highlight-icon">◷</span><p><strong>10 мин / 3 с</strong><small>Контроль времени</small></p></div><div><span class="highlight-icon">♞</span><p><strong>Битва движков</strong><small>Одна платформа. Любой язык.</small></p></div><div><span class="highlight-icon">⌁</span><p><strong>Открытый код</strong><small>Изучай. Создавай. Улучшай.</small></p></div></div>
+      </section>
+    </div>
+
+    <section class="section wrap about-section" id="arena"><div class="eyebrow section-index"><span>01 /</span> О ПРОЕКТЕ</div><div class="about-layout"><div class="about-copy"><h2>Шахматы — классика.<br><span class="accent">Твой подход — новый.</span></h2><p class="about-lead">За каждым ходом — твоя идея.<br>За каждой победой — твой алгоритм.</p><p>DeepMove — место, где программирование становится стратегией. Ты создаёшь движок, а он самостоятельно оценивает позиции, просчитывает варианты и принимает решения.</p><p>Сервер проверяет правила и время. Зрители следят за партией. После финального хода ты разбираешь результат и возвращаешься к коду.</p><a class="inline-link" href="docs/">Узнать, как устроена арена <span>↗</span></a></div>
+      <div class="approach-panel"><div class="approach-top"><span>⌘</span> ОДНА ЗАДАЧА. РАЗНЫЕ РЕШЕНИЯ.<span>···</span></div><a href="docs/deepmovebot-formulas/"><span class="approach-icon">{ }</span><div><h3>Математика и поиск</h3><p>Просчитывай варианты. Находи лучший ход.</p></div><small>01 ↗</small></a><a href="docs/deepspeedbot-formulas/"><span class="approach-icon">⌁</span><div><h3>Скорость и оптимизация</h3><p>Извлекай больше из каждой миллисекунды.</p></div><small>02 ↗</small></a><a href="docs/bot-api/"><span class="approach-icon">⎇</span><div><h3>Эвристики и свои идеи</h3><p>Объединяй подходы. Создавай свой.</p></div><small>03 ↗</small></a><div class="approach-comment">// сильная идея важнее знакомого языка</div></div>
+    </div><div class="platform-strip"><div><span>↗</span><strong>Зрители без регистрации</strong><small>Каждый ход — в эфире</small></div><div><span>≋</span><strong>PGN и разбор партии</strong><small>Из результата — в следующую идею</small></div><div><span>♜</span><strong>Два кубка</strong><small>Личный зачёт и команды</small></div></div></section>
+
+    <section class="section formats-section" id="formats"><div class="wrap"><div class="section-heading"><div><span class="eyebrow">02 / РЕЖИМЫ ИГРЫ</span><h2>Каждая миллисекунда<br><span class="muted">меняет игру.</span></h2></div><p>От вдумчивого поиска до предела скорости. Один протокол, разные вызовы.</p></div><div class="formats-grid"><article class="format-card"><span class="eyebrow">ОСНОВНОЙ РЕЖИМ</span><div class="format-time">10<span>мин</span></div><h3>Arena</h3><p>До 3 секунд на ход бота.<br>Без добавления.</p><span class="format-code">format: "arena"</span></article><article class="format-card hardbullet"><span class="eyebrow"><span class="status-dot"></span> НА ПРЕДЕЛЕ СКОРОСТИ</span><div class="format-time">15<span>сек</span></div><div class="bullet-orbit" aria-hidden="true"><span></span></div><h3>HardBullet</h3><p>До 1 секунды на ход.<br>Каждое решение — мгновенно.</p><span class="format-code">format: "hardbullet"</span><span class="speed-lines" aria-hidden="true">↗↗↗</span></article><article class="format-card"><span class="eyebrow">КЛАССИКА И ЭКСПЕРИМЕНТЫ</span><div class="format-time">3<span>+ 2</span></div><h3>Блиц и не только</h3><p>Рапид, блиц с добавлением<br>и свой контроль времени.</p><a class="inline-link" href="docs/bot-api/#контроль-времени">Все форматы <span>↗</span></a></article></div></div></section>
+
+    <section class="section wrap" id="connect"><div class="connect-grid"><div><span class="eyebrow">03 / ТВОЙ ПЕРВЫЙ МАТЧ</span><h2>От функции<br>до первой <span class="accent">партии.</span></h2><p class="section-lead">Не нужно собирать платформу с нуля.<br>Нужно научить свой код выбирать ход.</p><ol class="connect-steps"><li><span>01</span><div><h3>Запусти арену</h3><p>Node.js 24, npm ci и npm run dev.</p></div></li><li><span>02</span><div><h3>Подготовь место для бота</h3><p>Создай аккаунт и партию, пригласи соперника и выпусти ключ.</p></div></li><li><span>03</span><div><h3>Подключи свою математику</h3><p>Заменяй choose_move своим алгоритмом. Коннектор возьмёт на себя протокол.</p></div></li></ol></div><div class="code-window"><div class="code-toolbar"><span><i></i><i></i><i></i></span><span>my_first_bot.py</span><span>PYTHON</span></div><pre><code><span class="code-dim"># Алгоритм — твой. Протокол — готов.</span>
+<span class="code-purple">from</span> deepmove_client <span class="code-purple">import</span> DeepMoveClient
+
+<span class="code-purple">def</span> <span class="code-green">choose_move</span>(state, budget_seconds):
+    position = state[<span class="code-string">"fen"</span>]
+    moves = state[<span class="code-string">"legalMoves"</span>]
+    <span class="code-dim"># Твой поиск. Твоя оценка позиции.</span>
+    <span class="code-purple">return</span> my_algorithm(position, moves,
+                        budget_seconds)
+
+client = DeepMoveClient(url, game_id,
+                        token, side)
+client.play(choose_move)</code></pre><div class="code-footer"><span class="status-dot"></span> HTTP + JSON <span>Без привязки к языку</span></div><a class="code-link" href="docs/getting-started/">Полный пример и запуск <span>↗</span></a></div></div></section>
+
+    <section class="section wrap" id="engines"><div class="section-heading"><div><span class="eyebrow">04 / ОТКРЫТАЯ МАТЕМАТИКА</span><h2>Два движка.<br><span class="muted">Два подхода к поиску.</span></h2></div><p>Изучи готовые примеры, разберись в формулах и напиши собственный алгоритм.</p></div><div class="engines-grid"><article class="engine-card"><div class="engine-card-top"><span class="engine-label">PYTHON</span><span class="mono">01 / УЧЕБНЫЙ</span></div><div class="engine-mark" aria-hidden="true">♞</div><h3>DeepMove<span>Bot</span></h3><p>Прозрачная математика и немного непредсказуемости. Авторский поиск, ручная оценка и выбор из близких по силе ходов.</p><ul class="engine-tags"><li>Alpha-beta</li><li>Softmax</li><li>Открытые формулы</li></ul><a class="inline-link" href="docs/deepmovebot/">Изучить движок <span>↗</span></a></article><article class="engine-card speed-engine"><div class="engine-card-top"><span class="engine-label">C++20</span><span class="mono">02 / СКОРОСТЬ</span></div><div class="engine-mark" aria-hidden="true">♜</div><h3>DeepSpeed<span>Bot</span></h3><p>Собственные правила, bitboard-представление и поиск с предварительным расчётом на ходу соперника. Эксперимент со скоростью.</p><ul class="engine-tags"><li>Bitboards</li><li>PVS + LMR</li><li>Pondering</li></ul><a class="inline-link" href="docs/deepspeedbot/">Под капот движка <span>↗</span></a></article></div></section>
+
+    <section class="section wrap faq-section" id="faq"><div><span class="eyebrow section-index"><span>05 /</span> FAQ</span><h2>Хорошие вопросы.<br><span class="accent">Прямые ответы.</span></h2><p>Всё, что нужно знать<br>перед первым ходом.</p></div><div class="faq-list"><details><summary>На каком языке писать бота?<span>+</span></summary><p>На любом. Протокол — HTTP + JSON. Готовый пример есть на Python; движок может быть написан на C++, Rust, Go или другом языке.</p></details><details><summary>Можно использовать готовый движок?<span>+</span></summary><p>Для соревнования нужен авторский алгоритм. Stockfish в платформе используется отдельно и только для разбора завершённых партий.</p></details><details><summary>Почему бот проиграл, если время ещё есть?<span>+</span></summary><p>Кроме общего запаса может действовать лимит одного хода. В Arena боту даётся до 3 секунд, в HardBullet — до секунды. Причина поражения и измеренное опоздание видны в партии.</p></details><details><summary>Как работают личный и командный зачёты?<span>+</span></summary><p>Зачётная серия — четыре партии: дважды белыми и дважды чёрными. Победа даёт 1, ничья 0,5, поражение 0. После всей серии очки попадают в личный зачёт бота и Кубок конструкторов его команды.</p></details><details><summary>Где сыграть первую партию?<span>+</span></summary><p>Запусти арену локально или на сервере организатора. На GitHub Pages находятся сайт проекта и документация. <a href="docs/getting-started/">Пошаговая инструкция запуска ↗</a></p></details></div></section>
+
+    <section class="wrap final-section"><div class="final-panel"><img src="assets/mark.svg" width="83" height="83" alt=""><div><div class="eyebrow">СЛЕДУЮЩИЙ ХОД — ЗА ТОБОЙ</div><h2>Большая игра начинается с идеи.</h2><p>Клонируй репозиторий. Подключи алгоритм. Сделай свой первый ход.</p></div><a class="button primary" href="docs/getting-started/">Начать разработку <span>↗</span></a></div><div class="final-links"><span>Открытый код · MIT · КАИТ №20</span><a href="https://github.com/Kait20-dev/DeepMove">Исходники проекта ↗</a><a href="docs/contributing/">Внести свой вклад ↗</a></div></section>
+    <section class="wrap closing-note"><span class="eyebrow">САЙТ ПРОЕКТА</span><p>Здесь — знакомство с DeepMove и документация. Для игры <a href="docs/getting-started/">запусти арену</a> на своей машине или сервере организатора.</p></section>
+  </main>
+  <footer class="footer wrap"><a class="brand" href="./"><img src="assets/mark.svg" width="30" height="30" alt=""><span>deep<span class="brand-light">move</span><span class="brand-dot">.</span></span></a><span>Собственный код. Честная игра.</span><nav aria-label="Ссылки в подвале"><a href="docs/">Документация</a><a href="docs/license/">Лицензия MIT</a><a href="https://github.com/Kait20-dev/DeepMove">GitHub ↗</a></nav><small>© 2026 Ярослав Бойков Владимирович<br>и другие разработчики проекта DeepMove</small></footer>
+</body>
+</html>
