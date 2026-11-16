@@ -95,9 +95,16 @@ python clients/example_bot.py --game GAME_UUID --side w
 | --- | --- | --- |
 | **[DeepMoveBot](DeepMoveBot/README.md)** · Python | Alpha-beta, ручная оценка, quiescence и softmax среди близких ходов | [Формулы](DeepMoveBot/docs/FORMULAS.md) · [Коннектор](DeepMoveBot/docs/CONNECTOR.md) |
 | **[DeepSpeedBot](DeepSpeedBot/README.md)** · C++20 | Свои правила, bitboards, PVS, LMR и pondering | [Формулы](DeepSpeedBot/docs/FORMULAS.md) · [Коннектор](DeepSpeedBot/docs/CONNECTOR.md) |
+| **[DeepNeuroBot](DeepNeuroBot/README.md)** · Python | Нейросетевой оценщик, самоигра поколениями, отбор по очкам и мутации | [Эволюция и формулы](DeepNeuroBot/docs/FORMULAS.md) · [Запуск](DeepNeuroBot/README.md#подключить-к-deepmove) |
+| **[DeepPatternBot](DeepPatternBot/README.md)** · Python | Индекс PGN, статистика ходов и потоковое обучение оценки позиций | [Данные и формулы](DeepPatternBot/docs/FORMULAS.md) · [Запуск](DeepPatternBot/README.md#подключение-к-арене) |
 
 Сила движков не измерена в Elo. Их алгоритмы авторские; отдельный
 Stockfish используется на сервере только для **послематчевого анализа**.
+
+Всего **четыре бота**, каждый в своей папке. Новые DeepNeuroBot и DeepPatternBot
+готовы к обучению, но обученных моделей и больших корпусов пока нет.
+Общий [Python BotKit](clients/python/README.md) — библиотека поиска и транспорта,
+не отдельный бот. Исходные DeepMoveBot и DeepSpeedBot от него не зависят.
 
 ## Документация
 

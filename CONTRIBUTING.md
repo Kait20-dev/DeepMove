@@ -27,7 +27,8 @@ npm run dev
 - API: `src/app/api/arena/[[...path]]/route.ts`.
 - Статический лендинг: `site/index.html` и `site/assets`.
 - Тексты документации: `docs/*.md`; её меню: `site/pages.mjs`.
-- Примеры участников: `clients`, `DeepMoveBot`, `DeepSpeedBot`.
+- Движки: `DeepMoveBot`, `DeepSpeedBot`, `DeepNeuroBot`, `DeepPatternBot`.
+- Общая библиотека новых Python-ботов: `clients/python`.
 
 Не меняй формат существующих партий без обратной совместимости.
 Секретные поля должны оставаться вне публичных представлений и PGN.
@@ -63,6 +64,22 @@ npm run test:pages
 Статическая проверка проверяет ссылки, якоря и опубликованные файлы.
 Браузерная — размеры экранов, меню, поиск, копирование, паузу анимации и
 режим reduced motion. Скриншоты остаются в `test-results`.
+
+## Проверки обучаемых ботов
+
+Установи пакеты в локальное окружение по [инструкции BotKit](clients/python/README.md).
+Ни одна из следующих проверок не запускает длительное обучение:
+
+```sh
+python -m unittest discover -s clients/python/tests -v
+python -m unittest discover -s DeepNeuroBot/tests -v
+python -m unittest discover -s DeepPatternBot/tests -v
+```
+
+Тесты используют временные папки, несколько коротких самоигр и синтетическую
+выборку. Интеграция `node clients/python/scripts/arena-smoke.mjs` после build
+поднимает отдельную арену для DeepNeuroBot против DeepPatternBot.
+Загрузка корпусов и настоящее обучение требуют явных `import-pgn` и `train`.
 
 ## Pull request
 

@@ -10,7 +10,7 @@ DeepMove. Она не заменяет лицензии зависимостей
 | React | Интерфейс арены | [MIT](https://github.com/facebook/react/blob/main/LICENSE) |
 | chess.js | Правила и браузерная демонстрация | [BSD-2-Clause](https://github.com/jhlywa/chess.js/blob/master/LICENSE) |
 | Stockfish.js / Stockfish | Локальный анализ завершённых партий | [GPL-3.0](https://github.com/nmrugg/stockfish.js) |
-| python-chess / chess | Правила Python-движка DeepMoveBot | [GPL-3.0+](https://github.com/niklasf/python-chess/blob/master/LICENSE.txt) |
+| python-chess / chess | Правила DeepMoveBot, DeepNeuroBot, DeepPatternBot и PGN-импорт | [GPL-3.0+](https://github.com/niklasf/python-chess/blob/master/LICENSE.txt) |
 | Lucide | Иконки интерфейса | [ISC](https://github.com/lucide-icons/lucide/blob/main/LICENSE) |
 | sharp | Обработка аватаров и иллюстраций сборки | [Apache-2.0](https://github.com/lovell/sharp/blob/main/LICENSE) |
 | Marked | Сборка HTML-документации из Markdown | [MIT](https://github.com/markedjs/marked/blob/master/LICENSE.md) |
