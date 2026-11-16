@@ -16,6 +16,28 @@ void hashWalk(ds::Board& board,int depth) {
         check(board.fen()==original && board.key==key && board.context==context && board.historySize==history,"unmake is not exact");
     }
 }
+void sliderTests() {
+    constexpr int directions[8][2] = {{1,0},{-1,0},{0,1},{0,-1},{1,1},{-1,1},{1,-1},{-1,-1}};
+    std::uint64_t random = 0x542ec81a7f3902d9ULL;
+    ds::Board board;
+    for (int sample = 0; sample < 256; ++sample) {
+        random ^= random << 13; random ^= random >> 7; random ^= random << 17;
+        auto occupancy = sample == 0 ? ds::Bits{0} : sample == 1 ? ~ds::Bits{0} : random;
+        board.occupied = {occupancy, 0};
+        for (int square = 0; square < 64; ++square) for (int t : {ds::Bishop, ds::Rook, ds::Queen}) {
+            ds::Bits expected = 0;
+            for (int dir = t == ds::Bishop ? 4 : 0; dir < (t == ds::Rook ? 4 : 8); ++dir) {
+                int x = square % 8 + directions[dir][0], y = square / 8 + directions[dir][1];
+                while (x >= 0 && x < 8 && y >= 0 && y < 8) {
+                    auto target = ds::bit(y * 8 + x); expected |= target;
+                    if (occupancy & target) break;
+                    x += directions[dir][0]; y += directions[dir][1];
+                }
+            }
+            check(board.attacks(t,square,0) == expected,"precomputed slider ray differs from square walk");
+        }
+    }
+}
 void moveTests() {
     ds::Board start;
     check(ds::perft(start,1)==20,"start perft 1");
@@ -48,6 +70,8 @@ void moveTests() {
     ds::Board rep;
     for(int i=0;i<2;++i) for(auto m:{"g1f3","g8f6","f3g1","f6g8"}) check(rep.play(m),"repetition move");
     check(rep.repetition(),"threefold repetition");
+    ds::Board sameFen(rep.fen());
+    check(rep.key==sameFen.key && rep.searchKey()!=sameFen.searchKey(),"TT separates different repetition histories");
     check(ds::Board("4k3/8/8/8/8/8/8/4K3 w - - 0 1").insufficient(),"bare kings draw");
     check(ds::Board("4k3/8/8/8/8/8/8/2B1K3 w - - 0 1").insufficient(),"single minor draw");
     check(!ds::Board("4k3/8/8/8/8/8/8/1NN1K3 w - - 0 1").insufficient(),"two knights not automatic draw");
@@ -85,6 +109,6 @@ void searchTests() {
 }
 }
 int main() {
-    try { moveTests(); searchTests(); std::cout<<"PASS "<<checks<<" checks including perft, hashes, draws, mates, cancellation and time management\n"; return 0; }
+    try { sliderTests(); moveTests(); searchTests(); std::cout<<"PASS "<<checks<<" checks including slider attacks, perft, hashes, draws, mates, cancellation and time management\n"; return 0; }
     catch(const std::exception& e) { std::cerr<<"FAIL "<<e.what()<<'\n'; return 1; }
 }

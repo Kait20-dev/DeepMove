@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-15",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "cpu": "Intel Core Ultra 5 125H",
+  "compiler": "GCC 16.2.0, C++20, -O3, generic x86-64, static MinGW runtime",
+  "binary_bytes": 2869347,
+  "binary_sha256": "c990e1c7954ebda138e674eb5d69ba4bc3cb7efba4eb3f864f00f9a8c8c79e0c",
+  "evidence_sha256": {
+    ".gitattributes": "9bb17971bc52a78a83c8eb8a8d53861907cc20b4c20ab69255b118083e5cb2ce",
+    "arena-1.jsonl": "c1e5d9511dc02882e6ab40c3d11954091f6a920f632350932522fb7a348e7f46",
+    "arena-1.pgn": "3417d40c0ca996f9ca8754443834b4869332694df2cd439257214e06eb71d91f",
+    "arena-2.jsonl": "fab2d0b0afaa450a89cb18199c21af41c309f40a6a19412775078b9e9d889cb7",
+    "arena-2.pgn": "b2830be6497f7a65df848b1bfc63e9b282b079ec21df5132eda90fc2ce86df57",
+    "arena-smoke.json": "456edc04e034a4bce155aec940c59ef7891bba1b499d55e73feeb7d5a3a51c95",
+    "benchmark.json": "697fc23f943465820ce23abfe7da2c1f16a0908f56a6cacf0a04c9a9858c5bcb",
+    "matches-moves.jsonl.gz": "8a1dd8f97353e5fe5162aa676e5ccffb630008f76b69675685b7f87dd9e74e38",
+    "matches-summary.json": "d66b688f8a55920d1dbf8f33798f3b0ec87b2dd241240029c13e0819917f55d3",
+    "matches.pgn": "8d828db7d620505703159fe92c72e2469a15d23fc310aa49812a3158177aafd3",
+    "stress-moves.jsonl.gz": "7ccdc6bfca44890ce3876811176b133d763550aeb50156c2aa5c0b4a6c4d30c7",
+    "stress-summary.json": "d9d3b264e09298092903fb18da142a7feda5e5ace501af1108617f812b486322",
+    "stress.pgn": "eda92008635a188226b94414a617b01d84290254641da9627ba66c5efad00575"
+  }
+}

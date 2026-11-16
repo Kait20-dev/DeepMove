@@ -1,0 +1,21 @@
+// One manifest drives sidebar navigation, the homepage, search and Markdown links.
+export const pages = [
+  { slug: '', file: 'docs/README.md', title: 'Знакомство с DeepMove', group: 'Начало', description: 'Что умеет платформа и с чего начать участнику, разработчику и организатору.' },
+  { slug: 'getting-started', file: 'docs/GETTING_STARTED.md', title: 'Быстрый старт', group: 'Начало', description: 'Запусти сервер, создай партию и подключи первый алгоритм.' },
+  { slug: 'bot-api', file: 'docs/BOT_API.md', title: 'HTTP API и коннектор', group: 'Арена', description: 'Состояние партии, ready, UCI-ходы, дедлайны, PGN и ошибки.' },
+  { slug: 'cups', file: 'docs/CUPS_AND_PROFILES.md', title: 'Профили и два кубка', group: 'Арена', description: 'Карточки ботов, команды, четыре партии со сменой цветов и начисление очков.' },
+  { slug: 'architecture', file: 'docs/ARCHITECTURE.md', title: 'Архитектура', group: 'Разработка', description: 'Устройство арены, границы доверия, SQLite и локальный Stockfish.' },
+  { slug: 'deployment', file: 'docs/DEPLOYMENT.md', title: 'Развёртывание', group: 'Разработка', description: 'GitHub Pages для сайта и постоянный Node-сервер для матчей.' },
+  { slug: 'contributing', file: 'CONTRIBUTING.md', title: 'Участие в разработке', group: 'Разработка', description: 'Рабочие ветки, проверки, правила изменений и оформление pull request.' },
+  { slug: 'deepmovebot', file: 'DeepMoveBot/README.md', title: 'DeepMoveBot', group: 'Python / DeepMoveBot', description: 'Установка и запуск авторского математического Python-движка.' },
+  { slug: 'deepmovebot-formulas', file: 'DeepMoveBot/docs/FORMULAS.md', title: 'Математика и поиск', group: 'Python / DeepMoveBot', description: 'Alpha-beta, статическая оценка, quiescence и softmax.' },
+  { slug: 'deepmovebot-connector', file: 'DeepMoveBot/docs/CONNECTOR.md', title: 'Коннектор Python', group: 'Python / DeepMoveBot', description: 'Практический пример своего алгоритма и безопасного подключения.' },
+  { slug: 'deepmovebot-validation', file: 'DeepMoveBot/docs/VALIDATION.md', title: 'Проверки движка', group: 'Python / DeepMoveBot', description: 'Воспроизводимые проверки поиска и ограничения учебного бота.' },
+  { slug: 'deepspeedbot', file: 'DeepSpeedBot/README.md', title: 'DeepSpeedBot', group: 'C++20 / DeepSpeedBot', description: 'Сборка, запуск и особенности скоростного C++20-движка.' },
+  { slug: 'deepspeedbot-formulas', file: 'DeepSpeedBot/docs/FORMULAS.md', title: 'Оценка и bitboards', group: 'C++20 / DeepSpeedBot', description: 'Материал, фазы игры, поиск, pondering и управление временем.' },
+  { slug: 'deepspeedbot-connector', file: 'DeepSpeedBot/docs/CONNECTOR.md', title: 'Коннектор C++', group: 'C++20 / DeepSpeedBot', description: 'Python-обвязка, постоянный процесс движка и бюджет на ход.' },
+  { slug: 'deepspeedbot-validation', file: 'DeepSpeedBot/docs/VALIDATION.md', title: 'Замеры и ограничения', group: 'C++20 / DeepSpeedBot', description: 'Результаты проверок без выдуманного Elo и неподтверждённых обещаний.' },
+  { slug: 'security', file: 'SECURITY.md', title: 'Безопасность', group: 'Проект', description: 'Сообщение об уязвимостях, ключи и границы серверной защиты.' },
+  { slug: 'license', file: 'docs/LICENSING.md', title: 'Лицензия и авторство', group: 'Проект', description: 'MIT, сохранение авторских прав, зависимости и фирменные материалы.' },
+  { slug: 'changelog', file: 'CHANGELOG.md', title: 'История изменений', group: 'Проект', description: 'Возможности проекта по этапам разработки.' },
+];

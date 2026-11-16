@@ -16,9 +16,9 @@ int main(int argc,char** argv) {
         ds::Engine engine(config);
         std::string line;
         while(std::getline(std::cin,line)) {
-            if(line.size()>65536) { std::cout<<"info string command too large"<<std::endl; continue; }
+            if(line.size()>65536) { engine.error("command too large"); continue; }
             try { if(!engine.command(line)) break; }
-            catch(const std::exception& e) { std::cout<<"info string error "<<e.what()<<std::endl; }
+            catch(const std::exception& e) { engine.error(e.what()); }
         }
         return 0;
     } catch(const std::exception& e) { std::cerr<<"DeepSpeedBot: "<<e.what()<<'\n'; return 1; }

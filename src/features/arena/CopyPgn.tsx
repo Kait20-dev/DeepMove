@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 
-export function CopyPgn({ pgn }: { pgn: string }) {
+export function CopyPgn({ pgn, compact = false }: { pgn: string; compact?: boolean }) {
   const [copiedPgn, setCopied] = useState<string | null>(null);
   const copied = copiedPgn === pgn;
   const [fallback, setFallback] = useState(false);
@@ -17,5 +17,5 @@ export function CopyPgn({ pgn }: { pgn: string }) {
       setFallback(true);
     }
   }
-  return <div className="copy-pgn"><button className="text-button" onClick={copy}>{copied ? <Check size={15} /> : <Copy size={15} />}{copied ? 'PGN скопирован' : 'Скопировать PGN'}</button>{fallback && <div className="pgn-copy-fallback"><label>Не удалось получить доступ к буферу. Скопируй запись вручную:<textarea aria-label="PGN для ручного копирования" readOnly value={pgn} rows={6} onFocus={event => event.currentTarget.select()} /></label><button className="text-button" onClick={() => setFallback(false)}>Закрыть</button></div>}</div>;
+  return <div className="copy-pgn"><button className="text-button" aria-label={copied ? 'PGN скопирован' : 'Скопировать PGN'} title={copied ? 'PGN скопирован' : 'Скопировать PGN'} onClick={copy}>{copied ? <Check size={15} /> : <Copy size={15} />}{compact ? 'PGN' : copied ? 'PGN скопирован' : 'Скопировать PGN'}</button>{fallback && <div className="pgn-copy-fallback"><label>Не удалось получить доступ к буферу. Скопируй запись вручную:<textarea aria-label="PGN для ручного копирования" readOnly value={pgn} rows={6} onFocus={event => event.currentTarget.select()} /></label><button className="text-button" onClick={() => setFallback(false)}>Закрыть</button></div>}</div>;
 }

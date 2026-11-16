@@ -1,0 +1,27 @@
+{
+  "measuredAt": "2026-11-15T11:30:41.520Z",
+  "node": "v24.20.0",
+  "platform": "win32",
+  "fixture": {
+    "games": 50,
+    "pliesPerGame": 128,
+    "status": "finished",
+    "storage": "isolated in-memory SQLite"
+  },
+  "baseline": {
+    "algorithm": "Former lobby: full board/material replay plus PGN replay for all archives",
+    "repetitions": 5,
+    "minMs": 2301.407,
+    "medianMs": 2421.541,
+    "maxMs": 3695.283
+  },
+  "optimized": {
+    "algorithm": "Explicit lobby summary projection with clock settlement, no history replay",
+    "repetitions": 25,
+    "minMs": 4.299,
+    "medianMs": 5.349,
+    "maxMs": 6.986
+  },
+  "medianSpeedup": 452.71,
+  "limitations": "Local CPU measurements, not a network benchmark. Repeated legal knight cycles model long archives, including repeated positions. No chess-search settings or move-quality changes."
+}

@@ -7,8 +7,10 @@
 
 namespace ds {
 namespace {
+constexpr int directions[8][2] = {{1,0},{-1,0},{0,1},{0,-1},{1,1},{-1,1},{1,-1},{-1,-1}};
 struct Tables {
     Bits knight[64]{}, king[64]{}, pawn[2][64]{};
+    Bits ray[8][64]{};
     std::uint64_t piece[12][64]{}, castle[16]{}, ep[8]{}, side{};
     Tables() {
         std::uint64_t seed = 0xDEE950EED12345ULL;
@@ -20,6 +22,13 @@ struct Tables {
         };
         for (int sq = 0; sq < 64; ++sq) {
             int x = sq % 8, y = sq / 8;
+            for (int dir = 0; dir < 8; ++dir) {
+                int nx = x + directions[dir][0], ny = y + directions[dir][1];
+                while (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+                    ray[dir][sq] |= bit(ny * 8 + nx);
+                    nx += directions[dir][0]; ny += directions[dir][1];
+                }
+            }
             for (int dx = -2; dx <= 2; ++dx) for (int dy = -2; dy <= 2; ++dy) {
                 int nx = x + dx, ny = y + dy;
                 if (nx < 0 || nx > 7 || ny < 0 || ny > 7) continue;
@@ -36,17 +45,18 @@ struct Tables {
     }
 };
 const Tables tables;
-constexpr int directions[8][2] = {{1,0},{-1,0},{0,1},{0,-1},{1,1},{-1,1},{1,-1},{-1,-1}};
 Bits sliders(int square, int t, Bits occupancy) {
     Bits result = 0;
     int start = t == Bishop ? 4 : 0, end = t == Rook ? 4 : 8;
     for (int dir = start; dir < end; ++dir) {
-        int x = square % 8 + directions[dir][0], y = square / 8 + directions[dir][1];
-        while (x >= 0 && x < 8 && y >= 0 && y < 8) {
-            Bits target = bit(y * 8 + x); result |= target;
-            if (occupancy & target) break;
-            x += directions[dir][0]; y += directions[dir][1];
+        Bits ray = tables.ray[dir][square], blockers = ray & occupancy;
+        if (blockers) {
+            // Keep the nearest blocker, removing only squares beyond it.
+            constexpr bool increasing[8] = {true,false,true,false,true,true,false,false};
+            int first = increasing[dir] ? std::countr_zero(blockers) : 63 - std::countl_zero(blockers);
+            ray &= ~tables.ray[dir][first];
         }
+        result |= ray;
     }
     return result;
 }

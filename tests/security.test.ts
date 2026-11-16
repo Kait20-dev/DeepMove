@@ -14,6 +14,19 @@ function user(): { user: UserView; request: Request } {
   db().prepare('INSERT INTO sessions(hash,user_id,expires) VALUES(?,?,?)').run(hash(token), id, Date.now() + 100000);
   return { user: { id, handle: id, name: 'Test', bio: '', createdAt: Date.now() }, request: new Request('http://localhost:3000', { headers: { cookie: `dm_session=${token}` } }) };
 }
+test('HardBullet is a server-owned preset: 15 seconds and one second per move for both player kinds', () => {
+  const alice = user(), bob = user();
+  const game = createGame(alice.user, { format: 'hardbullet', side: 'w', kind: 'human', opponentKind: 'bot', initialSeconds: 7200, botMoveSeconds: 60, humanMoveMs: 60000 });
+  assert.deepEqual(game.clocks, { w: 15000, b: 15000 });
+  assert.equal(game.format.incrementMs, 0);
+  assert.equal(game.format.botMoveMs, 1000);
+  assert.equal(game.format.humanMoveMs, 1000);
+  const joined = joinGame(game.id, bob.user, { joinCode: game.joinCode });
+  assert.equal(joined.status, 'waiting');
+  assert.deepEqual(joined.clocks, { w: 15000, b: 15000 });
+  assert.equal(joined.deadline, null);
+  assert.throws(() => createGame(alice.user, { format: 'custom', side: 'w', kind: 'bot', opponentKind: 'bot', initialSeconds: 15, incrementSeconds: 0, botMoveSeconds: 1 }), /30 до 7200/);
+});
 test('invites protect vacant seats; spectator and other accounts cannot move, ready or rotate keys', () => {
   const alice = user(), bob = user(), mallory = user();
   const game = createGame(alice.user, { format: 'arena', side: 'w', kind: 'bot', opponentKind: 'human' });
@@ -50,6 +63,31 @@ test('bot credentials are game-scoped, not readable, and revocable; invite rotat
   joinGame(first.id, bob.user, { joinCode: code });
   const json = JSON.stringify(getGame(first.id)); assert.ok(!json.includes(old)); assert.ok(!json.includes(code)); assert.ok(!json.includes('Hash'));
 });
+
+test('late diagnostics require the expired seat key and ignore client timestamps, illegal and stale attempts', () => {
+  const alice = user(), bob = user(), mallory = user();
+  const created = createGame(alice.user, { format: 'hardbullet', side: 'w', kind: 'bot', opponentKind: 'bot' });
+  joinGame(created.id, bob.user, { joinCode: created.joinCode });
+  const white = rotateBotKey(created.id, alice.user).token;
+  const black = rotateBotKey(created.id, bob.user).token;
+  const botRequest = (token: string) => new Request('http://localhost', { headers: { authorization: `Bearer ${token}` } });
+  const game = loadGame(created.id), deadline = Date.now() - 100;
+  game.status = 'playing'; game.turnStartedAt = deadline - 1000;
+  saveGame(game);
+  assert.equal(getGame(game.id).reason, 'timeout'); // Spectator settled it before the POST.
+  const input = { move: 'e2e4', expectedPly: 0, receivedAt: deadline - 1, delayMs: 0 };
+  assert.throws(() => gameAction(game.id, mallory.request, 'move', input), /зритель/);
+  assert.throws(() => gameAction(game.id, alice.request, 'move', input), /Bearer/);
+  assert.equal(gameAction(game.id, botRequest(black), 'move', input).timeout?.lateMove, undefined);
+  assert.equal(gameAction(game.id, botRequest(white), 'move', { ...input, expectedPly: 1 }).timeout?.lateMove, undefined);
+  assert.equal(gameAction(game.id, botRequest(white), 'move', { ...input, move: 'e2e5' }).timeout?.lateMove, undefined);
+  const late = gameAction(game.id, botRequest(white), 'move', input, deadline + 79);
+  assert.deepEqual(late.timeout?.lateMove, { uci: 'e2e4', receivedAt: deadline + 79, delayMs: 79 });
+  assert.equal(gameAction(game.id, botRequest(white), 'move', input, deadline + 1000).timeout?.lateMove?.delayMs, 79);
+  assert.equal(loadGame(game.id).timeout?.lateMove?.delayMs, 79);
+  assert.equal(late.result, '0-1');
+  assert.equal(late.moves.length, 0);
+});
 test('profile authentication uses salted KDF, hashed sessions and exact same-origin validation', async () => {
   const handle = `user_${randomUUID().slice(0, 8)}`;
   const registered = await authenticate({ handle, name: 'Alice', password: 'a-long-test-password' }, true);
@@ -74,6 +112,22 @@ test('team join requires invitation and rotation is restricted to its owner', ()
   assert.throws(() => teamAction('', 'join', bob, { invite: team.invite }), /недействительно/);
   teamAction(team.id, 'leave', bob, {});
   assert.equal(listTeams().find(item => item.id === team.id)?.members.length, 1);
+});
+
+test('local login accepts loopback aliases on the same port and keeps cross-site protection', t => {
+  const previous = process.env.APP_ORIGIN;
+  process.env.APP_ORIGIN = 'http://localhost:3000';
+  t.after(() => { if (previous === undefined) delete process.env.APP_ORIGIN; else process.env.APP_ORIGIN = previous; });
+  for (const origin of ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://[::1]:3000']) {
+    assert.doesNotThrow(() => sameOrigin(new Request('http://localhost:3000/api/arena/register', { headers: { origin } })));
+  }
+  for (const origin of ['null', 'https://evil.example', 'http://localhost:3001', 'https://localhost:3000', 'http://localhost:3000.evil.example', 'http://user@localhost:3000']) {
+    assert.throws(() => sameOrigin(new Request('http://localhost:3000/api/arena/login', { headers: { origin } })), /другого сайта/);
+  }
+  assert.throws(() => sameOrigin(new Request('http://localhost:3000/api/arena/login')), /другого сайта/);
+  process.env.APP_ORIGIN = 'https://deepmove.example';
+  assert.throws(() => sameOrigin(new Request('http://localhost:3000', { headers: { origin: 'http://127.0.0.1:3000' } })), /другого сайта/);
+  assert.doesNotThrow(() => sameOrigin(new Request('http://localhost:3000', { headers: { origin: 'https://deepmove.example' } })));
 });
 test('rate limits persist and oversized or malformed JSON requests are rejected', async () => {
   rateLimit('test-rate', 1, 1000, 0); assert.throws(() => rateLimit('test-rate', 1, 1000, 1), /много запросов/);

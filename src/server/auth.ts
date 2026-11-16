@@ -7,8 +7,8 @@ import type { UserView } from '@/features/arena/types';
 const scrypt = promisify(scryptCallback);
 export const secret = () => randomBytes(32).toString('base64url');
 export const hash = (value: string) => createHash('sha256').update(value).digest('hex');
-export interface UserRow { id: string; handle: string; name: string; bio: string; password: string; created_at: number }
-export const publicUser = (row: UserRow): UserView => ({ id: row.id, handle: row.handle, name: row.name, bio: row.bio, createdAt: row.created_at });
+export interface UserRow { id: string; handle: string; name: string; bio: string; password: string; created_at: number; avatar?: string; organization?: string; city?: string; website?: string }
+export const publicUser = (row: UserRow): UserView => ({ id: row.id, handle: row.handle, name: row.name, bio: row.bio, createdAt: row.created_at, avatar: row.avatar || null, organization: row.organization || '', city: row.city || '', website: row.website || '' });
 export function getUser(id: string): UserView | null {
   const row = db().prepare('SELECT * FROM users WHERE id=?').get(id) as unknown as UserRow | undefined;
   return row ? publicUser(row) : null;
@@ -25,8 +25,15 @@ export function requireUser(request: Request): UserView {
   return user;
 }
 export function sameOrigin(request: Request) {
-  const allowed = process.env.APP_ORIGIN || new URL(request.url).origin;
-  ensure(request.headers.get('origin') === allowed, 403, 'Запрос с другого сайта запрещён', 'origin_rejected');
+  const allowed = new URL(process.env.APP_ORIGIN || request.url);
+  let origin: URL | null = null;
+  try { origin = new URL(request.headers.get('origin') || ''); } catch { /* Missing/opaque origins are rejected. */ }
+  const loopback = (hostname: string) => ['localhost', '127.0.0.1', '[::1]'].includes(hostname);
+  // Next's internal URL can use localhost even when the browser used 127.0.0.1.
+  // Only loopback aliases with the same scheme AND port are interchangeable.
+  const valid = origin && origin.origin === request.headers.get('origin') && (origin.origin === allowed.origin
+    || loopback(origin.hostname) && loopback(allowed.hostname) && origin.protocol === allowed.protocol && origin.port === allowed.port);
+  ensure(valid, 403, 'Запрос с другого сайта запрещён', 'origin_rejected');
 }
 export async function authenticate(input: Record<string, unknown>, register: boolean): Promise<{ user: UserView; token: string }> {
   const handle = text(input.handle, 3, 30, 'Логин').toLowerCase();

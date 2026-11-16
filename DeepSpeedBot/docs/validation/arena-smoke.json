@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "games": [
+    {
+      "native_side": "w",
+      "result": "1-0",
+      "reason": "checkmate",
+      "plies": 75,
+      "truncated": false,
+      "format": {
+        "name": "Свой формат",
+        "initialMs": 300000,
+        "incrementMs": 0,
+        "botMoveMs": 3000
+      },
+      "max_server_move_ms": 702,
+      "native_summary": {
+        "event": "finished",
+        "result": "1-0",
+        "reason": "checkmate",
+        "plies": 75,
+        "own_moves": 38,
+        "ponder_hits": 15,
+        "ponder_opportunities": 37,
+        "ponder_hit_rate": 0.40540540540540543,
+        "search_ms": 4985.093,
+        "ponder_ms": 15396.956999999995,
+        "own_clock_used_ms": 11612,
+        "captures": 19,
+        "opponent_captures": 6,
+        "wall_seconds": 25.562000000150874
+      },
+      "native_searches": 38,
+      "native_ponder_hits": 15,
+      "max_native_search_ms": 450.19
+    },
+    {
+      "native_side": "b",
+      "result": "0-1",
+      "reason": "checkmate",
+      "plies": 28,
+      "truncated": false,
+      "format": {
+        "name": "Свой формат",
+        "initialMs": 300000,
+        "incrementMs": 0,
+        "botMoveMs": 3000
+      },
+      "max_server_move_ms": 344,
+      "native_summary": {
+        "event": "finished",
+        "result": "0-1",
+        "reason": "checkmate",
+        "plies": 28,
+        "own_moves": 14,
+        "ponder_hits": 4,
+        "ponder_opportunities": 13,
+        "ponder_hit_rate": 0.3076923076923077,
+        "search_ms": 549.0189999999999,
+        "ponder_ms": 4893.755,
+        "own_clock_used_ms": 2506,
+        "captures": 8,
+        "opponent_captures": 4,
+        "wall_seconds": 9.077999999979511
+      },
+      "native_searches": 14,
+      "native_ponder_hits": 4,
+      "max_native_search_ms": 66.023
+    }
+  ]
+}

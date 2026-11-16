@@ -1,0 +1,5 @@
+*.json text eol=lf
+*.jsonl text eol=lf
+*.pgn text eol=lf
+*.gz binary
+.gitattributes text eol=lf

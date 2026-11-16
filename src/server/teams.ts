@@ -41,6 +41,7 @@ export function teamAction(id: string, action: string, user: UserView, input: Re
     ensure(action === 'leave', 404, 'Неизвестное действие');
     ensure(team.owner_id !== user.id, 409, 'Владелец не может покинуть свою команду');
     db().prepare('DELETE FROM team_members WHERE team_id=? AND user_id=?').run(id, user.id);
+    db().prepare('UPDATE bots SET team_id=NULL WHERE team_id=? AND owner_id=?').run(id, user.id);
     return { ok: true };
   });
 }

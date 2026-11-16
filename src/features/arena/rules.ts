@@ -1,15 +1,22 @@
 import { Chess, type Color, type PieceSymbol } from 'chess.js';
 import type { Game, GameView, MaterialSummary, Side } from './types';
 import { ApiError, ensure } from '@/server/errors';
+import { timeoutFor } from './timing';
 
 export const values: Record<PieceSymbol, number> = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };
 export const opposite = (side: Side): Side => side === 'w' ? 'b' : 'w';
 export function chessFor(game: Game): Chess {
   return new Chess(game.moves.at(-1)?.fen);
 }
-export function fullChess(game: Game): Chess {
+export function fullChess(game: Game, withTimings = false): Chess {
   const chess = new Chess();
-  for (const move of game.moves) chess.move(move.uci);
+  for (const move of game.moves) {
+    chess.move(move.uci);
+    if (withTimings) {
+      const seconds = move.remainingMs / 1000;
+      chess.setComment(`[%clk ${Math.floor(seconds / 3600)}:${String(Math.floor(seconds / 60) % 60).padStart(2, '0')}:${(seconds % 60).toFixed(3).padStart(6, '0')}] [%emt ${(move.elapsedMs / 1000).toFixed(3)}]`);
+    }
+  }
   return chess;
 }
 export function finish(game: Game, result: Game['result'], reason: string) {
@@ -18,7 +25,7 @@ export function finish(game: Game, result: Game['result'], reason: string) {
 export function deadlineFor(game: Game): number | null {
   if (game.status !== 'playing' || game.turnStartedAt === null) return null;
   const turn = chessFor(game).turn();
-  const cap = game.seats[turn].kind === 'bot' ? game.format.botMoveMs : null;
+  const cap = game.seats[turn].kind === 'bot' ? game.format.botMoveMs : game.format.humanMoveMs;
   return game.turnStartedAt + Math.min(game.clocks[turn], cap ?? Infinity);
 }
 function canPossiblyMate(chess: Chess, side: Side): boolean {
@@ -38,9 +45,22 @@ export function settleClock(game: Game, now: number) {
   if (deadline === null || now < deadline) return;
   const chess = chessFor(game);
   const side = chess.turn();
+  const cap = game.seats[side].kind === 'bot' ? game.format.botMoveMs : game.format.humanMoveMs;
+  const total = game.clocks[side];
   game.clocks[side] = Math.max(0, game.clocks[side] - (deadline - game.turnStartedAt!));
+  game.timeout = { side, kind: cap != null && cap < total ? 'move' : 'total', ply: game.moves.length + 1, limitMs: deadline - game.turnStartedAt!, remainingMs: game.clocks[side], deadlineAt: deadline };
   const winner = opposite(side);
   finish(game, canPossiblyMate(chess, winner) ? winner === 'w' ? '1-0' : '0-1' : '1/2-1/2', 'timeout');
+}
+/** Record only the first authenticated, legal attempt for the expired turn. */
+export function recordLateMove(game: Game, side: Side, uci: string, expectedPly: number, receivedAt: number): void {
+  const timeout = game.timeout;
+  if (game.status !== 'finished' || game.reason !== 'timeout' || !timeout || timeout.deadlineAt == null || timeout.lateMove || side !== timeout.side || expectedPly !== game.moves.length || receivedAt < timeout.deadlineAt) return;
+  if (!/^[a-h][1-8][a-h][1-8][qrbn]?$/.test(uci)) return;
+  const chess = chessFor(game);
+  if (chess.turn() !== side || !chess.moves({ verbose: true }).some(move => `${move.from}${move.to}${move.promotion || ''}` === uci)) return;
+  timeout.lateMove = { uci, receivedAt, delayMs: receivedAt - timeout.deadlineAt };
+  game.version++;
 }
 export function applyMove(game: Game, side: Side, uci: string, expectedPly: number, now: number) {
   settleClock(game, now);
@@ -68,23 +88,47 @@ export function material(chess: Chess): MaterialSummary {
   return summary;
 }
 const safeHeader = (value: string) => value.replace(/[\[\]"\\\r\n]/g, '').slice(0, 80);
-export function pgnFor(game: Game): string {
-  const chess = new Chess();
+export function pgnFor(game: Game, chess = fullChess(game, true)): string {
   const headers = { Event: 'DeepMove Arena', Site: 'DeepMove', Date: new Date(game.createdAt).toISOString().slice(0, 10).replaceAll('-', '.'), Round: '-', White: safeHeader(game.seats.w.name), Black: safeHeader(game.seats.b.name), Result: game.result, TimeControl: `${game.format.initialMs / 1000}+${game.format.incrementMs / 1000}`, BotMoveLimit: game.format.botMoveMs === null ? '-' : `${game.format.botMoveMs / 1000}`, Termination: game.reason || 'unterminated' };
   for (const [key, value] of Object.entries(headers)) chess.setHeader(key, value);
-  for (const record of game.moves) {
-    chess.move(record.uci);
-    const seconds = record.remainingMs / 1000;
-    chess.setComment(`[%clk ${Math.floor(seconds / 3600)}:${String(Math.floor(seconds / 60) % 60).padStart(2, '0')}:${(seconds % 60).toFixed(3).padStart(6, '0')}] [%emt ${(record.elapsedMs / 1000).toFixed(3)}]`);
+  if (game.format.humanMoveMs != null) chess.setHeader('HumanMoveLimit', `${game.format.humanMoveMs / 1000}`);
+  if (game.series) { chess.setHeader('Event', 'DeepMove Cup'); chess.setHeader('Round', String(game.series.round)); chess.setHeader('SeriesId', game.series.id); }
+  const timeout = timeoutFor(game);
+  if (timeout) {
+    chess.setHeader('TimeoutSide', timeout.side);
+    chess.setHeader('TimeoutKind', timeout.kind);
+    chess.setHeader('TimeoutPly', String(timeout.ply));
+    chess.setHeader('TimeoutLimitMs', String(timeout.limitMs));
+    chess.setHeader('TimeoutRemainingMs', String(timeout.remainingMs));
+    if (timeout.deadlineAt != null) chess.setHeader('TimeoutDeadlineAt', String(timeout.deadlineAt));
+    if (timeout.lateMove) {
+      chess.setHeader('LateMove', timeout.lateMove.uci);
+      chess.setHeader('LateMoveReceivedAt', String(timeout.lateMove.receivedAt));
+      chess.setHeader('LateMoveDelayMs', String(timeout.lateMove.delayMs));
+    }
   }
   return chess.pgn();
 }
+type PositionView = Pick<GameView, 'fen' | 'legalMoves' | 'pgn' | 'material' | 'turn'>;
+const positionCache = new Map<string, { signature: string; view: PositionView }>();
+function positionView(game: Game): PositionView {
+  // Cache derived public data only; clocks, secrets and analysis always stay fresh.
+  // The content signature also handles imported/updated archives without a version bump.
+  const signature = JSON.stringify([game.version, game.createdAt, game.status, game.result, game.reason, game.seats.w.name, game.seats.b.name, game.format, game.moves, game.timeout]);
+  const cached = positionCache.get(game.id);
+  if (cached?.signature === signature) return cached.view;
+  const chess = fullChess(game, true);
+  const view = { fen: chess.fen(), turn: chess.turn(), legalMoves: game.status === 'playing' ? chess.moves({ verbose: true }).map(move => `${move.from}${move.to}${move.promotion || ''}`) : [], pgn: pgnFor(game, chess), material: material(chess) };
+  if (positionCache.size >= 128) positionCache.delete(positionCache.keys().next().value!);
+  positionCache.set(game.id, { signature, view });
+  return view;
+}
 export function viewGame(game: Game, now: number): GameView {
-  const chess = fullChess(game);
+  const position = positionView(game);
   const seats = Object.fromEntries((['w', 'b'] as Color[]).map(side => {
-    const { userId, name, kind, ready } = game.seats[side]; return [side, { userId, name, kind, ready }];
+    const { userId, name, kind, ready, botId, teamId, teamName } = game.seats[side]; return [side, { userId, name, kind, ready, botId, teamId, teamName }];
   })) as GameView['seats'];
   const { joinHash: _joinHash, ...publicGame } = game;
   void _joinHash;
-  return { ...publicGame, seats, analysis: game.status === 'finished' ? game.analysis || null : null, fen: chess.fen(), turn: chess.turn(), legalMoves: game.status === 'playing' ? chess.moves({ verbose: true }).map(move => `${move.from}${move.to}${move.promotion || ''}`) : [], serverNow: now, deadline: deadlineFor(game), pgn: pgnFor(game), material: material(chess) };
+  return { ...publicGame, ...position, seats, timeout: timeoutFor(game), analysis: game.status === 'finished' ? game.analysis || null : null, serverNow: now, deadline: deadlineFor(game) };
 }

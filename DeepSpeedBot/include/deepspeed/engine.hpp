@@ -15,6 +15,7 @@ class Engine {
     std::mutex outputMutex;
     std::vector<Prepared> prepared;
     bool wasPondering=false;
+    int ponderBudgetMs=70;
     std::atomic<bool> suppressBest{false};
     std::function<void(const std::string&)> output;
     void emit(const std::string& line);
@@ -25,6 +26,7 @@ public:
     explicit Engine(Config cfg={},std::function<void(const std::string&)> out={});
     ~Engine();
     bool command(const std::string& line);
+    void error(const std::string& message) { emit("info string error "+message); }
 };
 std::string resultJson(const Result& result,const std::string& mode,double ponderMs=0,std::uint64_t ponderNodes=0);
 }

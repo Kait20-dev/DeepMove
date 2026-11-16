@@ -1,0 +1,17 @@
+name: Предложение
+description: Идея улучшения платформы, документации или движка
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Какую задачу нужно решить?
+      description: Опиши конкретную ситуацию участника, зрителя или разработчика.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Предлагаемое поведение
+      description: Как это должно работать и какой результат можно проверить?
+    validations:
+      required: true

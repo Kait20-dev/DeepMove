@@ -13,3 +13,6 @@
 @media(max-width:760px){.piece-token .chess-piece{font-size:9vw}}
 @media(max-width:420px){.piece-token .chess-piece{font-size:9.5vw}.start-countdown>span{font-size:8px}.start-countdown>p{font-size:11px}.last-move-caption{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.piece-token{transition:none!important}}
+.instant-board .piece-token{transition:none!important}
+.animation-toggle[aria-checked=false]{color:#c5dfc7}
+.replay-clock-note,.selected-move-timing{font-size:11px;line-height:1.6;color:#baa3cd;margin:8px 0;font-variant-numeric:tabular-nums}.selected-move-timing{font-family:Consolas,monospace}.timeout-details,.timeout-event{border-left:2px solid #d49c71;padding:4px 0 4px 12px;margin:14px 0;color:#d9baa2;font-size:11px;line-height:1.8}.timeout-details p,.timeout-event p{margin:5px 0}.timeout-event strong{font-size:12px}.move-table button small.move-timing{display:flex;flex-direction:column;align-items:flex-end;gap:3px;font-size:9px;font-variant-numeric:tabular-nums;white-space:nowrap}.player-bar>div{min-width:0}.player-bar strong{overflow-wrap:anywhere}.player-bar time{white-space:nowrap;font-variant-numeric:tabular-nums;flex-shrink:0}
